@@ -142,6 +142,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Visual Studio 2015\Projects\DataStructures\DataStructures\LinkedList.h" />
+    <ClInclude Include="..\..\..\Visual Studio 2015\Projects\DataStructures\DataStructures\LkListNode.h" />
+    <ClInclude Include="Course.h" />
+    <ClInclude Include="Student.h" />
+    <ClInclude Include="LinkedListSel.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Course.cpp" />
+    <ClCompile Include="Student.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
