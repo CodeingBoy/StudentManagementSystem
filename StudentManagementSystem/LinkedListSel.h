@@ -3,10 +3,12 @@
 
 using namespace std;
 
-#ifdef USE_STL
-#include <vector>
-#define LINKED_LIST vector
+#ifdef USE_STL_LIST
+#include <list>
+#define LINKED_LIST list
+#define LKLIST_NODEPTR _NODEPTR
 #else
 #include "MyLinkedList.h"
 #define LINKED_LIST MyLinkedList
+#define LKLIST_NODEPTR LkListNode
 #endif
