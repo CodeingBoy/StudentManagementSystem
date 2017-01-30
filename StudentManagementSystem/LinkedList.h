@@ -14,26 +14,9 @@ class LinkedList
 {
 public:
     virtual ~LinkedList() = 0;
-    // delete elements
-    virtual T pop_front() = 0;
-    virtual T pop_back() = 0;
-    // add elements
-    virtual void push_back(T obj) = 0;
-    virtual void push_front(T obj) = 0;
-    // access elements
-    virtual T front() = 0;
-    virtual T back() = 0;
-    virtual T at(int pos) = 0;
-    // informations
-    virtual int size() = 0;
-    virtual void resize(int newsize) = 0;
 
-    // operators
-    T& operator[](const int pos)
-    {
-        return at(pos);
-    }
     // iterators definition
+    // TODO: refactor this to fit LinkedList
     class LinkedList<T>::iterator
     {
     public:
@@ -56,6 +39,19 @@ public:
             return *this;
         }
 
+        iterator& operator+(int val)
+        {
+            index += val;
+            return *this;
+        }
+
+        iterator& operator+=(int val)
+        {
+            index += val;
+            return *this;
+        }
+
+
         T operator*()
         {
             return at(index);
@@ -64,6 +60,54 @@ public:
         int index;
         LinkedList& lkList;
     };
+
+
+    // delete elements
+    virtual T pop_front() = 0;
+    virtual T pop_back() = 0;
+    virtual iterator erase(iterator where) = 0;
+    virtual void erase(iterator first, iterator last)
+    {
+        for (iterator iter = first; iter != last; /*leave here blank because erase will return next iter*/) {
+            iter = erase(iter);
+        }
+        erase(last);
+    }
+    virtual void erase(int pos)
+    {
+        iterator iter = begin();
+        iter += pos;
+        erase(iter);
+    };
+    void clear()
+    {
+        erase(begin(), end());
+    }
+    // add elements
+    virtual void push_back(T obj) = 0;
+    virtual void push_front(T obj) = 0;
+    virtual void insert(iterator iter, T obj) = 0;
+    virtual void insert(int index, T obj)
+    {
+        iterator iter = begin();
+        iter += index;
+        insert(iter, obj);
+    }
+
+    // access elements
+    virtual T front() = 0;
+    virtual T back() = 0;
+    virtual T at(int pos) = 0;
+    // informations
+    virtual int size() = 0;
+    virtual void resize(int newsize) = 0;
+
+    // operators
+    T& operator[](const int pos)
+    {
+        return at(pos);
+    }
+
 
     class LinkedList<T>::reverse_iterator
     {
