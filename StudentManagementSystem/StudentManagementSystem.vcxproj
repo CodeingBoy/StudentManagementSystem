@@ -143,13 +143,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Course.h" />
+    <ClInclude Include="CSVParser.h" />
+    <ClInclude Include="FileHandler.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LkListNode.h" />
+    <ClInclude Include="StuCSVParser.h" />
     <ClInclude Include="Student.h" />
     <ClInclude Include="LinkedListSel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Course.cpp" />
+    <ClCompile Include="CSVParser.cpp" />
+    <ClCompile Include="FileHandler.cpp" />
+    <ClCompile Include="StuCSVParser.cpp" />
     <ClCompile Include="Student.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
