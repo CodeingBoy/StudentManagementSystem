@@ -11,7 +11,7 @@ CCSVParser::~CCSVParser()
 {
 }
 
-vector<wchar_t*>& CCSVParser::Parse(wchar_t* line, vector<wchar_t*>& container)
+LINKED_LIST<wchar_t*>& CCSVParser::Parse(wchar_t* line, LINKED_LIST<wchar_t*>& container)
 {
     // ·Ö¸î×Ö·û´®
     wchar_t* pStr, *pContext = nullptr;

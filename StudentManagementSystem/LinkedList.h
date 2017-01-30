@@ -92,6 +92,10 @@ public:
     {
         Insert(obj);
     }
+    void shrink_to_fit()
+    {
+
+    }
 private:
     LkListNode<T>* head;
 
