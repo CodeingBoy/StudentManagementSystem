@@ -3,7 +3,7 @@
 #include "LinkedList.h"
 
 template <typename T>
-class MyLinkedList : public LinkedList<T>
+class MyLinkedList /* : public LinkedList<T>*/
 {
 public:
     MyLinkedList()
@@ -25,7 +25,7 @@ public:
     {
         Insert(obj);
     }
-    int size()
+    int size() const
     {
         return GetLength();
     }
@@ -37,19 +37,19 @@ public:
         return GetData(pos);
     }
 
-    T pop_front() override
+    T pop_front()
     {
         T val = front();
         Destroy(0);
         return val;
     }
-    T pop_back() override
+    T pop_back()
     {
         T val = back();
         Destroy(size() - 1);
         return val;
     }
-    void push_front(T obj) override
+    void push_front(T obj)
     {
         LkListNode<T>* node = new LkListNode<T>(obj);
         if (!node)
@@ -59,38 +59,157 @@ public:
         head->SetNext(node);
     }
 
-    T front() override
+    T front() const
     {
         return GetData(0);
     }
-    T back() override
+    T back() const
     {
         return GetData(size() - 1);
     }
-    void resize(int newsize) override
+    void resize(int newsize)
     {
         // do nothing
     }
 
-    LinkedList<T>::iterator erase(LinkedList<T>::iterator where) override
+    // iterators definition
+    class mylklist_iterator /*: public LinkedList<T>::iterator*/
     {
-        LinkedList<T>::iterator next_iter = where + 1;
-        delete &(*where);
-        return next_iter;
-    }
-    void insert(LinkedList<T>::iterator iter, T obj) override
+    public:
+        mylklist_iterator(MyLinkedList& lk_list, LkListNode<T>* node)
+            : nodeptr(node),
+              lkList(lk_list)
+        {
+        }
+
+        mylklist_iterator& operator++()
+        {
+            nodeptr = nodeptr->GetNext();
+            return *this;
+        }
+
+        mylklist_iterator& operator--()
+        {
+            nodeptr = nodeptr->GetPrev();
+            return *this;
+        }
+
+        mylklist_iterator operator+(int val)
+        {
+            mylklist_iterator new_iter = *this;
+            new_iter += val;
+            return new_iter;
+        }
+
+        mylklist_iterator& operator+=(int val)
+        {
+            while (val) {
+                ++(*this);
+                val--;
+            }
+            return *this;
+        }
+
+        mylklist_iterator operator-(int val)
+        {
+            mylklist_iterator new_iter = *this;
+            new_iter -= val;
+            return new_iter;
+        }
+
+        mylklist_iterator& operator-=(int val)
+        {
+            while (val) {
+                --(*this);
+                val--;
+            }
+            return *this;
+        }
+
+        LkListNode<T>* GetNodePtr()
+        {
+            return nodeptr;
+        }
+
+        T operator*()
+        {
+            return nodeptr->GetData();
+        }
+
+        bool operator==(mylklist_iterator& other)
+        {
+            return this->nodeptr == other.nodeptr
+                   && &(this->lkList) == &(other.lkList);
+        }
+
+        bool operator!=(mylklist_iterator& other)
+        {
+            return !(*this == other);
+        }
+    private:
+        LkListNode<T>* nodeptr;
+        MyLinkedList<T>& lkList;
+    };
+
+    class mylklist_reverse_iterator : public mylklist_iterator
+    {
+    public:
+        mylklist_iterator& operator++()
+        {
+            mylklist_iterator::nodeptr = mylklist_iterator::nodeptr->GetPrev();
+            return *this;
+        }
+
+        mylklist_iterator& operator--()
+        {
+            mylklist_iterator::nodeptr = mylklist_iterator::nodeptr->GetNext();
+            return *this;
+        }
+    };
+
+    void insert(mylklist_iterator& iter, T obj)
     {
         LkListNode<T>* node = new LkListNode<T>(obj);
         if (!node)
             return;
 
-        LinkedList<T>::iterator prev_iter = iter - 1;
+        mylklist_iterator prev_iter = iter - 1;
 
-        LkListNode<T>* priorNode = (*prev_iter);
+        LkListNode<T>* priorNode = prev_iter.GetNodePtr();
 
         node->SetNext(priorNode->GetNext());
         priorNode->SetNext(node);
     }
+
+    mylklist_iterator erase(mylklist_iterator& where)
+    {
+        mylklist_iterator next_iter = where + 1;
+        delete &(*where);
+        return next_iter;
+    }
+
+    // iterators
+    mylklist_iterator begin()
+    {
+        return mylklist_iterator(*this, head->GetNext());
+    }
+
+    mylklist_iterator end()
+    {
+        return mylklist_iterator(*this, nullptr);
+    }
+
+    mylklist_reverse_iterator rbegin()
+    {
+        return mylklist_reverse_iterator(*this, GetNode(size() - 1));
+    }
+
+    mylklist_reverse_iterator rend()
+    {
+        if (size() == 0)return rbegin();
+        return mylklist_reverse_iterator(*this, head);
+    }
+
 private:
     LkListNode<T>* head;
 

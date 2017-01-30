@@ -1,13 +1,12 @@
 #pragma once
 #include <exception>
 #include <iterator>
+#include "LinkedListSel.h"
 
 class IllegalIndex : public std::exception
 {
 
 };
-
-
 
 // interface for LinkedList
 
@@ -17,153 +16,65 @@ class LinkedList
 public:
     virtual ~LinkedList() = 0;
 
-#pragma once
-#include "LinkedList.h"
-
     // iterators definition
-    // TODO: refactor this to fit LinkedList
     class iterator
     {
     public:
+        virtual ~iterator();
 
-        iterator(LinkedList& lk_list, int index)
-            : index(index),
-              lkList(lk_list)
+        // these should be override
+        virtual iterator& operator++()
         {
-        }
-
-        iterator& operator++()
+            return nullptr;
+        };
+        virtual iterator& operator--()
         {
-            index++;
-            return *this;
-        }
-
-        iterator& operator--()
+            return nullptr;
+        };
+        virtual iterator operator+(int val)
         {
-            index--;
-            return *this;
-        }
-
-        iterator& operator+(int val)
+            return nullptr;
+        };
+        virtual iterator& operator+=(int val)
         {
-            iterator new_iter = this;
-            new_iter += val;
-            return new_iter;
-        }
-
-        iterator& operator+=(int val)
+            return nullptr;
+        };
+        virtual iterator operator-(int val)
         {
-            index += val;
-            return *this;
-        }
-
-        iterator& operator-(int val)
+            return nullptr;
+        };
+        virtual iterator& operator-=(int val)
         {
-            iterator new_iter = this;
-            new_iter -= val;
-            return new_iter;
-        }
-
-        iterator& operator-=(int val)
+            return nullptr;
+        };
+        virtual bool operator==(iterator& other)
         {
-            index -= val;
-            return *this;
-        }
-
-        iterator(const iterator& other)
-            : index(other.index),
-              lkList(other.lkList)
+            return false;
+        };
+        virtual bool operator!=(iterator& other)
         {
-        }
-
-        iterator(iterator&& other) noexcept
-            : index(other.index),
-              lkList(other.lkList)
+            return false;
+        };
+        virtual T operator*()
         {
-        }
-
-        iterator& operator=(const iterator& other)
-        {
-            if (this == &other)
-                return *this;
-            index = other.index;
-            lkList = other.lkList;
-            return *this;
-        }
-
-        iterator& operator=(iterator&& other) noexcept
-        {
-            if (this == &other)
-                return *this;
-            index = other.index;
-            lkList = other.lkList;
-            return *this;
-        }
-
-        friend bool operator==(const iterator& lhs, const iterator& rhs)
-        {
-            return lhs.index == rhs.index
-                   && lhs.lkList == rhs.lkList;
-        }
-
-        friend bool operator!=(const iterator& lhs, const iterator& rhs)
-        {
-            return !(lhs == rhs);
-        }
-
-        T operator*()
-        {
-            return at(index);
-        }
-    private:
-        int index;
-        LinkedList& lkList;
-    };
-
-    class reverse_iterator
-    {
-    public:
-        reverse_iterator(LinkedList& lk_list, int index)
-            : index(lk_list.size() - index),
-              lkList(lk_list)
-        {
-        }
-
-        reverse_iterator& operator++()
-        {
-            index--;
-            return *this;
-        }
-
-        reverse_iterator& operator--()
-        {
-            index++;
-            return *this;
-        }
-
-        T operator*()
-        {
-            return at(index);
-        }
-    private:
-        int index;
-        LinkedList& lkList;
+            return T();
+        };
     };
 
     // delete elements
     virtual T pop_front() = 0;
     virtual T pop_back() = 0;
-    virtual iterator erase(iterator where) = 0;
-    virtual void erase(iterator first, iterator last)
+    virtual iterator& erase(iterator& where) = 0;
+    virtual void erase(iterator& first, iterator& last)
     {
-        for (iterator iter = first; iter != last; /*leave here blank because erase will return next iter*/) {
+        for (iterator& iter = first; iter != last; /*leave here blank because erase will return next iter*/) {
             iter = erase(iter);
         }
         erase(last);
     }
     virtual void erase(int pos)
     {
-        iterator iter = begin();
+        iterator& iter = begin();
         iter += pos;
         erase(iter);
     };
@@ -174,10 +85,10 @@ public:
     // add elements
     virtual void push_back(T obj) = 0;
     virtual void push_front(T obj) = 0;
-    virtual void insert(iterator iter, T obj) = 0;
+    virtual void insert(iterator& iter, T obj) = 0;
     virtual void insert(int index, T obj)
     {
-        iterator iter = begin();
+        iterator& iter = begin();
         iter += index;
         insert(iter, obj);
     }
@@ -197,26 +108,20 @@ public:
     }
 
     // iterators
-    virtual iterator begin()
-    {
-        return iterator(*this, 0);
-    }
-    virtual iterator end()
-    {
-        return iterator(*this, size());
-    }
-    virtual reverse_iterator rbegin()
-    {
-        return reverse_iterator(*this, 0);
-    }
-    virtual reverse_iterator rend()
-    {
-        return reverse_iterator(*this, size());
-    }
+    virtual iterator& begin() = 0;
+    virtual iterator& end() = 0;
+    virtual iterator& rbegin() = 0;
+    virtual iterator& rend() = 0;
 };
 
 template <typename T>
 LinkedList<T>::~LinkedList()
+{
+    // keep it empty, this abstract class does not need deconstructor
+}
+
+template <typename T>
+LinkedList<T>::iterator::~iterator()
 {
     // keep it empty, this abstract class does not need deconstructor
 }
