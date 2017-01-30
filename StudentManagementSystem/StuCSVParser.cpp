@@ -38,7 +38,7 @@ bool CStuCSVParser::Parse(bool haveHeader, LINKED_LIST<Student>* plist)
 
 int CStuCSVParser::Parse(wchar_t* line, Student& inf)
 {
-    LINKED_LIST<wchar_t*> container;
+    vector<wchar_t*> container;
     CCSVParser::Parse(line, container);
 
     inf.SetID(container.size() >= 1 ? container.at(0) : LIST_ERR_STR);

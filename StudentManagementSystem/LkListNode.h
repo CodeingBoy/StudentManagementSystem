@@ -7,12 +7,10 @@ public:
     LkListNode(T data)
     {
         SetData(data);
-        SetNext(nullptr);
     }
 
     LkListNode()
     {
-        SetNext(nullptr);
     }
 
     ~LkListNode()
@@ -35,8 +33,24 @@ public:
     {
         LkListNode::next = next;
     }
+    LkListNode* GetPrev() const
+    {
+        return prev;
+    };
+    void SetPrev(LkListNode* prev)
+    {
+        LkListNode::prev = prev;
+    }
+    LkListNode& next_node()
+    {
+        return *next;
+    }
+    LkListNode& prev_node()
+    {
+        return *prev;
+    }
 private:
     T data;
     LkListNode* next = nullptr;
-    //LkListNode* prior = nullptr;
+    LkListNode* prev = nullptr;
 };
