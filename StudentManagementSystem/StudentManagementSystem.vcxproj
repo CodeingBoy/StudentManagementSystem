@@ -145,6 +145,7 @@
     <ClInclude Include="Course.h" />
     <ClInclude Include="CSVParser.h" />
     <ClInclude Include="FileHandler.h" />
+    <ClInclude Include="LinkedList.h" />
     <ClInclude Include="MyLinkedList.h" />
     <ClInclude Include="LkListNode.h" />
     <ClInclude Include="StuCSVParser.h" />

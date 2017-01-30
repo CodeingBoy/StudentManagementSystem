@@ -42,6 +42,9 @@
     <ClInclude Include="MyLinkedList.h">
       <Filter>Data Struct</Filter>
     </ClInclude>
+    <ClInclude Include="LinkedList.h">
+      <Filter>Data Struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Student.cpp">

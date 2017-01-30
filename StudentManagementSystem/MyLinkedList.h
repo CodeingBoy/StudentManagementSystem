@@ -1,8 +1,9 @@
 #pragma once
 #include "LkListNode.h"
+#include "LinkedList.h"
 
 template <typename T>
-class MyLinkedList
+class MyLinkedList : public LinkedList<T>
 {
 public:
     MyLinkedList()
@@ -18,6 +19,92 @@ public:
             delete node;
             node = next;
         }
+    }
+
+    void push_back(T obj)
+    {
+        Insert(obj);
+    }
+    int size()
+    {
+        return GetLength();
+    }
+    T at(int pos)
+    {
+        if (pos < 0 || pos > size()) {
+            throw IllegalIndex();
+        }
+        return GetData(pos);
+    }
+
+    T pop_front() override
+    {
+        T val = front();
+        Destroy(0);
+        return val;
+    }
+    T pop_back() override
+    {
+        T val = back();
+        Destroy(size() - 1);
+        return val;
+    }
+    void push_front(T obj) override
+    {
+        LkListNode<T>* node = new LkListNode<T>(obj);
+        if (!node)
+            return;
+
+        node->SetNext(head->GetNext());
+        head->SetNext(node);
+    }
+
+    T front() override
+    {
+        return GetData(0);
+    }
+    T back() override
+    {
+        return GetData(size() - 1);
+    }
+    void resize(int newsize) override
+    {
+        // do nothing
+    }
+
+    LinkedList<T>::iterator erase(LinkedList<T>::iterator where) override
+    {
+        LinkedList<T>::iterator next_iter = where + 1;
+        delete &(*where);
+        return next_iter;
+    }
+    void insert(LinkedList<T>::iterator iter, T obj) override
+    {
+        LkListNode<T>* node = new LkListNode<T>(obj);
+        if (!node)
+            return;
+
+        LinkedList<T>::iterator prev_iter = iter - 1;
+
+        LkListNode<T>* priorNode = (*prev_iter);
+
+        node->SetNext(priorNode->GetNext());
+        priorNode->SetNext(node);
+    }
+private:
+    LkListNode<T>* head;
+
+    LkListNode<T>* GetNode(int index)
+    {
+        LkListNode<T>* node = head->GetNext();
+        int curIndex = 0;
+
+        while (curIndex < index) {
+            node = node->GetNext();
+            curIndex++;
+        }
+
+        return node;
     }
 
     bool Insert(T data, int index = -1)
@@ -51,10 +138,6 @@ public:
         }
         return curIndex;
     }
-    LkListNode<T>* GetHead() const
-    {
-        return head;
-    }
     bool IsEmpty() const
     {
         return head->next == nullptr ? true : false;
@@ -62,10 +145,6 @@ public:
     bool Destroy(int index)
     {
         delete GetNode(index);
-        return false;
-    }
-    bool Reverse()
-    {
         return false;
     }
     T GetData(int index)
@@ -77,48 +156,5 @@ public:
         else
             return T();
     }
-    MyLinkedList<T>& Join_InPlace(MyLinkedList<T>& other)
-    {
-        LkListNode<T>* otherHead = other.GetHead();
-        LkListNode<T>* curListRear = GetNode(GetLength() - 1);
-
-        curListRear->SetNext(otherHead->GetNext());
-        other.GetHead()->SetNext(nullptr);
-
-        return *this;
-    }
-
-    void push_back(T obj)
-    {
-        Insert(obj);
-    }
-    void shrink_to_fit()
-    {
-
-    }
-    int size()
-    {
-        return GetLength();
-    }
-    T at(int pos)
-    {
-        return GetData(pos);
-    }
-private:
-    LkListNode<T>* head;
-
-    LkListNode<T>* GetNode(int index)
-    {
-        LkListNode<T>* node = head->GetNext();
-        int curIndex = 0;
-
-        while (curIndex < index) {
-            node = node->GetNext();
-            curIndex++;
-        }
-
-        return node;
-    }
-
 };
 
