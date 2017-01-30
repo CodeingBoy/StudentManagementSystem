@@ -7,32 +7,32 @@ public:
     Student();
     ~Student();
 
-    std::string GetID() const
+    std::wstring GetID() const
     {
         return id;
     }
 
-    void SetID(const std::string& id)
+    void SetID(const std::wstring& id)
     {
         this->id = id;
     }
 
-    std::string GetName() const
+    std::wstring GetName() const
     {
         return name;
     }
 
-    void SetName(const std::string& name)
+    void SetName(const std::wstring& name)
     {
         this->name = name;
     }
 
-    std::string GetClass() const
+    std::wstring GetClass() const
     {
         return clazz;
     }
 
-    void SetClass(const std::string& clazz)
+    void SetClass(const std::wstring& clazz)
     {
         this->clazz = clazz;
     }
@@ -47,23 +47,23 @@ public:
         isMale = is_male;
     }
 
-    std::string GetPhoneNum() const
+    std::wstring GetPhoneNum() const
     {
         return phoneNum;
     }
 
-    void SetPhoneNum(const std::string& phone_num)
+    void SetPhoneNum(const std::wstring& phone_num)
     {
         phoneNum = phone_num;
     }
 
 private:
     // 学号、姓名、班级（如：15级软件1班）、性别、手机号码、选修课程等信息。
-    std::string id;
-    std::string name;
-    std::string clazz;
+    std::wstring id;
+    std::wstring name;
+    std::wstring clazz;
     bool isMale;
-    std::string phoneNum;
+    std::wstring phoneNum;
 
 };
 
