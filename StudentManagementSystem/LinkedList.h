@@ -96,6 +96,14 @@ public:
     {
 
     }
+    int size()
+    {
+        return GetLength();
+    }
+    T at(int pos)
+    {
+        return GetData(pos);
+    }
 private:
     LkListNode<T>* head;
 
