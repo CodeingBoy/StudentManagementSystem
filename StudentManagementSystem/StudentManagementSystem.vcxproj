@@ -155,6 +155,7 @@
     <ClCompile Include="Course.cpp" />
     <ClCompile Include="CSVParser.cpp" />
     <ClCompile Include="FileHandler.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="StuCSVParser.cpp" />
     <ClCompile Include="Student.cpp" />
   </ItemGroup>
