@@ -96,8 +96,8 @@ void DeleteStudent()
 
 void ShowStudent()
 {
-    for (int i = 0; i < studentList.size(); i++) {
-        Student s = studentList.at(i);
+    for (auto iter = studentList.begin(); iter != studentList.end(); ++iter) {
+        Student s = *iter;
         wcout << "ID:" << s.GetID().c_str() << endl;
         wcout << "Name: " << s.GetName().c_str() << endl;
         wcout << "Class: " << s.GetClass().c_str() << endl;
