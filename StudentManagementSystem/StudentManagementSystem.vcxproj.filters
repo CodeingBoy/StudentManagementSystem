@@ -27,9 +27,6 @@
     <ClInclude Include="LinkedListSel.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="LinkedList.h">
-      <Filter>Data Struct</Filter>
-    </ClInclude>
     <ClInclude Include="LkListNode.h">
       <Filter>Data Struct</Filter>
     </ClInclude>
@@ -41,6 +38,9 @@
     </ClInclude>
     <ClInclude Include="StuCSVParser.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MyLinkedList.h">
+      <Filter>Data Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

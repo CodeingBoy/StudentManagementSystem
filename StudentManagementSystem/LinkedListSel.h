@@ -7,6 +7,6 @@ using namespace std;
 #include <vector>
 #define LINKED_LIST vector
 #else
-#include "LinkedList.h"
-#define LINKED_LIST LinkedList
+#include "MyLinkedList.h"
+#define LINKED_LIST MyLinkedList
 #endif

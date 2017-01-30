@@ -2,15 +2,15 @@
 #include "LkListNode.h"
 
 template <typename T>
-class LinkedList
+class MyLinkedList
 {
 public:
-    LinkedList()
+    MyLinkedList()
     {
         head = new LkListNode<T>();
     }
 
-    ~LinkedList()
+    ~MyLinkedList()
     {
         LkListNode<T>* node = head;
         while (node) {
@@ -77,7 +77,7 @@ public:
         else
             return T();
     }
-    LinkedList<T>& Join_InPlace(LinkedList<T>& other)
+    MyLinkedList<T>& Join_InPlace(MyLinkedList<T>& other)
     {
         LkListNode<T>* otherHead = other.GetHead();
         LkListNode<T>* curListRear = GetNode(GetLength() - 1);
