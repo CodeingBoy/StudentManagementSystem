@@ -87,6 +87,11 @@ public:
 
         return *this;
     }
+
+    void push_back(T obj)
+    {
+        Insert(obj);
+    }
 private:
     LkListNode<T>* head;
 
