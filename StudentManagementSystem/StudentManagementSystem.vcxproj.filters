@@ -27,10 +27,10 @@
     <ClInclude Include="LinkedListSel.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Visual Studio 2015\Projects\DataStructures\DataStructures\LinkedList.h">
+    <ClInclude Include="LinkedList.h">
       <Filter>Data Struct</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Visual Studio 2015\Projects\DataStructures\DataStructures\LkListNode.h">
+    <ClInclude Include="LkListNode.h">
       <Filter>Data Struct</Filter>
     </ClInclude>
   </ItemGroup>
