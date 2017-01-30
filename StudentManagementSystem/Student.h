@@ -7,6 +7,15 @@ public:
     Student();
     ~Student();
 
+    Student(const std::wstring& id, const std::wstring& name, const std::wstring& clazz, bool is_male, const std::wstring& phone_num)
+        : id(id),
+          name(name),
+          clazz(clazz),
+          isMale(is_male),
+          phoneNum(phone_num)
+    {
+    }
+
     std::wstring GetID() const
     {
         return id;
