@@ -1,8 +1,19 @@
 #pragma once
 #include <string>
+#include <ostream>
+
+using namespace std;
 
 class Student
 {
+private:
+    // 学号、姓名、班级（如：15级软件1班）、性别、手机号码、选修课程等信息。
+    std::wstring id;
+    std::wstring name;
+    std::wstring clazz;
+    bool isMale;
+    std::wstring phoneNum;
+
 public:
     Student();
     ~Student();
@@ -66,13 +77,29 @@ public:
         phoneNum = phone_num;
     }
 
-private:
-    // 学号、姓名、班级（如：15级软件1班）、性别、手机号码、选修课程等信息。
-    std::wstring id;
-    std::wstring name;
-    std::wstring clazz;
-    bool isMale;
-    std::wstring phoneNum;
 
+    friend bool operator==(const Student& lhs, const Student& rhs)
+    {
+        return lhs.id == rhs.id
+               && lhs.name == rhs.name
+               && lhs.clazz == rhs.clazz
+               && lhs.isMale == rhs.isMale
+               && lhs.phoneNum == rhs.phoneNum;
+    }
+
+    friend bool operator!=(const Student& lhs, const Student& rhs)
+    {
+        return !(lhs == rhs);
+    }
+
+    friend std::wostream& operator<<(std::wostream& os, const Student& obj)
+    {
+        return os
+               << obj.id << ","
+               << obj.name << ","
+               << obj.clazz << ","
+               << obj.isMale << ","
+               << obj.phoneNum;
+    }
 };
 
