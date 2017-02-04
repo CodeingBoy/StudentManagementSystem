@@ -3,13 +3,15 @@
 #include <TCHAR.h>
 #include "Student.h"
 #include "LinkedListSel.h"
+#include "FileHandler.h"
 
 using namespace std;
 
-LINKED_LIST<Student> studentList;
+StudentList studentList;
 
 void AddStudent();
 void ShowStudent();
+void SearchStudent();
 
 int main()
 {
@@ -20,6 +22,7 @@ int main()
         printf("1. add\n");
         printf("2. del\n");
         printf("3. show\n");
+        printf("4. search\n");
 
         wcin >> select;
 
@@ -30,11 +33,15 @@ int main()
             case 3:
                 ShowStudent();
                 break;
+            case 4:
+                SearchStudent();
+                break;
             default:
                 break;
         }
 
     } while (select);
+
     cin.get();
 }
 
@@ -104,4 +111,51 @@ void ShowStudent()
         wcout << "PhoneNumber: " << s.GetPhoneNum().c_str() << endl;
         wcout << endl;
     }
+}
+
+void SearchStudent()
+{
+    wstring id, name, clazz, phoneNum;
+
+    wcout << "Please input your search condition, leave blank to search all." << endl;
+
+    // ask for input
+    wchar_t buffer[1024];
+    wcout << "ID: ";
+    wcin >> buffer;
+    id.assign(buffer);
+
+    wcout << "Name: ";
+    wcin >> buffer;
+    name.assign(buffer);
+
+    wcout << "Class: ";
+    wcin >> buffer;
+    clazz.assign(buffer);
+
+    wcout << "PhoneNumber: ";
+    wcin >> buffer;
+    phoneNum.assign(buffer);
+
+    Student condition(id, name, clazz, true, phoneNum);
+
+    // search students
+    MyLinkedList<Student> searchResult = studentList.Search_Fuzzy(condition, false);
+
+    if (searchResult.size() != 0) {
+        wcout << "Here's what you got:" << endl;
+
+        for (auto iter = searchResult.begin(); iter != searchResult.end(); ++iter) {
+            Student s = *iter;
+            wcout << "ID:" << s.GetID().c_str() << endl;
+            wcout << "Name: " << s.GetName().c_str() << endl;
+            wcout << "Class: " << s.GetClass().c_str() << endl;
+            wcout << "PhoneNumber: " << s.GetPhoneNum().c_str() << endl;
+            wcout << endl;
+        }
+    } else {
+        wcout << "All students are not matches your condition." << endl;
+    }
+
+    wcout << "==Search End==" << endl;
 }
