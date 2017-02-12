@@ -59,6 +59,17 @@ void Dialog::DrawDialogBorder()
     console.FillAreaChar({ rect.Right - 1, rect.Bottom, rect.Right, rect.Bottom }, _T('©¿'));  // bottom right
 }
 
+void Dialog::DrawTitle(wstring title) const
+{
+    // redraw upper border to clean previous title
+    SMALL_RECT horizontalBorder_top = { rect.Left + 2, rect.Top, rect.Right - 2, rect.Top };
+    console.FillAreaChar(horizontalBorder_top, _T('©¥'));
+
+    DWORD fillNum;
+    COORD titlePos = { size.X / 2 - GetMBCSLength(title) / 2, clientArea.Top - 1 }; // draw over border
+    WriteConsoleOutputCharacter(console.GetConsoleHandle(), title.c_str(), wcslen(title.c_str()), titlePos, &fillNum);
+}
+
 void Dialog::Show()
 {
     DrawDialogBox(rect);  // draw dialog plane

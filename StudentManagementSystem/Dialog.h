@@ -19,6 +19,7 @@ public:
 
     void DrawDialogBox(SMALL_RECT rect);
     void DrawDialogBorder();
+    void DrawTitle(wstring title) const;
 
     void Show();
     virtual void Draw() = 0;

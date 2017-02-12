@@ -28,12 +28,9 @@ void ConfirmDlg::Draw()
     //console.FillAreaChar(separator_1_rect, _T('©¥'));
     console.FillAreaChar(separator_2_rect, _T('©¥'));
 
-    // show title
+    DrawTitle(title); // draw title
+
     DWORD fillNum;
-
-    COORD titlePos = { size.X / 2 - GetMBCSLength(title) / 2, clientArea.Top - 1 }; // draw over border
-    WriteConsoleOutputCharacter(console.GetConsoleHandle(), title.c_str(), wcslen(title.c_str()), titlePos, &fillNum);
-
     // show content
     COORD contentPos = { clientArea.Left + 1, clientArea.Top + 1 };
     SMALL_RECT content_line_rect = { clientArea.Left + 1, clientArea.Top + 1, clientArea.Right - 1, clientArea.Top + 1 };
