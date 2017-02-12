@@ -46,6 +46,7 @@ public:
     SMALL_RECT GetWindowSize() const;
     WORD GetPressedKey();
     void SetCurrentTextAttribute(WORD attr);
+    void SetCursorPos(COORD pos);
 
 
     HANDLE GetConsoleHandle() const
@@ -60,6 +61,8 @@ public:
 
     void ShadowWindowLine(wchar_t* str);
     void DrawBox(bool bSingle, SMALL_RECT rc);
+    void HideCursor();
+    void ShowCursor();
     static int GetMBCSLength(wstring str);
     static int GetWCSLength(string str);
 };

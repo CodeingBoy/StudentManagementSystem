@@ -259,6 +259,29 @@ void ConsoleOperator::SetCurrentTextAttribute(WORD attr)
     SetConsoleTextAttribute(consoleHandle, attr);
 }
 
+void ConsoleOperator::SetCursorPos(COORD pos)
+{
+    SetConsoleCursorPosition(consoleHandle, pos);
+}
+
+void ConsoleOperator::HideCursor()
+{
+    CONSOLE_CURSOR_INFO info;
+    GetConsoleCursorInfo(consoleHandle, &info);
+
+    info.bVisible = false;
+    SetConsoleCursorInfo(consoleHandle, &info);
+}
+
+void ConsoleOperator::ShowCursor()
+{
+    CONSOLE_CURSOR_INFO info;
+    GetConsoleCursorInfo(consoleHandle, &info);
+
+    info.bVisible = false;
+    SetConsoleCursorInfo(consoleHandle, &info);
+}
+
 int ConsoleOperator::GetMBCSLength(wstring str)
 {
     return WideCharToMultiByte(CP_OEMCP, NULL, str.c_str(), -1, NULL, 0, NULL, FALSE);
