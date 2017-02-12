@@ -28,6 +28,7 @@ int main()
     setlocale(LC_ALL, "chs");
     wcout.imbue(locale("chs"));
     console.SetTitle(_T("学生管理系统")); // set window title
+    console.HideCursor(); // hide cursor at first
     COORD size = console.GetSize();
     console.SetSize({ size.X, 25 });
     console.ClearScreen(FOREGROUND_WHITE | BACKGROUND_BLUE); // set background
