@@ -51,6 +51,12 @@
     <ClInclude Include="AddStudentDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Dialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfirmDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Student.cpp">
@@ -75,6 +81,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="AddStudentDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfirmDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
