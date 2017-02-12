@@ -30,20 +30,25 @@ public:
     DWORD SetLineAttr(int coord_Y, WORD attr) const;
     DWORD WriteConsoleLine(wstring content, COORD writeCoord, WORD attr = NULL) const;
     DWORD WriteConsoleLine(wstring content, int coord_Y, WORD attr = NULL, int align = 0) const;
-    void ShowConfirmDialog(wstring title, wstring content, int lineStrCount, wstring btnOKCaption = _T("OK"));
+    void DrawDialogBox(SMALL_RECT rect);
+    void ShowConfirmDialog(wstring title, wstring content, int lineStrCount, wstring btnOKCaption = _T("OK"), WORD confirmKeyCode = VK_RETURN);
     bool ShowYesNoDialog(wstring title, wstring content, wstring btnYesCaption = _T("Yes"), wstring btnNoCaption = _T("No"));
     void FillScreen(wchar_t fillChar);
     void FillScreen(wchar_t fillChar, WORD attr);
+    void FillArea(SMALL_RECT rect, wchar_t fillChar, WORD attr);
+    void FillAreaChar(SMALL_RECT rect, wchar_t fillChar) const;
+    void FillAreaAttr(SMALL_RECT rect, WORD attr) const;
     void ClearScreen();
     void ClearScreen(WORD attr);
     COORD GetCursorPos() const;
     COORD GetSize() const;
     void SetSize(COORD size) const;
     SMALL_RECT GetWindowSize() const;
-    WORD GetInput();
+    WORD GetPressedKey();
     void ShadowWindowLine(wchar_t* str);
     void DrawBox(bool bSingle, SMALL_RECT rc);
     static int GetMBCSLength(wstring str);
+    static int GetWCSLength(string str);
 };
 
 

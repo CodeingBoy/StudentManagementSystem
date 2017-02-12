@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AddStudentDlg.h" />
     <ClInclude Include="ConsoleOperator.h" />
     <ClInclude Include="Course.h" />
     <ClInclude Include="CSVParser.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="LinkedListSel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddStudentDlg.cpp" />
     <ClCompile Include="ConsoleOperator.cpp" />
     <ClCompile Include="Course.cpp" />
     <ClCompile Include="CSVParser.cpp" />

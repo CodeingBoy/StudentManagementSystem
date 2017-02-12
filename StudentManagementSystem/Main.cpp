@@ -19,6 +19,8 @@ void AddStudent();
 void ShowStudent();
 void SearchStudent();
 
+void OnExit();
+
 int main()
 {
     setlocale(LC_ALL, "chs");
@@ -49,10 +51,10 @@ int main()
     // get input
     wchar_t input;
     bool shouldExit = false;
-    while (!shouldExit && ((input = console.GetInput()))) {
+    while (!shouldExit && ((input = console.GetPressedKey()))) {
         switch (input) {
             case 0x41: // A
-                shouldExit = true;
+                console.ShowConfirmDialog(_T("无法添加"), _T("目前添加功能被禁用，请稍后再试。"), 20);
                 break;
             case 0x45: // E
                 shouldExit = true;
@@ -70,6 +72,7 @@ int main()
                 shouldExit = true;
                 break;
             case VK_ESCAPE: // Esc
+                OnExit();
                 shouldExit = true;
                 break;
             default:
@@ -215,4 +218,9 @@ void SaveToFile(wchar_t* fileName)
         file << s << endl;
     }
     file.close();*/
+}
+
+void OnExit()
+{
+
 }

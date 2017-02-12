@@ -65,11 +65,26 @@ DWORD ConsoleOperator::WriteConsoleLine(wstring content, int coord_Y, WORD attr,
     return WriteConsoleLine(content, writeCoord, attr);
 }
 
-void ConsoleOperator::ShowConfirmDialog(wstring title, wstring content, int lineStrCount, wstring btnOKCaption)
+void ConsoleOperator::DrawDialogBox(SMALL_RECT rect)
+{
+    // draw shadows
+    WORD bg_attr = BACKGROUND_INTENSITY;
+
+    SMALL_RECT rect_shadow = { rect.Left + 1, rect.Top + 1, rect.Right + 1, rect.Bottom + 1 };
+    FillAreaAttr(rect_shadow, bg_attr);
+
+    // draw dialog plane
+    WORD dlg_attr = FOREGROUND_WHITE | FOREGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_BLUE; // do not use FOREGROUND_RED! -- is for text
+
+    SMALL_RECT rect_dialog = { rect.Left, rect.Top, rect.Right, rect.Bottom };
+    FillAreaAttr(rect_dialog, dlg_attr);
+}
+
+void ConsoleOperator::ShowConfirmDialog(wstring title, wstring content, int lineStrCount, wstring btnOKCaption, WORD confirmKeyCode)
 {
     // calc dialog width
-    int len_title = wcslen(title.c_str());
-    int len_content = wcslen(content.c_str());
+    int len_title = GetMBCSLength(title);
+    int len_content = GetMBCSLength(content);
     // width = border + space + width_content or width_title + space + border
     int width = 1 + 1 + max(len_title, len_content % lineStrCount) + 1 + 1;
     // height = border + height_title + border + height_content + border + height_btnOK + border
@@ -85,56 +100,58 @@ void ConsoleOperator::ShowConfirmDialog(wstring title, wstring content, int line
     dialogRect.Top = size.Y / 2 - height / 2;
     dialogRect.Bottom = size.Y / 2 + height / 2;
 
-    // create shadows
-    WORD bg_attr = BACKGROUND_INTENSITY;
-    DWORD fillNum;
-
-    COORD shadowStartPos = { dialogRect.Left + 1, dialogRect.Top + 1 };
-    while (shadowStartPos.Y <= dialogRect.Bottom + 1) {
-        FillConsoleOutputAttribute(consoleHandle, bg_attr, width, shadowStartPos, &fillNum); // fill a line shadow
-        shadowStartPos.Y++; // switch to next line
-    }
-
-    // create dialog
-    WORD dlg_attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_BLUE; // do not use FOREGROUND_RED! -- is for text
-
-    COORD dlgStartPos = { dialogRect.Left, dialogRect.Top};
-    while (dlgStartPos.Y <= dialogRect.Bottom) {
-        FillConsoleOutputAttribute(consoleHandle, dlg_attr, width, dlgStartPos, &fillNum); // fill a line shadow
-        dlgStartPos.Y++; // switch to next line
-    }
+    DrawDialogBox(dialogRect);
 
     // create border
-    SetConsoleTextAttribute(consoleHandle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    SetConsoleTextAttribute(consoleHandle, FOREGROUND_WHITE);
 
-    // horizontal
-    COORD horizontalBorderTopPos = { dialogRect.Left, dialogRect.Top };
-    FillConsoleOutputCharacter(consoleHandle, _T('-'), width, horizontalBorderTopPos, &fillNum);
-    FillConsoleOutputCharacter(consoleHandle, _T('-'), width, { dialogRect.Left, dialogRect.Top + 2 }, &fillNum);
-    FillConsoleOutputCharacter(consoleHandle, _T('-'), width, { dialogRect.Left, dialogRect.Bottom - 2 }, &fillNum);
-    FillConsoleOutputCharacter(consoleHandle, _T('-'), width, { dialogRect.Left, dialogRect.Bottom }, &fillNum); // fill a line shadow
+    // horizontal separator
+    SMALL_RECT horizontalBorder_top = { dialogRect.Left, dialogRect.Top, dialogRect.Right, dialogRect.Top },
+               horizontalBorder_bottom = { dialogRect.Left, dialogRect.Bottom, dialogRect.Right, dialogRect.Bottom };
+    FillAreaChar(horizontalBorder_top, _T('-'));
+    FillAreaChar(horizontalBorder_bottom, _T('-'));
 
-    // vertical
-    COORD verticalBorderLeftPos = { dialogRect.Left, dialogRect.Top };
-    while (verticalBorderLeftPos.Y <= dialogRect.Bottom) {
-        FillConsoleOutputCharacter(consoleHandle, _T('|'), 1, verticalBorderLeftPos, &fillNum); // fill a line shadow
-        FillConsoleOutputCharacter(consoleHandle, _T('|'), 1, { dialogRect.Right, verticalBorderLeftPos.Y}, &fillNum); // fill a line shadow
-        verticalBorderLeftPos.Y++; // switch to next line
-    }
+    // vertical border
+    SMALL_RECT verticalBorder_left = { dialogRect.Left, dialogRect.Top, dialogRect.Left, dialogRect.Bottom };
+    FillAreaChar(verticalBorder_left, _T('|'));
+
+    SMALL_RECT verticalBorder_right = { dialogRect.Right, dialogRect.Top, dialogRect.Right, dialogRect.Bottom };
+    FillAreaChar(verticalBorder_right, _T('|'));
+
+    // separator
+    SMALL_RECT separator_1_rect = { dialogRect.Left + 1, dialogRect.Top + 2, dialogRect.Right - 1, dialogRect.Top + 2 },
+               separator_2_rect = { dialogRect.Left + 1, dialogRect.Bottom - 2, dialogRect.Right - 1, dialogRect.Bottom - 2 };
+    FillAreaChar(separator_1_rect, _T('-'));
+    FillAreaChar(separator_2_rect, _T('-'));
 
     // show title
+    DWORD fillNum;
+
     COORD dlgMidPos = { size.X / 2, (dialogRect.Bottom - dialogRect.Top) / 2 };
-    COORD titlePos = { dlgMidPos.X - wcslen(title.c_str()) / 2, dialogRect.Top + 1 };
+    COORD titlePos = { dlgMidPos.X - GetMBCSLength(title) / 2, dialogRect.Top + 1 };
     WriteConsoleOutputCharacter(consoleHandle, title.c_str(), wcslen(title.c_str()), titlePos, &fillNum);
 
     // show content
-    COORD contentPos = { dlgMidPos.X - wcslen(content.c_str()) / 2, dialogRect.Top + 3 };
-    WriteConsoleOutputCharacter(consoleHandle, content.c_str(), wcslen(content.c_str()), contentPos, &fillNum);
+    COORD contentPos = { dialogRect.Left + 1, dialogRect.Top + 3 };
+    SMALL_RECT content_line_rect = { dialogRect.Left + 1, dialogRect.Top + 3, dialogRect.Right - 1, dialogRect.Top + 3};
+    const wchar_t* buffer = content.c_str();
+    int content_width_line = content_line_rect.Right + 1 - content_line_rect.Left;
+    int strPos = 0;
+    while (strPos < content.length()) {
+        WriteConsoleOutputCharacter(consoleHandle, buffer + strPos,
+                                    min(content_width_line / 2, content.length() - strPos), contentPos, &fillNum);
+        strPos += min(content_width_line / 2, content.length());
+        contentPos.Y++;
+    }
 
     // show button OK
-    COORD btnOKPos = { dlgMidPos.X - wcslen(btnOKCaption.c_str()) / 2, dialogRect.Bottom - 1 };
+    COORD btnOKPos = { dlgMidPos.X - GetMBCSLength(btnOKCaption) / 2, dialogRect.Bottom - 1 };
     WriteConsoleOutputCharacter(consoleHandle, btnOKCaption.c_str(), wcslen(btnOKCaption.c_str()), btnOKPos, &fillNum);
 
+    WORD pressedKey;
+    do {
+        pressedKey = GetPressedKey();
+    } while (pressedKey != confirmKeyCode);
 }
 
 bool ConsoleOperator::ShowYesNoDialog(wstring title, wstring content, wstring btnYesCaption, wstring btnNoCaption)
@@ -157,6 +174,42 @@ void ConsoleOperator::FillScreen(wchar_t fillChar, WORD attr)
     DWORD fillNum;
     FillConsoleOutputAttribute(consoleHandle, attr, size.X * size.Y, start, &fillNum);
     FillConsoleOutputCharacter(consoleHandle, fillChar, size.X * size.Y, start, &fillNum);
+}
+
+void ConsoleOperator::FillArea(SMALL_RECT rect, wchar_t fillChar, WORD attr)
+{
+    DWORD fillNum;
+    COORD startPos = { rect.Left, rect.Top};
+    int length = rect.Right + 1 - rect.Left;
+    while (startPos.Y <= rect.Bottom) {
+        if (attr != -1) {
+            FillConsoleOutputAttribute(consoleHandle, attr, length, startPos, &fillNum);
+        }
+        FillConsoleOutputCharacter(consoleHandle, fillChar, length, startPos, &fillNum);
+        startPos.Y++; // switch to next line
+    }
+}
+
+void ConsoleOperator::FillAreaChar(SMALL_RECT rect, wchar_t fillChar) const
+{
+    DWORD fillNum;
+    COORD startPos = { rect.Left, rect.Top };
+    int length = rect.Right + 1 - rect.Left;
+    while (startPos.Y <= rect.Bottom) {
+        FillConsoleOutputCharacter(consoleHandle, fillChar, length, startPos, &fillNum);
+        startPos.Y++; // switch to next line
+    }
+}
+
+void ConsoleOperator::FillAreaAttr(SMALL_RECT rect, WORD attr) const
+{
+    DWORD fillNum;
+    COORD startPos = { rect.Left, rect.Top };
+    int length = rect.Right + 1 - rect.Left;
+    while (startPos.Y <= rect.Bottom) {
+        FillConsoleOutputAttribute(consoleHandle, attr, length, startPos, &fillNum);
+        startPos.Y++; // switch to next line
+    }
 }
 
 void ConsoleOperator::ClearScreen()
@@ -196,7 +249,7 @@ SMALL_RECT ConsoleOperator::GetWindowSize() const
     return info.srWindow;
 }
 
-WORD ConsoleOperator::GetInput()
+WORD ConsoleOperator::GetPressedKey()
 {
     INPUT_RECORD record;
     DWORD readNum;
@@ -310,4 +363,9 @@ void ConsoleOperator::DrawBox(bool bSingle, SMALL_RECT rc) // º¯Êý¹¦ÄÜ£º»­±ß¿ò
 int ConsoleOperator::GetMBCSLength(wstring str)
 {
     return WideCharToMultiByte(CP_OEMCP, NULL, str.c_str(), -1, NULL, 0, NULL, FALSE);
+}
+
+int ConsoleOperator::GetWCSLength(string str)
+{
+    return MultiByteToWideChar(CP_OEMCP, NULL, str.c_str(), -1, NULL, 0);
 }
