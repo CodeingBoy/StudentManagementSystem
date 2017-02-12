@@ -76,32 +76,6 @@ int main()
                 break;
         }
     }
-    //console.ShowConfirmDialog(_T("title"), _T("contentcontentcontentcontentcontent"), 10);
-    //do {
-    //    //wcout << "Welcome using Student Management System\n" << endl;
-    //    printf("Please sel func:\n");
-    //    printf("1. add\n");
-    //    printf("2. del\n");
-    //    printf("3. show\n");
-    //    printf("4. search\n");
-
-    //    wcin >> select;
-
-    //    switch (select) {
-    //        case 1:
-    //            AddStudent();
-    //            break;
-    //        case 3:
-    //            ShowStudent();
-    //            break;
-    //        case 4:
-    //            SearchStudent();
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    //    //console.ClearScreen();
-    //} while (select);
 }
 
 void AddStudent()
