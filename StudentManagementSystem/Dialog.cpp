@@ -1,0 +1,124 @@
+#include "Dialog.h"
+#include "ConsoleOperator.h"
+
+
+Dialog::Dialog(ConsoleOperator& console, int x, int y, int width, int height): console(console), size(console.GetSize())
+{
+    SetPos(x, y, width, height);
+}
+
+Dialog::Dialog(ConsoleOperator& console, int width, int height) : console(console), size(console.GetSize())
+{
+    SetCenteredPos(width, height);
+}
+
+Dialog::Dialog(ConsoleOperator& console): console(console), size(console.GetSize())
+{
+}
+
+
+Dialog::~Dialog()
+{
+}
+
+
+void Dialog::DrawDialogBox(SMALL_RECT rect)
+{
+    // draw shadows
+    WORD bg_attr = BACKGROUND_INTENSITY;
+
+    SMALL_RECT rect_shadow = { rect.Left + 1, rect.Top + 1, rect.Right + 1, rect.Bottom + 1 };
+    console.FillAreaAttr(rect_shadow, bg_attr);
+
+    // draw dialog plane
+    WORD dlg_attr = FOREGROUND_WHITE | FOREGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_BLUE; // do not use FOREGROUND_RED! -- is for text
+
+    SMALL_RECT rect_dialog = { rect.Left, rect.Top, rect.Right, rect.Bottom };
+    console.FillAreaAttr(rect_dialog, dlg_attr);
+}
+
+void Dialog::DrawDialogBorder()
+{
+    // horizontal border
+    SMALL_RECT horizontalBorder_top = { rect.Left, rect.Top, rect.Right, rect.Top },
+               horizontalBorder_bottom = { rect.Left, rect.Bottom, rect.Right, rect.Bottom };
+    console.FillAreaChar(horizontalBorder_top, _T('©¥'));
+    console.FillAreaChar(horizontalBorder_bottom, _T('©¥'));
+
+    // vertical border
+    SMALL_RECT verticalBorder_left = { rect.Left, rect.Top, rect.Left + 1, rect.Bottom };
+    console.FillAreaChar(verticalBorder_left, _T('©§'));
+
+    SMALL_RECT verticalBorder_right = { rect.Right - 1, rect.Top, rect.Right, rect.Bottom };
+    console.FillAreaChar(verticalBorder_right, _T('©§'));
+
+    // draw conner
+    console.FillAreaChar({ rect.Left, rect.Top, rect.Left + 1, rect.Top }, _T('©³'));          // upper left
+    console.FillAreaChar({ rect.Right - 1, rect.Top, rect.Right, rect.Top }, _T('©·'));         // upper right
+    console.FillAreaChar({ rect.Left, rect.Bottom, rect.Left + 1, rect.Bottom }, _T('©»'));      // bottom left
+    console.FillAreaChar({ rect.Right - 1, rect.Bottom, rect.Right, rect.Bottom }, _T('©¿'));  // bottom right
+}
+
+void Dialog::Show()
+{
+    DrawDialogBox(rect);  // draw dialog plane
+    DrawDialogBorder();   // draw dialog border
+    Draw();
+}
+
+int Dialog::GetX()
+{
+    return rect.Left;
+}
+
+int Dialog::GetY()
+{
+    return rect.Top;
+}
+
+int Dialog::GetWidth()
+{
+    return rect.Right + 1 - rect.Left;
+}
+
+int Dialog::GetHeight()
+{
+    return rect.Bottom + 1 - rect.Top;
+}
+
+void Dialog::SetPos(int x, int y, int width, int height)
+{
+    rect.Left = x;
+    rect.Right = x + width;
+    rect.Top = y;
+    rect.Bottom = y + height;
+
+    UpdateClientArea();
+}
+
+void Dialog::SetCenteredPos(int width, int height)
+{
+    COORD size = console.GetSize();
+    rect.Left = (size.X - width) / 2;
+    rect.Right = (size.X + width) / 2;
+
+    rect.Top = (size.Y - height) / 2;
+    rect.Bottom = (size.Y + height) / 2;
+
+    UpdateClientArea();
+}
+
+void Dialog::UpdateClientArea()
+{
+    clientArea = { rect.Left + 2, rect.Top + 1, rect.Right - 2, rect.Bottom - 1 };
+}
+
+int Dialog::GetMBCSLength(wstring str)
+{
+    return WideCharToMultiByte(CP_OEMCP, NULL, str.c_str(), -1, NULL, 0, NULL, FALSE);
+}
+
+int Dialog::GetWCSLength(string str)
+{
+    return MultiByteToWideChar(CP_OEMCP, NULL, str.c_str(), -1, NULL, 0);
+}

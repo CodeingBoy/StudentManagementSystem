@@ -102,9 +102,6 @@ void ConsoleOperator::ShowConfirmDialog(wstring title, wstring content, int line
 
     DrawDialogBox(dialogRect);
 
-    // create border
-    SetConsoleTextAttribute(consoleHandle, FOREGROUND_WHITE);
-
     // horizontal separator
     SMALL_RECT horizontalBorder_top = { dialogRect.Left, dialogRect.Top, dialogRect.Right, dialogRect.Top },
                horizontalBorder_bottom = { dialogRect.Left, dialogRect.Bottom, dialogRect.Right, dialogRect.Bottom };
@@ -260,6 +257,11 @@ WORD ConsoleOperator::GetPressedKey()
             return keyRecord.wVirtualKeyCode;
         }
     }
+}
+
+void ConsoleOperator::SetCurrentTextAttribute(WORD attr)
+{
+    SetConsoleTextAttribute(consoleHandle, attr);
 }
 
 void ConsoleOperator::ShadowWindowLine(wchar_t* str)

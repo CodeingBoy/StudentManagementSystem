@@ -5,6 +5,7 @@
 #include "LinkedListSel.h"
 #include "FileHandler.h"
 #include "ConsoleOperator.h"
+#include "ConfirmDlg.h"
 
 #define ATTR_OPERINSTRUCTIONS   FOREGROUND_WHITE | BACKGROUND_RED
 #define ATTR_STATUSBAR BACKGROUND_INTENSITY
@@ -53,9 +54,11 @@ int main()
     bool shouldExit = false;
     while (!shouldExit && ((input = console.GetPressedKey()))) {
         switch (input) {
-            case 0x41: // A
-                console.ShowConfirmDialog(_T("无法添加"), _T("目前添加功能被禁用，请稍后再试。"), 20);
+            case 0x41: { // A
+                ConfirmDlg confirm_dlg(console, _T("无法添加"), _T("目前添加功能被禁用，请稍后再试。"), 20);
+                confirm_dlg.Show();
                 break;
+            }
             case 0x45: // E
                 shouldExit = true;
                 break;

@@ -45,6 +45,19 @@ public:
     void SetSize(COORD size) const;
     SMALL_RECT GetWindowSize() const;
     WORD GetPressedKey();
+    void SetCurrentTextAttribute(WORD attr);
+
+
+    HANDLE GetConsoleHandle() const
+    {
+        return consoleHandle;
+    }
+
+    void SetConsoleHandle(const HANDLE console_handle)
+    {
+        consoleHandle = console_handle;
+    }
+
     void ShadowWindowLine(wchar_t* str);
     void DrawBox(bool bSingle, SMALL_RECT rc);
     static int GetMBCSLength(wstring str);
