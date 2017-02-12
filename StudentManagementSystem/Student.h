@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <ostream>
+#include <sstream>
+#include <TCHAR.h>
 
 using namespace std;
 
@@ -76,7 +78,6 @@ public:
     {
         phoneNum = phone_num;
     }
-
 
     friend bool operator==(const Student& lhs, const Student& rhs)
     {

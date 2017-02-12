@@ -45,6 +45,9 @@
     <ClInclude Include="LinkedList.h">
       <Filter>Data Struct</Filter>
     </ClInclude>
+    <ClInclude Include="ConsoleOperator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Student.cpp">
@@ -63,6 +66,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleOperator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
