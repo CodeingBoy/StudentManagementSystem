@@ -4,6 +4,7 @@
 ConsoleOperator::ConsoleOperator()
 {
     consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    inputHandle = GetStdHandle(STD_INPUT_HANDLE);
 }
 
 ConsoleOperator::~ConsoleOperator()
@@ -193,6 +194,19 @@ SMALL_RECT ConsoleOperator::GetWindowSize() const
     CONSOLE_SCREEN_BUFFER_INFO info;
     GetConsoleScreenBufferInfo(consoleHandle, &info);
     return info.srWindow;
+}
+
+WORD ConsoleOperator::GetInput()
+{
+    INPUT_RECORD record;
+    DWORD readNum;
+    while (true) {
+        ReadConsoleInput(inputHandle, &record, 1, &readNum);
+        if (record.EventType == KEY_EVENT) {
+            KEY_EVENT_RECORD keyRecord = record.Event.KeyEvent;
+            return keyRecord.wVirtualKeyCode;
+        }
+    }
 }
 
 void ConsoleOperator::ShadowWindowLine(wchar_t* str)

@@ -37,7 +37,7 @@ int main()
     console.SetLineAttr(23, ATTR_OPERINSTRUCTIONS);
 
     console.WriteConsoleLine(_T("操作：（A）添加 （E）编辑 （D）删除 （S）搜索 (PgUp)上一屏 (PgDown)下一屏"), { 0, 22 });
-    console.WriteConsoleLine(_T("      （C）查看学生选课 （M）管理学生选课 （E）退出"), { 0, 23 });
+    console.WriteConsoleLine(_T("      （C）查看学生选课 （M）管理学生选课 （Esc）退出"), { 0, 23 });
 
 
     // show status bar
@@ -45,9 +45,36 @@ int main()
     console.WriteConsoleLine(_T("记录数：0┃文件：未读取┃状态：就绪"), 24, NULL, 1);
 
     ShowStudent();
-    int select = 0;
-    while (true) {
 
+    // get input
+    wchar_t input;
+    bool shouldExit = false;
+    while (!shouldExit && ((input = console.GetInput()))) {
+        switch (input) {
+            case 0x41: // A
+                shouldExit = true;
+                break;
+            case 0x45: // E
+                shouldExit = true;
+                break;
+            case 0x44: // D
+                shouldExit = true;
+                break;
+            case 0x53: // S
+                shouldExit = true;
+                break;
+            case VK_PRIOR: // PgUp
+                shouldExit = true;
+                break;
+            case VK_NEXT: // PgDown
+                shouldExit = true;
+                break;
+            case VK_ESCAPE: // Esc
+                shouldExit = true;
+                break;
+            default:
+                break;
+        }
     }
     //console.ShowConfirmDialog(_T("title"), _T("contentcontentcontentcontentcontent"), 10);
     //do {
@@ -75,8 +102,6 @@ int main()
     //    }
     //    //console.ClearScreen();
     //} while (select);
-
-    cin.get();
 }
 
 void AddStudent()
