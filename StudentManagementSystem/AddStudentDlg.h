@@ -6,7 +6,8 @@ class AddStudentDlg : public Dialog
 {
 private:
     ConsoleOperator& console = ConsoleOperator::GetInstance();
-    const wstring OKCaption = _T("<确认>"), cancelCaption = _T("<取消>");
+    const wstring OKCaption = _T("(Enter)确认"), cancelCaption = _T("(Esc)取消");
+    const WORD keyCode_OK = VK_RETURN, keyCode_cancel = VK_ESCAPE;
 public:
     AddStudentDlg(ConsoleOperator& console);
     ~AddStudentDlg();

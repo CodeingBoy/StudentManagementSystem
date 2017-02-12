@@ -254,6 +254,18 @@ WORD ConsoleOperator::GetPressedKey()
     }
 }
 
+KEY_EVENT_RECORD ConsoleOperator::GetKeyEvent()
+{
+    INPUT_RECORD record;
+    DWORD readNum;
+    while (true) {
+        ReadConsoleInput(inputHandle, &record, 1, &readNum);
+        if (record.EventType == KEY_EVENT) {
+            return record.Event.KeyEvent;
+        }
+    }
+}
+
 void ConsoleOperator::SetCurrentTextAttribute(WORD attr)
 {
     SetConsoleTextAttribute(consoleHandle, attr);
@@ -278,7 +290,16 @@ void ConsoleOperator::ShowCursor()
     CONSOLE_CURSOR_INFO info;
     GetConsoleCursorInfo(consoleHandle, &info);
 
-    info.bVisible = false;
+    info.bVisible = true;
+    SetConsoleCursorInfo(consoleHandle, &info);
+}
+
+void ConsoleOperator::SetCursorSize(int size)
+{
+    CONSOLE_CURSOR_INFO info;
+    GetConsoleCursorInfo(consoleHandle, &info);
+
+    info.dwSize = size;
     SetConsoleCursorInfo(consoleHandle, &info);
 }
 

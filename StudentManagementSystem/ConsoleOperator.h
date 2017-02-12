@@ -45,6 +45,7 @@ public:
     void SetSize(COORD size) const;
     SMALL_RECT GetWindowSize() const;
     WORD GetPressedKey();
+    KEY_EVENT_RECORD GetKeyEvent();
     void SetCurrentTextAttribute(WORD attr);
     void SetCursorPos(COORD pos);
 
@@ -63,6 +64,7 @@ public:
     void DrawBox(bool bSingle, SMALL_RECT rc);
     void HideCursor();
     void ShowCursor();
+    void SetCursorSize(int size);
     static int GetMBCSLength(wstring str);
     static int GetWCSLength(string str);
 };

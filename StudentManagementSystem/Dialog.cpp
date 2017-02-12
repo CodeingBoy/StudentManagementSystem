@@ -129,6 +129,11 @@ int Dialog::GetMBCSLength(wstring str)
     return WideCharToMultiByte(CP_OEMCP, NULL, str.c_str(), -1, NULL, 0, NULL, FALSE);
 }
 
+int Dialog::GetMBCSLength(wchar_t* str)
+{
+    return WideCharToMultiByte(CP_OEMCP, NULL, str, -1, NULL, 0, NULL, FALSE) - 1; // delete '\0'
+}
+
 int Dialog::GetWCSLength(string str)
 {
     return MultiByteToWideChar(CP_OEMCP, NULL, str.c_str(), -1, NULL, 0);

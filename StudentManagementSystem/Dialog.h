@@ -35,6 +35,7 @@ public:
     void UpdateClientArea();
 
     static int GetMBCSLength(wstring str);
+    int GetMBCSLength(wchar_t* str);
     static int GetWCSLength(string str);
 
 };
