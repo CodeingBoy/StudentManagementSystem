@@ -147,11 +147,11 @@ void StudentManagementUI::Draw()
 
 void StudentManagementUI::RefreshList()
 {
-    static const short x_select = 0, x_ID = 8, x_name = 20, x_sex = 30, x_clazz = 38, x_phoneNum = 52;
+    static const short x_select = 0, x_ID = 8, x_name = 24, x_sex = 34, x_clazz = 42, x_phoneNum = 56;
 
     console.FillArea(list_rect, _T(' '), FOREGROUND_WHITE | BACKGROUND_BLUE);
-    console.WriteConsoleLine(_T("┏━━━┳━━━━━┳━━━━┳━━━┳━━━━━━┳━━━━━━━━┓"), { 0, 1 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
-    console.WriteConsoleLine(_T("┃ 序号 ┃   学号   ┃  姓名  ┃ 性别 ┃    班级    ┃    联系方式    ┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
+    console.WriteConsoleLine(_T("┏━━━┳━━━━━━━┳━━━━┳━━━┳━━━━━━┳━━━━━━━━┓"), { 0, 1 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
+    console.WriteConsoleLine(_T("┃ 序号 ┃     学号     ┃  姓名  ┃ 性别 ┃    班级    ┃    联系方式    ┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
 
     short y = 3;
     for (auto iter = studentList.begin(); iter != studentList.end(); ++iter) {
