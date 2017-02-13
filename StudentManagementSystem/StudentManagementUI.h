@@ -9,6 +9,7 @@
 
 #define INPUT_OK 0
 #define INPUT_EXIT 1
+#define INPUT_SWITCH 2
 
 class StudentManagementUI
 {

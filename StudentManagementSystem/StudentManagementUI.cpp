@@ -67,6 +67,9 @@ int StudentManagementUI::ProcessInput(wchar_t input, int& curSel)
         case 0x53: // S - Search
             OnSearchStudent();
             break;
+        case 0x4d: // M - Switch to CourseUI
+            return INPUT_SWITCH;
+            break;
         case VK_PRIOR: // PgUp
             break;
         case VK_NEXT: // PgDown
@@ -98,8 +101,12 @@ int StudentManagementUI::Show()
     // get input
     wchar_t input;
     while ((input = console.GetPressedDownKey())) {
-        if (ProcessInput(input, curSel) == INPUT_EXIT) {
-            return UI_RET_EXIT;
+        int retcode = ProcessInput(input, curSel);
+        switch (retcode) {
+            case INPUT_EXIT:
+                return UI_RET_EXIT;
+            case INPUT_SWITCH:
+                return UI_RET_SWITCH;
         }
         console.HideCursor();
         RefreshList();
