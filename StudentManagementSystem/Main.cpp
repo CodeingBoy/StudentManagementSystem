@@ -7,6 +7,7 @@
 #include "ConsoleOperator.h"
 #include "ConfirmDlg.h"
 #include "StudentEditDlg.h"
+#include "ChoiceDlg.h"
 
 #define ATTR_OPERINSTRUCTIONS   FOREGROUND_WHITE | BACKGROUND_RED
 #define ATTR_STATUSBAR BACKGROUND_INTENSITY
@@ -84,8 +85,16 @@ int main()
                 break;
             }
             case 0x44: { // D
-                ConfirmDlg confirm_dlg(console, _T("无法添加"), _T("目前添加功能被禁用，请稍后再试。"), 20);
-                confirm_dlg.Show();
+                int selNum = GetSelNum(3 + curSel);
+                if (selNum == -1) {
+                    ConfirmDlg confirm_dlg(console, _T("无记录"), _T("所选行没有记录，请选择记录行。"), 20);
+                    confirm_dlg.Show();
+                    break;
+                }
+                ChoiceDlg choiceDlg(console, _T("是否确认删除"), _T("选中的记录将被删除，且无法恢复。是否删除？"));
+                if (choiceDlg.Show() == RET_OK) {
+
+                }
                 break;
             }
             case 0x53: // S

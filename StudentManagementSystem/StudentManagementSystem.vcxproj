@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ChoiceDlg.h" />
     <ClInclude Include="StudentEditDlg.h" />
     <ClInclude Include="ConfirmDlg.h" />
     <ClInclude Include="ConsoleOperator.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="LinkedListSel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ChoiceDlg.cpp" />
     <ClCompile Include="StudentEditDlg.cpp" />
     <ClCompile Include="ConfirmDlg.cpp" />
     <ClCompile Include="ConsoleOperator.cpp" />

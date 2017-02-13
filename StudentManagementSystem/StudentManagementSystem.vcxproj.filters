@@ -57,6 +57,9 @@
     <ClInclude Include="StudentEditDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ChoiceDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Student.cpp">
@@ -87,6 +90,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="StudentEditDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ChoiceDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
