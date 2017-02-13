@@ -2,11 +2,16 @@
 #include <iostream>
 
 
-StudentEditDlg::StudentEditDlg(ConsoleOperator& console): Dialog(console)
+StudentEditDlg::StudentEditDlg(ConsoleOperator& console): Dialog(console), addMode(true)
 {
     SetCenteredPos(31, 10);
 }
 
+StudentEditDlg::StudentEditDlg(ConsoleOperator& console, const Student& student)
+    : Dialog(console),
+      student(student)
+{
+}
 
 StudentEditDlg::~StudentEditDlg()
 {
@@ -44,6 +49,26 @@ void StudentEditDlg::Draw()
     COORD defaultPos = { clientArea.Left + (clientArea.Right + 1 - clientArea.Left) / 2, clientArea.Top + 1 };
     console.SetCursorPos(defaultPos);
 
+    // in edit mode, set student inf to editarea
+    if (!addMode) {
+        COORD startPos = { clientArea.Left + (clientArea.Right + 1 - clientArea.Left) / 2, clientArea.Top + 1 };
+        WriteConsoleOutputCharacter(console.GetConsoleHandle(), student.GetID().c_str(), student.GetID().length(), startPos, &fillNum);
+        startPos.Y++;
+
+        WriteConsoleOutputCharacter(console.GetConsoleHandle(), student.GetName().c_str(), student.GetName().length(), startPos, &fillNum);
+        startPos.Y++;
+
+        WriteConsoleOutputCharacter(console.GetConsoleHandle(), student.IsMale() ? _T("ÄÐ") : _T("Å®"), 2, startPos, &fillNum);
+        startPos.Y++;
+
+        WriteConsoleOutputCharacter(console.GetConsoleHandle(), student.GetClass().c_str(), student.GetClass().length(), startPos, &fillNum);
+        startPos.Y++;
+
+        WriteConsoleOutputCharacter(console.GetConsoleHandle(), student.GetPhoneNum().c_str(), student.GetPhoneNum().length(), startPos, &fillNum);
+        startPos.Y++;
+    }
+
+    SMALL_RECT editarea_rect = { defaultPos.X, defaultPos.Y, clientArea.Right, defaultPos.Y + 5 - 1 };
     KEY_EVENT_RECORD keyEvent;
     while (true) {
         keyEvent = console.GetKeyDownEvent();
@@ -85,9 +110,9 @@ void StudentEditDlg::Draw()
 
     if (keyEvent.wVirtualKeyCode == keyCode_OK) { // add to list
         CHAR_INFO info[50];
-        SMALL_RECT read_rect = { defaultPos.X, defaultPos.Y, clientArea.Right, defaultPos.Y + 5 - 1 };
 
-        ReadConsoleOutput(console.GetConsoleHandle(), info, { 10, 5 }, { 0, 0 }, &read_rect);
+
+        ReadConsoleOutput(console.GetConsoleHandle(), info, { 10, 5 }, { 0, 0 }, &editarea_rect);
 
         wstring ID, name, sex, clazz, phoneNum;
         wchar_t buffer[11] = {0};

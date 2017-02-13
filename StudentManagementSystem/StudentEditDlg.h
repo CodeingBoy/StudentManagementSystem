@@ -9,9 +9,12 @@ private:
     ConsoleOperator& console = ConsoleOperator::GetInstance();
     const wstring OKCaption = _T("(Enter)确认"), cancelCaption = _T("(Esc)取消");
     const WORD keyCode_OK = VK_RETURN, keyCode_cancel = VK_ESCAPE;
+    bool addMode = false;
     Student student;
 public:
     StudentEditDlg(ConsoleOperator& console);
+    StudentEditDlg(ConsoleOperator& console, const Student& student);
+
     ~StudentEditDlg();
 
     void Draw() override;
