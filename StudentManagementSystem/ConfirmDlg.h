@@ -11,7 +11,7 @@ private:
     WORD confirmKeyCode;
 public:
     ConfirmDlg(ConsoleOperator& console, wstring title, wstring content, int contentLineWidth,
-               wstring btnOKCaption = _T("OK"), WORD confirmKeyCode = VK_RETURN);
+               wstring btnOKCaption = _T("(Enter)OK"), WORD confirmKeyCode = VK_RETURN);
     ~ConfirmDlg();
 
     void Draw() override;

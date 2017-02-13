@@ -20,7 +20,11 @@ StudentEditDlg::~StudentEditDlg()
 
 void StudentEditDlg::Draw()
 {
-    DrawTitle(_T("添加学生信息"));
+    if (addMode) {
+        DrawTitle(_T("添加学生信息"));
+    } else {
+        DrawTitle(_T("编辑学生信息"));
+    }
 
     console.WriteConsoleLine(_T("学号："), { clientArea.Left, clientArea.Top + 1 });
     console.WriteConsoleLine(_T("姓名："), { clientArea.Left, clientArea.Top + 2 });
