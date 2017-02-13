@@ -167,12 +167,6 @@ void StudentManagementUI::RefreshList()
         console.WriteConsoleLine(_T("©§"), { x_end, y });
 
         y++;
-        //console.WriteConsoleLine(output, { 0, 3 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
-        /*wcout << "ID:" << s.GetID().c_str() << endl;
-        wcout << "Name: " << s.GetName().c_str() << endl;
-        wcout << "Class: " << s.GetClass().c_str() << endl;
-        wcout << "PhoneNumber: " << s.GetPhoneNum().c_str() << endl;
-        wcout << endl;*/
     }
 }
 
