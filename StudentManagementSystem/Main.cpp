@@ -54,6 +54,8 @@ int main()
 
     RefreshList();
 
+    int curSel = 0;
+
     // get input
     wchar_t input;
     bool shouldExit = false;
@@ -91,6 +93,7 @@ int main()
         }
         console.HideCursor();
         RefreshList();
+        console.HighlightRow(3 + curSel);
     }
 }
 

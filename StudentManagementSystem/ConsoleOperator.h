@@ -7,6 +7,7 @@
 using namespace std;
 
 #define FOREGROUND_WHITE (FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE)
+#define DEFAULT_HIGHLIGHT (BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY)
 
 #define ALIGN_LEFT 0
 #define ALIGN_RIGHT 1
@@ -16,6 +17,7 @@ class ConsoleOperator
 {
 private:
     HANDLE consoleHandle, inputHandle;
+    WORD highlightAttr = DEFAULT_HIGHLIGHT;
     ConsoleOperator();
     ~ConsoleOperator();
 public:
@@ -67,6 +69,12 @@ public:
     void SetCursorSize(int size);
     static int GetMBCSLength(wstring str);
     static int GetWCSLength(string str);
+    void HighlightRow(int row);
+
+    void SetHighlightAttr(const WORD highlight_attr)
+    {
+        highlightAttr = highlight_attr;
+    }
 };
 
 

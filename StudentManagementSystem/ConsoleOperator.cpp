@@ -314,3 +314,12 @@ int ConsoleOperator::GetWCSLength(string str)
 {
     return MultiByteToWideChar(CP_OEMCP, NULL, str.c_str(), -1, NULL, 0);
 }
+
+void ConsoleOperator::HighlightRow(int row)
+{
+    SMALL_RECT highlight_rect = GetWindowSize();
+    highlight_rect.Top = row;
+    highlight_rect.Bottom = row;
+
+    FillAreaAttr(highlight_rect, highlightAttr);
+}
