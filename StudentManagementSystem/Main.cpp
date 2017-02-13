@@ -143,7 +143,7 @@ void AddStudent()
     wcout << "Successfully added student." << endl;
 }
 
-void DeleteStudent()
+void DeleteStudent(int num)
 {
     wchar_t buffer[1024];
 
@@ -159,12 +159,14 @@ void RefreshList()
 
     console.FillArea(list_rect, _T(' '), FOREGROUND_WHITE | BACKGROUND_BLUE);
     console.WriteConsoleLine(_T("┏━━━┳━━━━━┳━━━━┳━━━┳━━━━━━┳━━━━━━━━┓"), { 0, 1 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
-    console.WriteConsoleLine(_T("┃ 选择 ┃   学号   ┃  姓名  ┃ 性别 ┃    班级    ┃    联系方式    ┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
+    console.WriteConsoleLine(_T("┃ 序号 ┃   学号   ┃  姓名  ┃ 性别 ┃    班级    ┃    联系方式    ┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
 
     short y = 3;
     for (auto iter = studentList.begin(); iter != studentList.end(); ++iter) {
         Student s = *iter;
-        console.WriteConsoleLine(_T("┃[   ]"), { x_select, y });
+        wchar_t buffer[10] = { 0 };
+        _itow(y - 3 + 1, buffer, 10);
+        console.WriteConsoleLine(_T("┃ " + wstring(buffer)), { x_select, y });
         console.WriteConsoleLine(_T("┃" + s.GetID()), { x_ID, y });
         console.WriteConsoleLine(_T("┃" + s.GetName()), { x_name, y });
         console.WriteConsoleLine(s.IsMale() ? _T("┃  男") : _T("┃  女"), { x_sex, y });
