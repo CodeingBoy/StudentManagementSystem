@@ -142,7 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AddStudentDlg.h" />
+    <ClInclude Include="StudentEditDlg.h" />
     <ClInclude Include="ConfirmDlg.h" />
     <ClInclude Include="ConsoleOperator.h" />
     <ClInclude Include="Course.h" />
@@ -157,7 +157,7 @@
     <ClInclude Include="LinkedListSel.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AddStudentDlg.cpp" />
+    <ClCompile Include="StudentEditDlg.cpp" />
     <ClCompile Include="ConfirmDlg.cpp" />
     <ClCompile Include="ConsoleOperator.cpp" />
     <ClCompile Include="Course.cpp" />

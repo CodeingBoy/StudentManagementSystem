@@ -6,7 +6,7 @@
 #include "FileHandler.h"
 #include "ConsoleOperator.h"
 #include "ConfirmDlg.h"
-#include "AddStudentDlg.h"
+#include "StudentEditDlg.h"
 
 #define ATTR_OPERINSTRUCTIONS   FOREGROUND_WHITE | BACKGROUND_RED
 #define ATTR_STATUSBAR BACKGROUND_INTENSITY
@@ -60,7 +60,7 @@ int main()
     while (!shouldExit && ((input = console.GetPressedDownKey()))) {
         switch (input) {
             case 0x41: { // A
-                AddStudentDlg editDlg(console);
+                StudentEditDlg editDlg(console);
                 editDlg.Show();
                 studentList.push_back(editDlg.GetStudent());
                 break;

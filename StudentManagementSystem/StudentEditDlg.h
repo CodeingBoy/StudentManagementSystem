@@ -3,7 +3,7 @@
 #include "Dialog.h"
 #include "Student.h"
 
-class AddStudentDlg : public Dialog
+class StudentEditDlg : public Dialog
 {
 private:
     ConsoleOperator& console = ConsoleOperator::GetInstance();
@@ -11,8 +11,8 @@ private:
     const WORD keyCode_OK = VK_RETURN, keyCode_cancel = VK_ESCAPE;
     Student student;
 public:
-    AddStudentDlg(ConsoleOperator& console);
-    ~AddStudentDlg();
+    StudentEditDlg(ConsoleOperator& console);
+    ~StudentEditDlg();
 
     void Draw() override;
     void Dispose() override;

@@ -1,18 +1,18 @@
-#include "AddStudentDlg.h"
+#include "StudentEditDlg.h"
 #include <iostream>
 
 
-AddStudentDlg::AddStudentDlg(ConsoleOperator& console): Dialog(console)
+StudentEditDlg::StudentEditDlg(ConsoleOperator& console): Dialog(console)
 {
     SetCenteredPos(31, 10);
 }
 
 
-AddStudentDlg::~AddStudentDlg()
+StudentEditDlg::~StudentEditDlg()
 {
 }
 
-void AddStudentDlg::Draw()
+void StudentEditDlg::Draw()
 {
     DrawTitle(_T("添加学生信息"));
 
@@ -65,9 +65,9 @@ void AddStudentDlg::Draw()
             continue;
         }
 
-        if (keyCode == VK_UP && curPos.Y > defaultPos.Y) { // up
+        if (keyCode == VK_UP && curPos.Y > defaultPos.Y) { // up arrow
             console.SetCursorPos({defaultPos.X, curPos.Y - 1 });
-        } else if ((keyCode == VK_DOWN && curPos.Y < defaultPos.Y + 5 - 1)) { // down
+        } else if ((keyCode == VK_DOWN && curPos.Y < defaultPos.Y + 5 - 1)) { // down arrow
             console.SetCursorPos({ defaultPos.X, curPos.Y + 1 });
         }
 
@@ -138,7 +138,7 @@ void AddStudentDlg::Draw()
     }
 }
 
-void AddStudentDlg::Dispose()
+void StudentEditDlg::Dispose()
 {
 }
 
