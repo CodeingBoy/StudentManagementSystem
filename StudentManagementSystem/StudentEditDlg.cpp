@@ -113,49 +113,16 @@ void StudentEditDlg::Draw()
     }
 
     if (keyEvent.wVirtualKeyCode == keyCode_OK) { // add to list
-        CHAR_INFO info[50];
-        ReadConsoleOutput(console.GetConsoleHandle(), info, { 10, 5 }, { 0, 0 }, &editarea_rect);
+        const int col_count = 14;
+        CHAR_INFO info[5 * col_count];
+        ReadConsoleOutput(console.GetConsoleHandle(), info, { 14, 5 }, { 0, 0 }, &editarea_rect);
 
         wstring ID, name, sex, clazz, phoneNum;
-        wchar_t buffer[11] = {0};
-        for (int i = 0; i < 10; ++i) {
-            wchar_t uchar = info[i].Char.UnicodeChar;
-            if (uchar == _T(' '))break;
-            buffer[i] = uchar;
-        }
-        ID.assign(buffer);
-
-        memset(buffer, 0, 11 * sizeof(wchar_t));
-        for (int i = 0; i < 10; ++i) {
-            wchar_t uchar = info[10 + i].Char.UnicodeChar;
-            if (uchar == _T(' '))break;
-            buffer[i] = uchar;
-        }
-        name.assign(buffer);
-
-        memset(buffer, 0, 11 * sizeof(wchar_t));
-        for (int i = 0; i < 10; ++i) {
-            wchar_t uchar = info[20 + i].Char.UnicodeChar;
-            if (uchar == _T(' '))break;
-            buffer[i] = uchar;
-        }
-        sex.assign(buffer);
-
-        memset(buffer, 0, 11 * sizeof(wchar_t));
-        for (int i = 0; i < 10; ++i) {
-            wchar_t uchar = info[30 + i].Char.UnicodeChar;
-            if (uchar == _T(' '))break;
-            buffer[i] = uchar;
-        }
-        clazz.assign(buffer);
-
-        memset(buffer, 0, 11 * sizeof(wchar_t));
-        for (int i = 0; i < 10; ++i) {
-            wchar_t uchar = info[40 + i].Char.UnicodeChar;
-            if (uchar == _T(' '))break;
-            buffer[i] = uchar;
-        }
-        phoneNum.assign(buffer);
+        ID = ParseCharInfos(info, 0, col_count - 1);
+        name = ParseCharInfos(info, col_count, 2 * col_count - 1);
+        sex = ParseCharInfos(info, 2 * col_count, 3 * col_count - 1);
+        clazz = ParseCharInfos(info, 3 * col_count, 4 * col_count - 1);
+        phoneNum = ParseCharInfos(info, 4 * col_count, 5 * col_count - 1);
 
         student.SetID(ID);
         student.SetName(name);
@@ -163,6 +130,25 @@ void StudentEditDlg::Draw()
         student.SetClass(clazz);
         student.SetPhoneNum(phoneNum);
     }
+}
+
+wstring StudentEditDlg::ParseCharInfos(const CHAR_INFO const charinfos[], int begin, int end)
+{
+    int col_count = end + 1 - begin;
+    wchar_t* buffer = new wchar_t[col_count + 1];
+    memset(buffer, 0, (col_count + 1) * sizeof(wchar_t));
+
+    int offset = 0;
+    for (int i = 0; i < col_count; ++i) {
+        wchar_t uchar = charinfos[begin + i + offset].Char.UnicodeChar;
+        if (uchar == _T(' '))break;
+        buffer[i] = uchar;
+        if (uchar != charinfos[begin + i + offset].Char.AsciiChar)++offset; // wide char
+    }
+
+    wstring result(buffer);
+    delete[] buffer;
+    return result;
 }
 
 void StudentEditDlg::Dispose()

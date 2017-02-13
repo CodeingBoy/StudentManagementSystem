@@ -20,6 +20,8 @@ public:
     void Draw() override;
     void Dispose() override;
 
+    static wstring StudentEditDlg::ParseCharInfos(const CHAR_INFO const charinfos[], int begin, int end);
+
 
     Student GetStudent() const
     {
