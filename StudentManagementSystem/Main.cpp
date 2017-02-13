@@ -47,13 +47,13 @@ int main()
     console.SetLineAttr(22, ATTR_OPERINSTRUCTIONS);
     console.SetLineAttr(23, ATTR_OPERINSTRUCTIONS);
 
-    console.WriteConsoleLine(_T("操作：（A）添加 （E）编辑 （D）删除 （S）搜索 (PgUp)上一屏 (PgDown)下一屏"), { 0, 22 });
-    console.WriteConsoleLine(_T("      （C）查看学生选课 （M）管理学生选课 （Esc）退出"), { 0, 23 });
+    console.WriteConsoleLine(_T("操作：（A）追加 （I）插入 （E）编辑 （D）删除 (PgUp)上一屏 (PgDown)下一屏"), { 0, 22 });
+    console.WriteConsoleLine(_T("      （S）搜索 （C）查看学生选课 （M）管理课程信息 （Esc）退出"), { 0, 23 });
 
 
     // show status bar
     console.SetLineAttr(24, ATTR_STATUSBAR);
-    console.WriteConsoleLine(_T("记录数：0┃文件：未读取┃状态：就绪"), 24, NULL, 1);
+    console.WriteConsoleLine(_T("记录数：0┃文件：未读取"), 24, NULL, 1);
 
     RefreshList();
 
