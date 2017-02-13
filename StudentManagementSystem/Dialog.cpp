@@ -75,7 +75,7 @@ int Dialog::Show()
     DrawDialogBox(rect);  // draw dialog plane
     DrawDialogBorder();   // draw dialog border
     Draw();
-    return RET_OK;
+    return DIALOG_RET_OK;
 }
 
 int Dialog::GetX()

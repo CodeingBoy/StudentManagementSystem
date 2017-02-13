@@ -1,19 +1,16 @@
-#include <cstdio>
 #include <iostream>
 #include <TCHAR.h>
 #include "Student.h"
-#include "LinkedListSel.h"
-#include "FileHandler.h"
 #include "ConsoleOperator.h"
-#include "ConfirmDlg.h"
-#include "StudentEditDlg.h"
 #include "ChoiceDlg.h"
 #include "StudentManagementUI.h"
+#include "defs.h"
 
 using namespace std;
 
 ConsoleOperator& console = ConsoleOperator::GetInstance();
 StudentManagementUI studentUI(console);
+CourseManagementUI courseUI(console);
 
 void OnExit();
 
@@ -23,8 +20,24 @@ int main()
     wcout.imbue(locale("chs"));
     console.SetTitle(_T("学生管理系统")); // set window title
 
-    if (studentUI.Show() == RET_OK) {
-        OnExit();
+    while (true) {
+        int retCode = studentUI.Show();
+        switch (retCode) {
+            case UI_RET_EXIT:
+                OnExit();
+                break;
+            case UI_RET_SWITCH:
+                break;
+        }
+
+        retCode = studentUI.Show();
+        switch (retCode) {
+            case UI_RET_EXIT:
+                OnExit();
+                break;
+            case UI_RET_SWITCH:
+                break;
+        }
     }
 }
 
@@ -41,7 +54,7 @@ void SaveToFile(wchar_t* fileName)
 void OnExit()
 {
     ChoiceDlg confirm_dlg(console, _T("是否保存？"), _T("是否将当前系统信息保存到文件？"), 40, _T("（Y）保存"), _T("（N）舍弃"));
-    if (confirm_dlg.Show() == RET_OK) {
+    if (confirm_dlg.Show() == DIALOG_RET_OK) {
         //SaveToFile();
     }
 }

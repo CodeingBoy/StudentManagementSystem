@@ -1,9 +1,7 @@
 #pragma once
 #include <windows.h>
 #include "ConsoleOperator.h"
-
-#define RET_OK 0
-#define RET_CANCEL 1
+#include "defs.h"
 
 class Dialog
 {

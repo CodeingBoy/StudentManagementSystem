@@ -3,7 +3,6 @@
 #include "ConfirmDlg.h"
 #include "ChoiceDlg.h"
 
-
 StudentManagementUI::StudentManagementUI(ConsoleOperator& console): console(console)
 {
 }
@@ -16,7 +15,7 @@ StudentManagementUI::~StudentManagementUI()
 void StudentManagementUI::OnAddStudent()
 {
     StudentEditDlg editDlg(console);
-    if (editDlg.Show() == RET_OK) {
+    if (editDlg.Show() == DIALOG_RET_OK) {
         studentList.push_back(editDlg.GetStudent());
     }
     SetStatus(_T("添加记录成功"));
@@ -31,7 +30,7 @@ void StudentManagementUI::OnEditStudent(int curSel)
         return;
     }
     StudentEditDlg editDlg(console, studentList.at(selNum - 1));
-    if (editDlg.Show() == RET_OK) {
+    if (editDlg.Show() == DIALOG_RET_OK) {
         studentList.push_back(editDlg.GetStudent());
     }
     SetStatus(_T("编辑记录成功"));
@@ -46,7 +45,7 @@ bool StudentManagementUI::OnDeleteStudent(int curSel)
         return true;
     }
     ChoiceDlg choiceDlg(console, _T("是否确认删除"), _T("选中的记录将被删除，且无法恢复。是否删除？"));
-    if (choiceDlg.Show() == RET_OK) {
+    if (choiceDlg.Show() == DIALOG_RET_OK) {
 
     }
     SetStatus(_T("删除记录成功"));
@@ -73,7 +72,7 @@ int StudentManagementUI::ProcessInput(wchar_t input, int& curSel)
         case VK_NEXT: // PgDown
             break;
         case VK_ESCAPE: // Esc - Exit
-            return 1;
+            return INPUT_EXIT;
         case VK_UP: // up arrow
             if (curSel <= 0) { // cursor at list top
                 break;
@@ -100,7 +99,7 @@ int StudentManagementUI::Show()
     wchar_t input;
     while ((input = console.GetPressedDownKey())) {
         if (ProcessInput(input, curSel) == INPUT_EXIT) {
-            return RET_OK;
+            return UI_RET_EXIT;
         }
         console.HideCursor();
         RefreshList();
