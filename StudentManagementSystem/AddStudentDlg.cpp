@@ -46,7 +46,7 @@ void AddStudentDlg::Draw()
 
     KEY_EVENT_RECORD keyEvent;
     while (true) {
-        keyEvent = console.GetKeyEvent();
+        keyEvent = console.GetKeyDownEvent();
 
         WORD keyCode = keyEvent.wVirtualKeyCode;
         COORD curPos = console.GetCursorPos();

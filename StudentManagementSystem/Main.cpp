@@ -17,10 +17,11 @@ using namespace std;
 StudentList studentList;
 ConsoleOperator& console = ConsoleOperator::GetInstance();
 
+SMALL_RECT list_rect = { 0, 1, 80, 21 };
+
 void AddStudent();
 void ShowStudent();
 void SearchStudent();
-
 void OnExit();
 
 int main()
@@ -54,7 +55,7 @@ int main()
     // get input
     wchar_t input;
     bool shouldExit = false;
-    while (!shouldExit && ((input = console.GetPressedKey()))) {
+    while (!shouldExit && ((input = console.GetPressedDownKey()))) {
         switch (input) {
             case 0x41: { // A
                 AddStudentDlg editDlg(console);
@@ -85,6 +86,7 @@ int main()
             default:
                 break;
         }
+        ShowStudent();
     }
 }
 
@@ -154,6 +156,7 @@ wstring GetFormattedString(Student s)
 
 void ShowStudent()
 {
+    console.FillArea(list_rect, _T(' '), FOREGROUND_WHITE | BACKGROUND_BLUE);
     console.WriteConsoleLine(_T("┏━━━┳━━━━━┳━━━━┳━━━┳━━━━━━┳━━━━━━━━┓"), { 0, 1 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
     console.WriteConsoleLine(_T("┃ 选择 ┃   学号   ┃  姓名  ┃ 性别 ┃    班级    ┃    联系方式    ┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
 

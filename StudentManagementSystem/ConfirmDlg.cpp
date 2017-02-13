@@ -50,7 +50,7 @@ void ConfirmDlg::Draw()
 
     WORD pressedKey;
     do {
-        pressedKey = console.GetPressedKey();
+        pressedKey = console.GetPressedDownKey();
     } while (pressedKey != confirmKeyCode);
 }
 

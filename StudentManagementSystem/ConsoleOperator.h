@@ -44,8 +44,8 @@ public:
     COORD GetSize() const;
     void SetSize(COORD size) const;
     SMALL_RECT GetWindowSize() const;
-    WORD GetPressedKey();
-    KEY_EVENT_RECORD GetKeyEvent();
+    WORD GetPressedDownKey();
+    KEY_EVENT_RECORD GetKeyDownEvent();
     void SetCurrentTextAttribute(WORD attr);
     void SetCursorPos(COORD pos);
 

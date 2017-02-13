@@ -241,7 +241,7 @@ SMALL_RECT ConsoleOperator::GetWindowSize() const
     return info.srWindow;
 }
 
-WORD ConsoleOperator::GetPressedKey()
+WORD ConsoleOperator::GetPressedDownKey()
 {
     INPUT_RECORD record;
     DWORD readNum;
@@ -249,18 +249,20 @@ WORD ConsoleOperator::GetPressedKey()
         ReadConsoleInput(inputHandle, &record, 1, &readNum);
         if (record.EventType == KEY_EVENT) {
             KEY_EVENT_RECORD keyRecord = record.Event.KeyEvent;
-            return keyRecord.wVirtualKeyCode;
+            if (keyRecord.bKeyDown) {
+                return keyRecord.wVirtualKeyCode;
+            }
         }
     }
 }
 
-KEY_EVENT_RECORD ConsoleOperator::GetKeyEvent()
+KEY_EVENT_RECORD ConsoleOperator::GetKeyDownEvent()
 {
     INPUT_RECORD record;
     DWORD readNum;
     while (true) {
         ReadConsoleInput(inputHandle, &record, 1, &readNum);
-        if (record.EventType == KEY_EVENT) {
+        if (record.EventType == KEY_EVENT && record.Event.KeyEvent.bKeyDown) {
             return record.Event.KeyEvent;
         }
     }
