@@ -88,6 +88,18 @@ int main()
                 OnExit();
                 shouldExit = true;
                 break;
+            case VK_UP: // up arrow
+                if (curSel <= 0) { // cursor at list top
+                    break;
+                }
+                curSel--;
+                break;
+            case VK_DOWN:
+                if (curSel >= 18) { // cursor at list bottom
+                    break;
+                }
+                curSel++;
+                break;
             default:
                 break;
         }
