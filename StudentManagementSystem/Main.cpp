@@ -11,7 +11,7 @@ using namespace std;
 
 ConsoleOperator& console = ConsoleOperator::GetInstance();
 StudentManagementUI studentUI(console);
-CourseManagementUI courseUI();
+CourseManagementUI courseUI(console);
 
 void Exit();
 void OnExit();
@@ -32,7 +32,7 @@ int main()
                 break;
         }
 
-        retCode = studentUI.Show();
+        retCode = courseUI.Show();
         switch (retCode) {
             case UI_RET_EXIT:
                 Exit();

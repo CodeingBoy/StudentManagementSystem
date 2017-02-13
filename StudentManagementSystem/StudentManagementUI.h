@@ -21,7 +21,7 @@ private:
 
     void OnAddStudent();
     void OnEditStudent(int curSel);
-    bool OnDeleteStudent(int curSel);
+    void OnDeleteStudent(int curSel);
     int ProcessInput(wchar_t input, int& curSel);
     void OnSearchStudent();
     void Draw();
