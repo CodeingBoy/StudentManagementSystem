@@ -70,11 +70,12 @@ void Dialog::DrawTitle(wstring title) const
     WriteConsoleOutputCharacter(console.GetConsoleHandle(), title.c_str(), wcslen(title.c_str()), titlePos, &fillNum);
 }
 
-void Dialog::Show()
+int Dialog::Show()
 {
     DrawDialogBox(rect);  // draw dialog plane
     DrawDialogBorder();   // draw dialog border
     Draw();
+    return RET_OK;
 }
 
 int Dialog::GetX()

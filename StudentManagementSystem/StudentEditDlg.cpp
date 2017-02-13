@@ -11,6 +11,7 @@ StudentEditDlg::StudentEditDlg(ConsoleOperator& console, const Student& student)
     : Dialog(console),
       student(student)
 {
+    SetCenteredPos(31, 10);
 }
 
 StudentEditDlg::~StudentEditDlg()
@@ -65,7 +66,6 @@ void StudentEditDlg::Draw()
         startPos.Y++;
 
         WriteConsoleOutputCharacter(console.GetConsoleHandle(), student.GetPhoneNum().c_str(), student.GetPhoneNum().length(), startPos, &fillNum);
-        startPos.Y++;
     }
 
     SMALL_RECT editarea_rect = { defaultPos.X, defaultPos.Y, clientArea.Right, defaultPos.Y + 5 - 1 };
@@ -110,8 +110,6 @@ void StudentEditDlg::Draw()
 
     if (keyEvent.wVirtualKeyCode == keyCode_OK) { // add to list
         CHAR_INFO info[50];
-
-
         ReadConsoleOutput(console.GetConsoleHandle(), info, { 10, 5 }, { 0, 0 }, &editarea_rect);
 
         wstring ID, name, sex, clazz, phoneNum;

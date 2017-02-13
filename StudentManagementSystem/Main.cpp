@@ -23,6 +23,8 @@ void RefreshList();
 void SearchStudent();
 void OnExit();
 
+int GetSelNum(int curSelRow);
+
 int main()
 {
     setlocale(LC_ALL, "chs");
@@ -63,18 +65,29 @@ int main()
         switch (input) {
             case 0x41: { // A
                 StudentEditDlg editDlg(console);
-                editDlg.Show();
-                studentList.push_back(editDlg.GetStudent());
+                if (editDlg.Show() == RET_OK) {
+                    studentList.push_back(editDlg.GetStudent());
+                }
                 break;
             }
             case 0x45: { // E
+                int selNum = GetSelNum(3 + curSel);
+                if (selNum == -1) {
+                    ConfirmDlg confirm_dlg(console, _T("无记录"), _T("所选行没有记录，请选择记录行。"), 20);
+                    confirm_dlg.Show();
+                    break;
+                }
+                StudentEditDlg editDlg(console, studentList.at(selNum - 1));
+                if (editDlg.Show() == RET_OK) {
+                    studentList.push_back(editDlg.GetStudent());
+                }
+                break;
+            }
+            case 0x44: { // D
                 ConfirmDlg confirm_dlg(console, _T("无法添加"), _T("目前添加功能被禁用，请稍后再试。"), 20);
                 confirm_dlg.Show();
                 break;
             }
-            case 0x44: // D
-                shouldExit = true;
-                break;
             case 0x53: // S
                 shouldExit = true;
                 break;
@@ -255,4 +268,23 @@ void SaveToFile(wchar_t* fileName)
 void OnExit()
 {
 
+}
+
+int GetSelNum(int curSelRow)
+{
+    SMALL_RECT numarea_rect = { 3, curSelRow, 7, curSelRow };
+    CHAR_INFO info[5];
+    ReadConsoleOutput(console.GetConsoleHandle(), info, { 5, 1 }, { 0, 0 }, &numarea_rect);
+
+    wchar_t buffer[6] = { 0 };
+    for (int i = 0; i < 5; ++i) {
+        wchar_t uchar = info[i].Char.UnicodeChar;
+        if (uchar == _T(' '))break;
+        buffer[i] = uchar;
+    }
+    if (!wcscmp(buffer, _T(""))) {
+        return -1;
+    } else {
+        return _wtoi(buffer);
+    }
 }

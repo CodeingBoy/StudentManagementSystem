@@ -2,6 +2,9 @@
 #include <windows.h>
 #include "ConsoleOperator.h"
 
+#define RET_OK 0
+#define RET_CANCEL 1
+
 class Dialog
 {
 private:
@@ -21,7 +24,7 @@ public:
     void DrawDialogBorder();
     void DrawTitle(wstring title) const;
 
-    void Show();
+    int Show();
     virtual void Draw() = 0;
     virtual void Dispose() = 0;
 
