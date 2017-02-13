@@ -5,6 +5,7 @@
 #include "ChoiceDlg.h"
 #include "StudentManagementUI.h"
 #include "defs.h"
+#include "CourseManagementUI.h"
 
 using namespace std;
 
