@@ -11,8 +11,9 @@ using namespace std;
 
 ConsoleOperator& console = ConsoleOperator::GetInstance();
 StudentManagementUI studentUI(console);
-CourseManagementUI courseUI(console);
+CourseManagementUI courseUI();
 
+void Exit();
 void OnExit();
 
 int main()
@@ -25,7 +26,7 @@ int main()
         int retCode = studentUI.Show();
         switch (retCode) {
             case UI_RET_EXIT:
-                OnExit();
+                Exit();
                 break;
             case UI_RET_SWITCH:
                 break;
@@ -34,7 +35,7 @@ int main()
         retCode = studentUI.Show();
         switch (retCode) {
             case UI_RET_EXIT:
-                OnExit();
+                Exit();
                 break;
             case UI_RET_SWITCH:
                 break;
@@ -50,6 +51,12 @@ void SaveToFile(wchar_t* fileName)
         file << s << endl;
     }
     file.close();*/
+}
+
+void Exit()
+{
+    OnExit();
+    exit(0);
 }
 
 void OnExit()

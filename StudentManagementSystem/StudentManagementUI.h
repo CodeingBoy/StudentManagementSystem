@@ -17,18 +17,19 @@ private:
     StudentList studentList;
     ConsoleOperator& console;
     int curSel = 0;
-public:
-    StudentManagementUI(ConsoleOperator& console);
-    ~StudentManagementUI();
+
     void OnAddStudent();
     void OnEditStudent(int curSel);
     bool OnDeleteStudent(int curSel);
     int ProcessInput(wchar_t input, int& curSel);
-    int Show();
     void OnSearchStudent();
     void Draw();
     void RefreshList();
     int GetSelNum(int curSelRow);
     void SetStatus(wstring text);
+public:
+    StudentManagementUI(ConsoleOperator& console);
+    ~StudentManagementUI();
+    int Show();
 };
 
