@@ -147,11 +147,11 @@ void StudentManagementUI::Draw()
 
 void StudentManagementUI::RefreshList()
 {
-    static const short x_select = 0, x_ID = 8, x_name = 24, x_sex = 34, x_clazz = 42, x_phoneNum = 56;
+    static const short x_select = 0, x_ID = 8, x_name = 24, x_sex = 38, x_clazz = 46, x_phoneNum = 62, x_end = 78;
 
     console.FillArea(list_rect, _T(' '), FOREGROUND_WHITE | BACKGROUND_BLUE);
-    console.WriteConsoleLine(_T("┏━━━┳━━━━━━━┳━━━━┳━━━┳━━━━━━┳━━━━━━━━┓"), { 0, 1 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
-    console.WriteConsoleLine(_T("┃ 序号 ┃     学号     ┃  姓名  ┃ 性别 ┃    班级    ┃    联系方式    ┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
+    console.WriteConsoleLine(_T("┏━━━┳━━━━━━━┳━━━━━━┳━━━┳━━━━━━━┳━━━━━━━┓"), { 0, 1 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
+    console.WriteConsoleLine(_T("┃ 序号 ┃     学号     ┃    姓名    ┃ 性别 ┃     班级     ┃   联系方式   ┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
 
     short y = 3;
     for (auto iter = studentList.begin(); iter != studentList.end(); ++iter) {
@@ -164,6 +164,7 @@ void StudentManagementUI::RefreshList()
         console.WriteConsoleLine(s.IsMale() ? _T("┃  男") : _T("┃  女"), { x_sex, y });
         console.WriteConsoleLine(_T("┃" + s.GetClass()), { x_clazz, y });
         console.WriteConsoleLine(_T("┃" + s.GetPhoneNum()), { x_phoneNum, y });
+        console.WriteConsoleLine(_T("┃"), { x_end, y });
 
         y++;
         //console.WriteConsoleLine(output, { 0, 3 }, FOREGROUND_WHITE | BACKGROUND_BLUE);

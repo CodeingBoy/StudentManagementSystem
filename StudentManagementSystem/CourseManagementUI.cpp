@@ -112,7 +112,7 @@ void CourseManagementUI::Draw()
 
 void CourseManagementUI::RefreshList()
 {
-    static const short x_num = 0, x_ID = 8, x_name = 20, x_period = 30, x_teacher = 38, x_phoneNum = 52;
+    static const short x_num = 0, x_ID = 8, x_name = 20, x_period = 30, x_teacher = 38, x_end = 52;
 
     console.FillArea(list_rect, _T(' '), FOREGROUND_WHITE | BACKGROUND_GREEN);
     console.WriteConsoleLine(_T("©³©¥©¥©¥©×©¥©¥©¥©¥©¥©¥©¥©×©¥©¥©¥©¥©¥©¥©¥©¥©×©¥©¥©¥©¥©¥©¥©¥©¥©×©¥©¥©¥©¥©¥©¥©¥©·"), { 0, 1 }, FOREGROUND_WHITE | BACKGROUND_GREEN);
@@ -128,6 +128,8 @@ void CourseManagementUI::RefreshList()
         console.WriteConsoleLine(_T("©§" + c.GetName()), { x_name, y });
         console.WriteConsoleLine(_T("©§" + c.GetPeriod()), { x_period, y });
         console.WriteConsoleLine(_T("©§" + c.GetTeacherName()), { x_teacher, y });
+        console.WriteConsoleLine(_T("©§"), { x_end, y });
+
 
         y++;
     }
