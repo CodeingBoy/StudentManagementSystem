@@ -1,5 +1,5 @@
 #include "AddStudentDlg.h"
-
+#include <iostream>
 
 
 AddStudentDlg::AddStudentDlg(ConsoleOperator& console): Dialog(console)
@@ -83,6 +83,59 @@ void AddStudentDlg::Draw()
         }
     }
 
+    if (keyEvent.wVirtualKeyCode == keyCode_OK) { // add to list
+        CHAR_INFO info[50];
+        SMALL_RECT read_rect = { defaultPos.X, defaultPos.Y, clientArea.Right, defaultPos.Y + 5 - 1 };
+
+        ReadConsoleOutput(console.GetConsoleHandle(), info, { 10, 5 }, { 0, 0 }, &read_rect);
+
+        wstring ID, name, sex, clazz, phoneNum;
+        wchar_t buffer[11] = {0};
+        for (int i = 0; i < 10; ++i) {
+            wchar_t uchar = info[i].Char.UnicodeChar;
+            if (uchar == _T(' '))break;
+            buffer[i] = uchar;
+        }
+        ID.assign(buffer);
+
+        memset(buffer, 0, 11 * sizeof(wchar_t));
+        for (int i = 0; i < 10; ++i) {
+            wchar_t uchar = info[10 + i].Char.UnicodeChar;
+            if (uchar == _T(' '))break;
+            buffer[i] = uchar;
+        }
+        name.assign(buffer);
+
+        memset(buffer, 0, 11 * sizeof(wchar_t));
+        for (int i = 0; i < 10; ++i) {
+            wchar_t uchar = info[20 + i].Char.UnicodeChar;
+            if (uchar == _T(' '))break;
+            buffer[i] = uchar;
+        }
+        sex.assign(buffer);
+
+        memset(buffer, 0, 11 * sizeof(wchar_t));
+        for (int i = 0; i < 10; ++i) {
+            wchar_t uchar = info[30 + i].Char.UnicodeChar;
+            if (uchar == _T(' '))break;
+            buffer[i] = uchar;
+        }
+        clazz.assign(buffer);
+
+        memset(buffer, 0, 11 * sizeof(wchar_t));
+        for (int i = 0; i < 10; ++i) {
+            wchar_t uchar = info[40 + i].Char.UnicodeChar;
+            if (uchar == _T(' '))break;
+            buffer[i] = uchar;
+        }
+        phoneNum.assign(buffer);
+
+        student.SetID(ID);
+        student.SetName(name);
+        student.SetIsMale(sex.compare(_T("ÄÐ")) == 0);
+        student.SetClass(clazz);
+        student.SetPhoneNum(phoneNum);
+    }
 }
 
 void AddStudentDlg::Dispose()

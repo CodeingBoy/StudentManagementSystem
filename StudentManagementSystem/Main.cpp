@@ -11,16 +11,15 @@
 #define ATTR_OPERINSTRUCTIONS   FOREGROUND_WHITE | BACKGROUND_RED
 #define ATTR_STATUSBAR BACKGROUND_INTENSITY
 
-
 using namespace std;
 
 StudentList studentList;
 ConsoleOperator& console = ConsoleOperator::GetInstance();
 
-SMALL_RECT list_rect = { 0, 1, 80, 21 };
+SMALL_RECT list_rect;
 
 void AddStudent();
-void ShowStudent();
+void RefreshList();
 void SearchStudent();
 void OnExit();
 
@@ -33,6 +32,9 @@ int main()
     COORD size = console.GetSize();
     console.SetSize({ size.X, 25 });
     console.ClearScreen(FOREGROUND_WHITE | BACKGROUND_BLUE); // set background
+
+    // set list rect
+    list_rect = { 0, 1, size.X - 1, 21 };
 
     // show title
     console.SetLineAttr(0, FOREGROUND_WHITE | BACKGROUND_RED);
@@ -50,7 +52,7 @@ int main()
     console.SetLineAttr(24, ATTR_STATUSBAR);
     console.WriteConsoleLine(_T("记录数：0┃文件：未读取┃状态：就绪"), 24, NULL, 1);
 
-    ShowStudent();
+    RefreshList();
 
     // get input
     wchar_t input;
@@ -60,6 +62,7 @@ int main()
             case 0x41: { // A
                 AddStudentDlg editDlg(console);
                 editDlg.Show();
+                studentList.push_back(editDlg.GetStudent());
                 break;
             }
             case 0x45: { // E
@@ -86,7 +89,8 @@ int main()
             default:
                 break;
         }
-        ShowStudent();
+        console.HideCursor();
+        RefreshList();
     }
 }
 
@@ -146,25 +150,26 @@ void DeleteStudent()
 
 }
 
-wstring GetFormattedString(Student s)
+void RefreshList()
 {
-    wchar_t buffer[1024];
-    swprintf_s(buffer, 1024, _T("┃ [ ]  ┃%-10s┃%-3s┃ %-1s ┃%-6s┃%-8s┃"),
-               s.GetID().c_str(), s.GetName().c_str(), s.IsMale() ? _T("男") : _T("女"), s.GetClass().c_str(), s.GetPhoneNum().c_str());
-    return wstring(buffer);
-}
+    static const short x_select = 0, x_ID = 8, x_name = 20, x_sex = 30, x_clazz = 38, x_phoneNum = 52;
 
-void ShowStudent()
-{
     console.FillArea(list_rect, _T(' '), FOREGROUND_WHITE | BACKGROUND_BLUE);
     console.WriteConsoleLine(_T("┏━━━┳━━━━━┳━━━━┳━━━┳━━━━━━┳━━━━━━━━┓"), { 0, 1 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
     console.WriteConsoleLine(_T("┃ 选择 ┃   学号   ┃  姓名  ┃ 性别 ┃    班级    ┃    联系方式    ┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
 
+    short y = 3;
     for (auto iter = studentList.begin(); iter != studentList.end(); ++iter) {
         Student s = *iter;
-        wstring output = GetFormattedString(s);
-        console.WriteConsoleLine(output, { 0, 3 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
-        wcout << output << endl;
+        console.WriteConsoleLine(_T("┃[   ]"), { x_select, y });
+        console.WriteConsoleLine(_T("┃" + s.GetID()), { x_ID, y });
+        console.WriteConsoleLine(_T("┃" + s.GetName()), { x_name, y });
+        console.WriteConsoleLine(s.IsMale() ? _T("┃  男") : _T("┃  女"), { x_sex, y });
+        console.WriteConsoleLine(_T("┃" + s.GetClass()), { x_clazz, y });
+        console.WriteConsoleLine(_T("┃" + s.GetPhoneNum()), { x_phoneNum, y });
+
+        y++;
+        //console.WriteConsoleLine(output, { 0, 3 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
         /*wcout << "ID:" << s.GetID().c_str() << endl;
         wcout << "Name: " << s.GetName().c_str() << endl;
         wcout << "Class: " << s.GetClass().c_str() << endl;
