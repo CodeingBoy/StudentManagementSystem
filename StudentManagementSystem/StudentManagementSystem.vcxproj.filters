@@ -16,6 +16,21 @@
     <Filter Include="Data Struct">
       <UniqueIdentifier>{d7c011a4-2103-44af-b41f-76bfbb655c4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Text-based UI">
+      <UniqueIdentifier>{1b61adb0-43e1-4374-b9ca-eb3411f7883d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Text-based UI\Common Dialogs">
+      <UniqueIdentifier>{4c4004ad-3635-4861-8b33-d9b2eab68ca3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Text-based UI\StudentManagementUI">
+      <UniqueIdentifier>{f7d0c4aa-aa1b-46c5-923e-6e08b28d67b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Text-based UI\CourseManagementUI">
+      <UniqueIdentifier>{8c2ef1d3-6194-4042-aa32-e33d9b02d9bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Text-based UI\StudentManagementUI\Dialogs">
+      <UniqueIdentifier>{8b620bd6-8ec5-4acd-b790-f418599b9737}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Student.h">
@@ -45,32 +60,32 @@
     <ClInclude Include="LinkedList.h">
       <Filter>Data Struct</Filter>
     </ClInclude>
-    <ClInclude Include="ConsoleOperator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Dialog.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ConfirmDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="StudentEditDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ChoiceDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="StudentManagementUI.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="StudentList.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="StudentManagementUI.h">
+      <Filter>Text-based UI\StudentManagementUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ChoiceDlg.h">
+      <Filter>Text-based UI\Common Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfirmDlg.h">
+      <Filter>Text-based UI\Common Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleOperator.h">
+      <Filter>Text-based UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog.h">
+      <Filter>Text-based UI</Filter>
+    </ClInclude>
     <ClInclude Include="defs.h">
-      <Filter>头文件</Filter>
+      <Filter>Text-based UI\Common Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="CourseManagementUI.h">
-      <Filter>头文件</Filter>
+      <Filter>Text-based UI\CourseManagementUI</Filter>
+    </ClInclude>
+    <ClInclude Include="StudentEditDlg.h">
+      <Filter>Text-based UI\StudentManagementUI\Dialogs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -92,29 +107,29 @@
     <ClCompile Include="Main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ConsoleOperator.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Dialog.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ConfirmDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="StudentEditDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ChoiceDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="StudentManagementUI.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="StudentList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="StudentManagementUI.cpp">
+      <Filter>Text-based UI\StudentManagementUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ChoiceDlg.cpp">
+      <Filter>Text-based UI\Common Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfirmDlg.cpp">
+      <Filter>Text-based UI\Common Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleOperator.cpp">
+      <Filter>Text-based UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog.cpp">
+      <Filter>Text-based UI</Filter>
+    </ClCompile>
     <ClCompile Include="CourseManagementUI.cpp">
-      <Filter>源文件</Filter>
+      <Filter>Text-based UI\CourseManagementUI</Filter>
+    </ClCompile>
+    <ClCompile Include="StudentEditDlg.cpp">
+      <Filter>Text-based UI\StudentManagementUI\Dialogs</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
