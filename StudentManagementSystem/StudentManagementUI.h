@@ -33,6 +33,7 @@ private:
     int GetSelNum(int curSelRow);
     void SetStatus(wstring text);
     void CalcTotalPage();
+    void RefreshStatusInf();
 public:
     StudentManagementUI(ConsoleOperator& console);
     ~StudentManagementUI();

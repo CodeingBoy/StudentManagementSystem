@@ -130,6 +130,7 @@ int StudentManagementUI::Show()
         }
         console.HideCursor();
         RefreshList(LIST_ROW_PER_PAGE * (curPage - 1));
+        RefreshStatusInf();
         console.HighlightRow(3 + curSel);
     }
 }
@@ -161,7 +162,8 @@ void StudentManagementUI::Draw()
 
     // show status bar
     console.SetLineAttr(24, ATTR_STATUSBAR);
-    console.WriteConsoleLine(_T("记录数：0┃文件：未读取"), 24, NULL, 1);
+
+    RefreshStatusInf();
     SetStatus(_T("就绪"));
 
     RefreshList(0);
@@ -222,4 +224,14 @@ void StudentManagementUI::SetStatus(wstring text)
 void StudentManagementUI::CalcTotalPage()
 {
     totalPage = ceil(studentList.size() / static_cast<double>(LIST_ROW_PER_PAGE));
+}
+
+void StudentManagementUI::RefreshStatusInf()
+{
+    wstringstream wss;
+    wss << curPage << _T("/") << totalPage << _T("页");
+    wss << _T("┃");
+    wss << _T("记录数：") << studentList.size();
+
+    console.WriteConsoleLine(wss.str(), 24, NULL, 1);
 }
