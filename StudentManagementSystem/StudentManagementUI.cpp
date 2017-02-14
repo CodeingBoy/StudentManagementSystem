@@ -2,6 +2,7 @@
 #include "StudentEditDlg.h"
 #include "ConfirmDlg.h"
 #include "ChoiceDlg.h"
+#include "defs.h"
 
 StudentManagementUI::StudentManagementUI(ConsoleOperator& console): console(console)
 {
@@ -50,7 +51,7 @@ void StudentManagementUI::OnDeleteStudent(int curSel)
     SetStatus(_T("删除记录成功"));
 }
 
-int StudentManagementUI::ProcessInput(wchar_t input, int& curSel)
+int StudentManagementUI::ProcessInput(WORD input, int& curSel)
 {
     switch (input) {
         case 0x41: // A - Add
@@ -97,7 +98,7 @@ int StudentManagementUI::Show()
     Draw();
 
     // get input
-    wchar_t input;
+    WORD input;
     while ((input = console.GetPressedDownKey())) {
         int retcode = ProcessInput(input, curSel);
         switch (retcode) {
@@ -107,7 +108,7 @@ int StudentManagementUI::Show()
                 return UI_RET_SWITCH;
         }
         console.HideCursor();
-        RefreshList();
+        RefreshList(0, 100);
         console.HighlightRow(3 + curSel);
     }
 }
@@ -142,10 +143,10 @@ void StudentManagementUI::Draw()
     console.WriteConsoleLine(_T("记录数：0┃文件：未读取"), 24, NULL, 1);
     SetStatus(_T("就绪"));
 
-    RefreshList();
+    RefreshList(0, 100);
 }
 
-void StudentManagementUI::RefreshList()
+void StudentManagementUI::RefreshList(int begin, int end)
 {
     static const short x_select = 0, x_ID = 8, x_name = 24, x_sex = 38, x_clazz = 46, x_phoneNum = 62, x_end = 78;
 

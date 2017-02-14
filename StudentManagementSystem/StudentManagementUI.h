@@ -22,10 +22,10 @@ private:
     void OnAddStudent();
     void OnEditStudent(int curSel);
     void OnDeleteStudent(int curSel);
-    int ProcessInput(wchar_t input, int& curSel);
+    int ProcessInput(WORD input, int& curSel);
     void OnSearchStudent();
     void Draw();
-    void RefreshList();
+    void RefreshList(int begin, int end);
     int GetSelNum(int curSelRow);
     void SetStatus(wstring text);
 public:

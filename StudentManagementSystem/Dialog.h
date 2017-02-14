@@ -1,7 +1,12 @@
 #pragma once
 #include <windows.h>
 #include "ConsoleOperator.h"
-#include "defs.h"
+
+#define DIALOG_RET_CONTINUE 0
+#define DIALOG_RET_OK 1
+#define DIALOG_RET_CANCEL 2
+#define DIALOG_RET_YES 3
+#define DIALOG_RET_NO 4
 
 class Dialog
 {
@@ -25,6 +30,7 @@ public:
     int Show();
     virtual void Draw() = 0;
     virtual void Dispose() = 0;
+    virtual int ProcessInput(WORD keyCode) = 0;
 
     int GetX();
     int GetY();

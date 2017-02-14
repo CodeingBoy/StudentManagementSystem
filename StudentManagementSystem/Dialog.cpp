@@ -75,7 +75,14 @@ int Dialog::Show()
     DrawDialogBox(rect);  // draw dialog plane
     DrawDialogBorder();   // draw dialog border
     Draw();
-    return DIALOG_RET_OK;
+
+    WORD input;
+    while ((input = console.GetPressedDownKey())) {
+        int retcode = ProcessInput(input);
+        if (retcode != DIALOG_RET_CONTINUE) {
+            return retcode;
+        }
+    }
 }
 
 int Dialog::GetX()
