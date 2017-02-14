@@ -215,6 +215,9 @@ public:
         LkListNode<T>* priorNode = prev_iter.GetNodePtr();
 
         node->SetNext(priorNode->GetNext());
+        node->SetPrev(priorNode);
+
+        priorNode->GetNext()->SetPrev(node);
         priorNode->SetNext(node);
     }
 
