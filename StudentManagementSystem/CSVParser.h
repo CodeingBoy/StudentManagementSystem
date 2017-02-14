@@ -8,7 +8,7 @@ class CCSVParser
 public:
     CCSVParser();
     ~CCSVParser();
-    static std::vector<wchar_t*>& CCSVParser::Parse(wchar_t* line, std::vector<wchar_t*>& pvector);
+    static vector<wchar_t*>& CCSVParser::Parse(wchar_t* line, vector<wchar_t*>& container);
     unsigned int GetParsedLine();
 };
 

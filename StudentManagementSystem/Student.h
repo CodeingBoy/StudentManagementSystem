@@ -79,6 +79,14 @@ public:
         phoneNum = phone_num;
     }
 
+    void GetFormatted()
+    {
+        if (id.empty())id = _T(" ");
+        if (name.empty())name = _T(" ");
+        if (clazz.empty())clazz = _T(" ");
+        if (phoneNum.empty())phoneNum = _T(" ");
+    }
+
     friend bool operator==(const Student& lhs, const Student& rhs)
     {
         return lhs.id == rhs.id

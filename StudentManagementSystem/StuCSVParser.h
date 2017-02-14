@@ -13,7 +13,7 @@ class CStuCSVParser :
 public:
     CStuCSVParser(CFileHandler* pHandler);
     ~CStuCSVParser();
-    bool Parse(bool haveHeader, LINKED_LIST<Student>* plist);
+    bool Parse(bool haveHeader, MyLinkedList<Student>* plist);
     static int Parse(wchar_t* line, Student& inf);
     unsigned int GetParsedLine();
     bool HasExtraInf();
