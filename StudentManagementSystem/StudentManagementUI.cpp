@@ -18,8 +18,9 @@ void StudentManagementUI::OnAddStudent()
     StudentEditDlg editDlg(console);
     if (editDlg.Show() == DIALOG_RET_OK) {
         studentList.push_back(editDlg.GetStudent());
+        SetStatus(_T("添加记录成功"));
     }
-    SetStatus(_T("添加记录成功"));
+
 }
 
 void StudentManagementUI::OnEditStudent(int curSel)
@@ -53,17 +54,19 @@ void StudentManagementUI::OnDeleteStudent(int curSel)
     }
 }
 
-int StudentManagementUI::ProcessInput(WORD input, int& curSel)
+int StudentManagementUI::ProcessInput(WORD input, int& listCurSel)
 {
     switch (input) {
         case 0x41: // A - Add
             OnAddStudent();
+            CalcTotalPage();
             break;
         case 0x45: // E - Edit
-            OnEditStudent(curSel);
+            OnEditStudent(listCurSel);
             break;
         case 0x44: // D - Delete
-            OnDeleteStudent(curSel);
+            OnDeleteStudent(listCurSel);
+            CalcTotalPage();
             break;
         case 0x53: // S - Search
             OnSearchStudent();
@@ -72,22 +75,38 @@ int StudentManagementUI::ProcessInput(WORD input, int& curSel)
             return INPUT_SWITCH;
             break;
         case VK_PRIOR: // PgUp
+            if (curPage > 1)curPage--;
+            else {
+                SetStatus(_T("没有上一页了"));
+            }
             break;
         case VK_NEXT: // PgDown
+            if (curPage < totalPage)curPage++;
+            else {
+                SetStatus(_T("没有下一页了"));
+            }
             break;
         case VK_ESCAPE: // Esc - Exit
             return INPUT_EXIT;
         case VK_UP: // up arrow
-            if (curSel <= 0) { // cursor at list top
+            if (listCurSel <= 0) { // cursor at list top
+                if (curPage > 1) {
+                    curPage--;
+                    listCurSel = 18;
+                }
                 break;
             }
-            curSel--;
+            listCurSel--;
             break;
         case VK_DOWN:
-            if (curSel >= 18) { // cursor at list bottom
+            if (listCurSel >= 18) { // cursor at list bottom
+                if (curPage < totalPage) {
+                    curPage++;
+                    listCurSel = 0;
+                }
                 break;
             }
-            curSel++;
+            listCurSel++;
             break;
         default:
             break;
@@ -110,7 +129,7 @@ int StudentManagementUI::Show()
                 return UI_RET_SWITCH;
         }
         console.HideCursor();
-        RefreshList(0, 100);
+        RefreshList(LIST_ROW_PER_PAGE * (curPage - 1));
         console.HighlightRow(3 + curSel);
     }
 }
@@ -145,11 +164,14 @@ void StudentManagementUI::Draw()
     console.WriteConsoleLine(_T("记录数：0┃文件：未读取"), 24, NULL, 1);
     SetStatus(_T("就绪"));
 
-    RefreshList(0, 100);
+    RefreshList(0);
 }
 
 void StudentManagementUI::RefreshList(int begin, int end)
 {
+    if (end == -1)end = begin + LIST_ROW_PER_PAGE - 1;
+    if (end > studentList.size())end = studentList.size();
+
     static const short x_select = 0, x_ID = 8, x_name = 24, x_sex = 38, x_clazz = 46, x_phoneNum = 62, x_end = 78;
 
     console.FillArea(list_rect, _T(' '), FOREGROUND_WHITE | BACKGROUND_BLUE);
@@ -157,10 +179,10 @@ void StudentManagementUI::RefreshList(int begin, int end)
     console.WriteConsoleLine(_T("┃ 序号 ┃     学号     ┃    姓名    ┃ 性别 ┃     班级     ┃   联系方式   ┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
 
     short y = 3;
-    for (auto iter = studentList.begin(); iter != studentList.end(); ++iter) {
+    for (auto iter = studentList.getIter(begin); iter != studentList.getIter(end + 1); ++iter) {
         Student s = *iter;
         wchar_t buffer[10] = { 0 };
-        _itow(y - 3 + 1, buffer, 10);
+        _itow(y - 3 + 1 + begin, buffer, 10);
         console.WriteConsoleLine(_T("┃ " + wstring(buffer)), { x_select, y });
         console.WriteConsoleLine(_T("┃" + s.GetID()), { x_ID, y });
         console.WriteConsoleLine(_T("┃" + s.GetName()), { x_name, y });
@@ -195,4 +217,9 @@ int StudentManagementUI::GetSelNum(int curSelRow)
 void StudentManagementUI::SetStatus(wstring text)
 {
     console.WriteConsoleLine(text, 24, NULL, 0);
+}
+
+void StudentManagementUI::CalcTotalPage()
+{
+    totalPage = ceil(studentList.size() / static_cast<double>(LIST_ROW_PER_PAGE));
 }

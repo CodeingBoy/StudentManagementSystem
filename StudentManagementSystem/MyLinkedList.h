@@ -272,7 +272,7 @@ private:
         LkListNode<T>* node = head->GetNext();
         int curIndex = 0;
 
-        while (curIndex < index) {
+        while (curIndex < index && node) {
             node = node->GetNext();
             curIndex++;
         }
