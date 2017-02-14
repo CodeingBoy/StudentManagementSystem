@@ -154,6 +154,7 @@ int StudentEditDlg::ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode)
         student.SetClass(clazz);
         student.SetPhoneNum(phoneNum);
     }
+    return DIALOG_RET_CONTINUE;
 }
 void StudentEditDlg::Dispose()
 {
