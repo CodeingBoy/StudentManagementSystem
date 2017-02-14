@@ -246,6 +246,7 @@ void StudentManagementUI::SetStatus(wstring text)
 void StudentManagementUI::CalcTotalPage()
 {
     totalPage = ceil(studentList.size() / static_cast<double>(LIST_ROW_PER_PAGE));
+    if (totalPage < 1)totalPage = 1; // at least 1 page
 }
 
 void StudentManagementUI::RefreshStatusInf()
