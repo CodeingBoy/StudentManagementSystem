@@ -22,10 +22,6 @@ public:
         }
     }
 
-    void push_back(T obj)
-    {
-        Insert(obj);
-    }
     int size() const
     {
         return GetLength();
@@ -57,7 +53,12 @@ public:
             return;
 
         node->SetNext(head->GetNext());
+        head->GetNext()->SetPrev(node);
         head->SetNext(node);
+    }
+    void push_back(T obj)
+    {
+        Insert(obj);
     }
 
     T front() const
@@ -209,6 +210,11 @@ public:
         LkListNode<T>* node = new LkListNode<T>(obj);
         if (!node)
             return;
+
+        if (where == end()) {
+            push_back(obj);
+            return;
+        }
 
         mylklist_iterator prev_iter = where - 1;
 
