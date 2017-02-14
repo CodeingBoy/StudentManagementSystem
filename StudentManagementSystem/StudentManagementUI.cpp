@@ -47,7 +47,7 @@ void StudentManagementUI::OnDeleteStudent(int curSel)
     }
     ChoiceDlg choiceDlg(console, _T("是否确认删除"), _T("选中的记录将被删除，且无法恢复。是否删除？"));
     if (choiceDlg.Show() == DIALOG_RET_YES) {
-
+        studentList.erase(studentList.getIter(selNum - 1));
         SetStatus(_T("删除记录成功"));
     }
 }

@@ -204,13 +204,13 @@ public:
         }
     };
 
-    void insert(mylklist_iterator& iter, T obj)
+    void insert(mylklist_iterator& where, T obj)
     {
         LkListNode<T>* node = new LkListNode<T>(obj);
         if (!node)
             return;
 
-        mylklist_iterator prev_iter = iter - 1;
+        mylklist_iterator prev_iter = where - 1;
 
         LkListNode<T>* priorNode = prev_iter.GetNodePtr();
 
@@ -221,7 +221,16 @@ public:
     mylklist_iterator erase(mylklist_iterator& where)
     {
         mylklist_iterator next_iter = where + 1;
-        delete &(*where);
+
+        LkListNode<T>* pNode = where.GetNodePtr();
+        LkListNode<T>* pPriorNode = pNode->GetPrev();
+        LkListNode<T>* pNextNode = pNode->GetNext();
+
+        if (pPriorNode)pPriorNode->SetNext(pNextNode);
+        if (pNextNode)pNextNode->SetPrev(pPriorNode);
+
+        delete pNode;
+
         return next_iter;
     }
 
@@ -245,6 +254,11 @@ public:
     {
         if (size() == 0)return rbegin();
         return mylklist_reverse_iterator(*this, head);
+    }
+
+    mylklist_iterator getIter(int index)
+    {
+        return mylklist_iterator(*this, GetNode(index));
     }
 
 private:
