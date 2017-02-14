@@ -30,7 +30,7 @@ public:
     int Show();
     virtual void Draw() = 0;
     virtual void Dispose() = 0;
-    virtual int ProcessInput(WORD keyCode) = 0;
+    virtual int ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode) = 0;
 
     int GetX();
     int GetY();

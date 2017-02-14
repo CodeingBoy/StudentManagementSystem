@@ -45,13 +45,18 @@ void ChoiceDlg::Draw()
     COORD btnNoPos = { clientArea.Right - 2 - GetMBCSLength(btnNoCaption), clientArea.Bottom };
     WriteConsoleOutputCharacter(console.GetConsoleHandle(), btnYesCaption.c_str(), btnYesCaption.length(), btnYesPos, &fillNum);
     WriteConsoleOutputCharacter(console.GetConsoleHandle(), btnNoCaption.c_str(), btnNoCaption.length(), btnNoPos, &fillNum);
-
-    WORD pressedKey;
-    do {
-        pressedKey = console.GetPressedDownKey();
-    } while (pressedKey != VK_RETURN);
 }
 
 void ChoiceDlg::Dispose()
 {
+}
+
+int ChoiceDlg::ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode)
+{
+    if (keyCode == btnYesKeyCode) {
+        return DIALOG_RET_YES;
+    } else if (keyCode == btnNoKeyCode) {
+        return DIALOG_RET_NO;
+    }
+    return DIALOG_RET_CONTINUE;
 }

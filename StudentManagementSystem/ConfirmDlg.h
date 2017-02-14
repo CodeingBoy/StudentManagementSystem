@@ -16,5 +16,6 @@ public:
 
     void Draw() override;
     void Dispose() override;
+    int ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode) override;
 };
 

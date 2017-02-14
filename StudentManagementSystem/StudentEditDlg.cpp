@@ -73,63 +73,6 @@ void StudentEditDlg::Draw()
     }
 
     SMALL_RECT editarea_rect = { defaultPos.X, defaultPos.Y, clientArea.Right, defaultPos.Y + 5 - 1 };
-    KEY_EVENT_RECORD keyEvent;
-    while (true) {
-        keyEvent = console.GetKeyDownEvent();
-
-        WORD keyCode = keyEvent.wVirtualKeyCode;
-        COORD curPos = console.GetCursorPos();
-
-        if ((keyCode == keyCode_OK) || (keyCode == keyCode_cancel)) { // OK or Cancel
-            break;
-        }
-
-        if (keyCode == VK_BACK) { // backspace
-            if (curPos.X >= defaultPos.X) {
-                WriteConsoleOutputCharacter(console.GetConsoleHandle(), _T(" "), 1, curPos, &fillNum);
-                if (curPos.X > defaultPos.X) {
-                    console.SetCursorPos({ curPos.X - 1, curPos.Y });
-                }
-            }
-            continue;
-        }
-
-        if (keyCode == VK_UP && curPos.Y > defaultPos.Y) { // up arrow
-            console.SetCursorPos({defaultPos.X, curPos.Y - 1 });
-        } else if ((keyCode == VK_DOWN && curPos.Y < defaultPos.Y + 5 - 1)) { // down arrow
-            console.SetCursorPos({ defaultPos.X, curPos.Y + 1 });
-        }
-
-        if (keyCode > 0x00 && keyCode < 0x2f) { // input can't be printed
-            continue;
-        }
-
-        wchar_t buffer[10] = {0};
-        buffer[0] = keyEvent.uChar.UnicodeChar;
-        WriteConsoleOutputCharacter(console.GetConsoleHandle(), buffer, 1, curPos, &fillNum);
-        if (curPos.X < clientArea.Right) {
-            console.SetCursorPos({ static_cast<SHORT>(curPos.X + GetMBCSLength(buffer)), curPos.Y });
-        }
-    }
-
-    if (keyEvent.wVirtualKeyCode == keyCode_OK) { // add to list
-        const int col_count = 14;
-        CHAR_INFO info[5 * col_count];
-        ReadConsoleOutput(console.GetConsoleHandle(), info, { 14, 5 }, { 0, 0 }, &editarea_rect);
-
-        wstring ID, name, sex, clazz, phoneNum;
-        ID = ParseCharInfos(info, 0, col_count - 1);
-        name = ParseCharInfos(info, col_count, 2 * col_count - 1);
-        sex = ParseCharInfos(info, 2 * col_count, 3 * col_count - 1);
-        clazz = ParseCharInfos(info, 3 * col_count, 4 * col_count - 1);
-        phoneNum = ParseCharInfos(info, 4 * col_count, 5 * col_count - 1);
-
-        student.SetID(ID);
-        student.SetName(name);
-        student.SetIsMale(sex.compare(_T("ÄÐ")) == 0);
-        student.SetClass(clazz);
-        student.SetPhoneNum(phoneNum);
-    }
 }
 
 wstring StudentEditDlg::ParseCharInfos(const CHAR_INFO const charinfos[], int begin, int end)
@@ -151,6 +94,67 @@ wstring StudentEditDlg::ParseCharInfos(const CHAR_INFO const charinfos[], int be
     return result;
 }
 
+int StudentEditDlg::ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode)
+{
+    SMALL_RECT editarea_rect = { clientArea.Left + (clientArea.Right + 1 - clientArea.Left) / 2, clientArea.Top + 1,
+                                 clientArea.Right, clientArea.Top + 5
+                               };
+    COORD curPos = console.GetCursorPos();
+    DWORD fillNum;
+
+    if (keyCode == keyCode_OK) { // OK
+        return DIALOG_RET_OK;
+    } else if (keyCode == keyCode_cancel) { // Cancel
+        return DIALOG_RET_CANCEL;
+    }
+
+    if (keyCode == VK_BACK) { // backspace
+        if (curPos.X >= editarea_rect.Left) {
+            WriteConsoleOutputCharacter(console.GetConsoleHandle(), _T(" "), 1, curPos, &fillNum);
+            if (curPos.X > editarea_rect.Left) {
+                console.SetCursorPos({ curPos.X - 1, curPos.Y });
+            }
+        }
+        return DIALOG_RET_CONTINUE;
+    }
+
+    if (keyCode == VK_UP && curPos.Y > editarea_rect.Top) { // up arrow
+        console.SetCursorPos({ editarea_rect.Left, curPos.Y - 1 });
+    } else if ((keyCode == VK_DOWN && curPos.Y < editarea_rect.Top + 5 - 1)) { // down arrow
+        console.SetCursorPos({ editarea_rect.Left, curPos.Y + 1 });
+    }
+
+    if (keyCode > 0x00 && keyCode < 0x2f) { // input can't be printed
+        return DIALOG_RET_CONTINUE;
+    }
+
+    wchar_t buffer[10] = { 0 };
+    buffer[0] = keyEvent.uChar.UnicodeChar;
+    WriteConsoleOutputCharacter(console.GetConsoleHandle(), buffer, 1, curPos, &fillNum);
+    if (curPos.X < clientArea.Right) {
+        console.SetCursorPos({ static_cast<SHORT>(curPos.X + GetMBCSLength(buffer)), curPos.Y });
+    }
+
+
+    if (keyEvent.wVirtualKeyCode == keyCode_OK) { // add to list
+        const int col_count = 14;
+        CHAR_INFO info[5 * col_count];
+        ReadConsoleOutput(console.GetConsoleHandle(), info, { 14, 5 }, { 0, 0 }, &editarea_rect);
+
+        wstring ID, name, sex, clazz, phoneNum;
+        ID = ParseCharInfos(info, 0, col_count - 1);
+        name = ParseCharInfos(info, col_count, 2 * col_count - 1);
+        sex = ParseCharInfos(info, 2 * col_count, 3 * col_count - 1);
+        clazz = ParseCharInfos(info, 3 * col_count, 4 * col_count - 1);
+        phoneNum = ParseCharInfos(info, 4 * col_count, 5 * col_count - 1);
+
+        student.SetID(ID);
+        student.SetName(name);
+        student.SetIsMale(sex.compare(_T("ÄÐ")) == 0);
+        student.SetClass(clazz);
+        student.SetPhoneNum(phoneNum);
+    }
+}
 void StudentEditDlg::Dispose()
 {
 }

@@ -76,13 +76,15 @@ int Dialog::Show()
     DrawDialogBorder();   // draw dialog border
     Draw();
 
-    WORD input;
-    while ((input = console.GetPressedDownKey())) {
-        int retcode = ProcessInput(input);
-        if (retcode != DIALOG_RET_CONTINUE) {
-            return retcode;
-        }
-    }
+    int retcode;
+    do {
+        KEY_EVENT_RECORD keyEvent;
+        keyEvent = console.GetKeyDownEvent();
+        WORD keyCode = keyEvent.wVirtualKeyCode;
+
+        retcode = ProcessInput(keyEvent, keyCode);
+    } while (retcode == DIALOG_RET_CONTINUE);
+    return retcode;
 }
 
 int Dialog::GetX()

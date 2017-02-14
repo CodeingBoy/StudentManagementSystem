@@ -22,6 +22,7 @@ public:
 
     static wstring StudentEditDlg::ParseCharInfos(const CHAR_INFO const charinfos[], int begin, int end);
 
+    int ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode) override;
 
     Student GetStudent() const
     {

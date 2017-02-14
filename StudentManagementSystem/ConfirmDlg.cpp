@@ -47,13 +47,16 @@ void ConfirmDlg::Draw()
     // show button OK
     COORD btnOKPos = { size.X / 2 - GetMBCSLength(btnOKCaption) / 2, rect.Bottom - 1 };
     WriteConsoleOutputCharacter(console.GetConsoleHandle(), btnOKCaption.c_str(), wcslen(btnOKCaption.c_str()), btnOKPos, &fillNum);
-
-    WORD pressedKey;
-    do {
-        pressedKey = console.GetPressedDownKey();
-    } while (pressedKey != confirmKeyCode);
 }
 
 void ConfirmDlg::Dispose()
 {
+}
+
+int ConfirmDlg::ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode)
+{
+    if (keyCode == confirmKeyCode) {
+        return DIALOG_RET_OK;
+    }
+    return DIALOG_RET_CONTINUE;
 }
