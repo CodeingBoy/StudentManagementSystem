@@ -28,13 +28,13 @@ void Dialog::DrawDialogBox(SMALL_RECT rect)
     WORD bg_attr = BACKGROUND_INTENSITY;
 
     SMALL_RECT rect_shadow = { rect.Left + 1, rect.Top + 1, rect.Right + 1, rect.Bottom + 1 };
-    console.FillAreaAttr(rect_shadow, bg_attr);
+    console.FillArea(rect_shadow, _T(' '), bg_attr);
 
     // draw dialog plane
     WORD dlg_attr = FOREGROUND_WHITE | FOREGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_BLUE; // do not use FOREGROUND_RED! -- is for text
 
     SMALL_RECT rect_dialog = { rect.Left, rect.Top, rect.Right, rect.Bottom };
-    console.FillAreaAttr(rect_dialog, dlg_attr);
+    console.FillArea(rect_dialog, _T(' '), dlg_attr);
 }
 
 void Dialog::DrawDialogBorder()
