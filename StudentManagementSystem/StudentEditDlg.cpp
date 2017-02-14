@@ -103,6 +103,23 @@ int StudentEditDlg::ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode)
     DWORD fillNum;
 
     if (keyCode == keyCode_OK) { // OK
+        const int col_count = 14;
+        CHAR_INFO info[5 * col_count];
+        ReadConsoleOutput(console.GetConsoleHandle(), info, { 14, 5 }, { 0, 0 }, &editarea_rect);
+
+        wstring ID, name, sex, clazz, phoneNum;
+        ID = ParseCharInfos(info, 0, col_count - 1);
+        name = ParseCharInfos(info, col_count, 2 * col_count - 1);
+        sex = ParseCharInfos(info, 2 * col_count, 3 * col_count - 1);
+        clazz = ParseCharInfos(info, 3 * col_count, 4 * col_count - 1);
+        phoneNum = ParseCharInfos(info, 4 * col_count, 5 * col_count - 1);
+
+        student.SetID(ID);
+        student.SetName(name);
+        student.SetIsMale(sex.compare(_T("ÄÐ")) == 0);
+        student.SetClass(clazz);
+        student.SetPhoneNum(phoneNum);
+
         return DIALOG_RET_OK;
     } else if (keyCode == keyCode_cancel) { // Cancel
         return DIALOG_RET_CANCEL;
@@ -135,25 +152,6 @@ int StudentEditDlg::ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode)
         console.SetCursorPos({ static_cast<SHORT>(curPos.X + GetMBCSLength(buffer)), curPos.Y });
     }
 
-
-    if (keyEvent.wVirtualKeyCode == keyCode_OK) { // add to list
-        const int col_count = 14;
-        CHAR_INFO info[5 * col_count];
-        ReadConsoleOutput(console.GetConsoleHandle(), info, { 14, 5 }, { 0, 0 }, &editarea_rect);
-
-        wstring ID, name, sex, clazz, phoneNum;
-        ID = ParseCharInfos(info, 0, col_count - 1);
-        name = ParseCharInfos(info, col_count, 2 * col_count - 1);
-        sex = ParseCharInfos(info, 2 * col_count, 3 * col_count - 1);
-        clazz = ParseCharInfos(info, 3 * col_count, 4 * col_count - 1);
-        phoneNum = ParseCharInfos(info, 4 * col_count, 5 * col_count - 1);
-
-        student.SetID(ID);
-        student.SetName(name);
-        student.SetIsMale(sex.compare(_T("ÄÐ")) == 0);
-        student.SetClass(clazz);
-        student.SetPhoneNum(phoneNum);
-    }
     return DIALOG_RET_CONTINUE;
 }
 void StudentEditDlg::Dispose()
