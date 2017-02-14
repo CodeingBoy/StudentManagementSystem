@@ -68,10 +68,6 @@ public:
     {
         return GetData(size() - 1);
     }
-    void resize(int newsize)
-    {
-        // do nothing
-    }
 
     // copy and move operator
     // Note: should do a deep copy
