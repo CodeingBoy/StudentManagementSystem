@@ -26,6 +26,7 @@ private:
     void OnAddStudent();
     void OnEditStudent(int curSel);
     void OnDeleteStudent(int curSel);
+    void OnInsertStudent();
     int ProcessInput(WORD input, int& curSel);
     void OnSearchStudent();
     void Draw();

@@ -54,11 +54,32 @@ void StudentManagementUI::OnDeleteStudent(int curSel)
     }
 }
 
+void StudentManagementUI::OnInsertStudent()
+{
+    int selNum = GetSelNum(3 + curSel);
+    if (selNum == -1) {
+        selNum = studentList.size();
+    }
+    StudentEditDlg editDlg(console);
+    if (editDlg.Show() == DIALOG_RET_OK) {
+        auto iter = studentList.getIter(selNum - 1);
+        studentList.insert(iter, editDlg.GetStudent());
+
+        wstringstream wss;
+        wss << _T("插入记录到序号") << selNum << _T("成功");
+        SetStatus(wss.str());
+    }
+}
+
 int StudentManagementUI::ProcessInput(WORD input, int& listCurSel)
 {
     switch (input) {
         case 0x41: // A - Add
             OnAddStudent();
+            CalcTotalPage();
+            break;
+        case 0x49: // I - Insert
+            OnInsertStudent();
             CalcTotalPage();
             break;
         case 0x45: // E - Edit
@@ -218,6 +239,7 @@ int StudentManagementUI::GetSelNum(int curSelRow)
 
 void StudentManagementUI::SetStatus(wstring text)
 {
+    console.FillAreaChar({ 0, 24, 50, 24 }, _T(' '));
     console.WriteConsoleLine(text, 24, NULL, 0);
 }
 
