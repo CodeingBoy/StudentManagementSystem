@@ -1,6 +1,8 @@
 #include "CSVParser.h"
 #include <TCHAR.h>
+#include <vector>
 
+using namespace std;
 
 CCSVParser::CCSVParser()
 {
