@@ -8,8 +8,8 @@ public:
     ~CFileHandler();
     bool ReadLine(wchar_t* output);
     wchar_t* ReadLine();
-    bool Write(wchar_t* content);
-    bool WriteLine(wchar_t* content);
+    bool Write(const wchar_t* content);
+    bool WriteLine(const wchar_t* content);
     int GetError();
     bool isEOF();
 private:

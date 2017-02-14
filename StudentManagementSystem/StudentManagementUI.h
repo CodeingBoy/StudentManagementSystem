@@ -39,5 +39,11 @@ public:
     StudentManagementUI(ConsoleOperator& console);
     ~StudentManagementUI();
     int Show();
+
+    StudentList& GetStudentList()
+    {
+        return studentList;
+    }
+
 };
 

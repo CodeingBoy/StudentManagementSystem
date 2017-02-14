@@ -1,14 +1,15 @@
 #include "FileHandler.h"
 #include <cstring>
 #include <TCHAR.h>
+#include <cstdio>
 
 CFileHandler::CFileHandler(const wchar_t* filename, bool bRead)
 {
     if (bRead) {
-        if (err = _wfopen_s(&fp, filename, _T("r,ccs=UTF-8")))   // err
+        if ((err = _wfopen_s(&fp, filename, _T("r,ccs=UTF-8"))))   // err
             return;
     } else {
-        if (err = _wfopen_s(&fp, filename, _T("w,ccs=UTF-8")))  // err
+        if ((err = _wfopen_s(&fp, filename, _T("w,ccs=UTF-8"))))  // err
             return;
     }
 }
@@ -35,14 +36,14 @@ wchar_t* CFileHandler::ReadLine()
     return output;
 }
 
-bool CFileHandler::Write(wchar_t* content)
+bool CFileHandler::Write(const wchar_t* content)
 {
     if (!fp || feof(fp))return false;
     fputws(content, fp);
     return true;
 }
 
-bool CFileHandler::WriteLine(wchar_t* content)
+bool CFileHandler::WriteLine(const wchar_t* content)
 {
     if (!Write(content))
         return false;

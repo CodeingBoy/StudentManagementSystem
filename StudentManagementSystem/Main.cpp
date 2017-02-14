@@ -45,12 +45,19 @@ int main()
 
 void SaveToFile(wchar_t* fileName)
 {
-    /*std::wofstream file(fileName, ios::ate);
-    for (auto iter = studentList.begin(); iter != studentList.end(); ++iter) {
-        Student s = *iter;
-        file << s << endl;
+    CFileHandler handler(_T("data.txt"), false);
+    StudentList& stuList = studentUI.GetStudentList();
+    for (auto iter = stuList.begin(); iter != stuList.end(); ++iter) {
+        Student& s = *iter;
+        wstringstream wss;
+        wss << s.GetID() << _T(",");
+        wss << s.GetName() << _T(",");
+        wss << (s.IsMale() ? _T("1") : _T("0")) << _T(",");
+        wss << s.GetClass() << _T(",");
+        wss << s.GetPhoneNum() << _T(",");
+
+        handler.WriteLine(wss.str().c_str());
     }
-    file.close();*/
 }
 
 void Exit()
@@ -62,8 +69,8 @@ void Exit()
 void OnExit()
 {
     ChoiceDlg confirm_dlg(console, _T("是否保存？"), _T("是否将当前系统信息保存到文件？"), 40, _T("（Y）保存"), _T("（N）舍弃"));
-    if (confirm_dlg.Show() == DIALOG_RET_OK) {
-        //SaveToFile();
+    if (confirm_dlg.Show() == DIALOG_RET_YES) {
+        SaveToFile(NULL);
     }
 }
 

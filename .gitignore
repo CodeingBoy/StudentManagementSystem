@@ -244,3 +244,4 @@ ModelManifest.xml
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+/StudentManagementSystem/data.txt

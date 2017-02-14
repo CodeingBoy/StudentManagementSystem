@@ -8,7 +8,6 @@ StudentManagementUI::StudentManagementUI(ConsoleOperator& console): console(cons
 {
 }
 
-
 StudentManagementUI::~StudentManagementUI()
 {
 }
