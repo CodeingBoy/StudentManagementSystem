@@ -32,7 +32,9 @@ void StudentManagementUI::OnEditStudent(int curSel)
     }
     StudentEditDlg editDlg(console, studentList.at(selNum - 1));
     if (editDlg.Show() == DIALOG_RET_OK) {
-        studentList.push_back(editDlg.GetStudent());
+        auto iter = studentList.getIter(selNum - 1);
+        studentList.erase(iter);
+        studentList.insert(iter, editDlg.GetStudent());
     }
     SetStatus(_T("±à¼­¼ÇÂ¼³É¹¦"));
 }
