@@ -5,7 +5,7 @@
 
 StudentSortDlg::StudentSortDlg(ConsoleOperator& console) : Dialog(console)
 {
-    SetCenteredPos(31, 12);
+    SetCenteredPos(37, 12);
 }
 
 StudentSortDlg::~StudentSortDlg()

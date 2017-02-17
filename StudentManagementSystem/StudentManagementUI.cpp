@@ -84,7 +84,7 @@ void StudentManagementUI::OnInsertStudent()
 void StudentManagementUI::OnSortStudent()
 {
     StudentSortDlg sortDlg(console);
-    if (sortDlg.Show() == DIALOG_RET_OK && !sortDlg.IsAllEmpty()) {
+    if (sortDlg.Show() == DIALOG_RET_OK) {
         int weighs[5];
         sortDlg.GetWeight(weighs);
         studentList.Sort(weighs);

@@ -16,7 +16,6 @@ public:
     ~StudentSortDlg();
     void Draw() override;
     void Dispose() override;
-    bool IsAllEmpty();
     int ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode) override;
     void StudentSortDlg::GetWeight(int outs[]);
 };

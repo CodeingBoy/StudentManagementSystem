@@ -129,8 +129,97 @@ public:
         return -1;
     }
 
-    void Sort(int weighs[])
+    void Replace(int index, Student stu)
+    {
+        auto nextiter = erase(getIter(index));
+        insert(nextiter, stu);
+    }
+
+    mylklist_iterator Replace(mylklist_iterator iter, Student stu)
+    {
+        auto nextiter = erase(iter);
+        insert(nextiter, stu);
+        return nextiter;
+    }
+
+
+    void SortByID()
     {
 
+    }
+
+    void SortByName()
+    {
+
+    }
+
+    void SortBySex()
+    {
+        mylklist_iterator iter = begin();
+        mylklist_reverse_iterator riter = rbegin();
+
+        int index = 0, index_reverse = size() - 1;
+
+        while (index < index_reverse) {
+            while ((*iter).IsMale() && index < index_reverse) {
+                ++iter;
+                index++;
+            }
+
+            while (!(*riter).IsMale() && index < index_reverse) {
+                ++riter;
+                index_reverse--;
+            }
+
+            if (index < index_reverse) {
+                Student a = *iter; // copy first
+                Student b = *riter;
+
+                // swap
+                iter = Replace(iter, b); // replace a with b
+                riter = Replace(riter, a);
+            }
+        }
+    }
+
+    void SortByClass()
+    {
+
+    }
+
+    void SortByPhoneNum()
+    {
+
+    }
+
+    void Sort(int weighs[])
+    {
+        while (weighs[0] > 0 || weighs[1] > 0 || weighs[2] > 0 || weighs[3] > 0 || weighs[4] > 0) {
+            if (weighs[0] == 1) {
+                SortByID();
+            }
+
+            if (weighs[1] == 1) {
+                SortByName();
+            }
+
+            if (weighs[2] == 1) {
+                SortBySex();
+            }
+
+            if (weighs[3] == 1) {
+                SortByClass();
+            }
+
+            if (weighs[4] == 1) {
+                SortByPhoneNum();
+            }
+
+            weighs[0]--;
+            weighs[1]--;
+            weighs[2]--;
+            weighs[3]--;
+            weighs[4]--;
+        }
     }
 };

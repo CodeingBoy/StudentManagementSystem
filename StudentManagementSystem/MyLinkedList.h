@@ -115,9 +115,9 @@ public:
     class mylklist_iterator /*: public LinkedList<T>::iterator*/
     {
     public:
-        mylklist_iterator(const MyLinkedList& lk_list, LkListNode<T>* node)
+        mylklist_iterator(const MyLinkedList* pLklist, LkListNode<T>* node)
             : nodeptr(node),
-              lkList(&lk_list)
+              lkList(pLklist)
         {
         }
 
@@ -186,7 +186,7 @@ public:
             return !(*this == other);
         }
 
-    private:
+    protected:
         LkListNode<T>* nodeptr;
         const MyLinkedList<T>* lkList;
     };
@@ -194,6 +194,20 @@ public:
     class mylklist_reverse_iterator : public mylklist_iterator
     {
     public:
+        mylklist_reverse_iterator(const MyLinkedList* pLklist, LkListNode<T>* node)
+            : mylklist_iterator(pLklist, node)
+        {
+        }
+
+
+        mylklist_reverse_iterator& operator=(const mylklist_iterator& other)
+        {
+            if (this == &other)
+                return *this;
+            mylklist_iterator::operator =(other);
+            return *this;
+        }
+
         mylklist_iterator& operator++()
         {
             mylklist_iterator::nodeptr = mylklist_iterator::nodeptr->GetPrev();
@@ -256,28 +270,28 @@ public:
     // iterators
     mylklist_iterator begin() const
     {
-        return mylklist_iterator(*this, head->GetNext());
+        return mylklist_iterator(this, head->GetNext());
     }
 
     mylklist_iterator end() const
     {
-        return mylklist_iterator(*this, nullptr);
+        return mylklist_iterator(this, nullptr);
     }
 
     mylklist_reverse_iterator rbegin()
     {
-        return mylklist_reverse_iterator(*this, GetNode(size() - 1));
+        return mylklist_reverse_iterator(this, GetNode(size() - 1));
     }
 
     mylklist_reverse_iterator rend()
     {
         if (size() == 0)return rbegin();
-        return mylklist_reverse_iterator(*this, head);
+        return mylklist_reverse_iterator(this, head);
     }
 
     mylklist_iterator getIter(int index)
     {
-        return mylklist_iterator(*this, GetNode(index));
+        return mylklist_iterator(this, GetNode(index));
     }
 
 private:
