@@ -3,6 +3,7 @@
 #include "ConfirmDlg.h"
 #include "ChoiceDlg.h"
 #include "defs.h"
+#include "StudentSearchDlg.h"
 
 StudentManagementUI::StudentManagementUI(ConsoleOperator& console): console(console)
 {
@@ -132,7 +133,6 @@ int StudentManagementUI::ProcessInput(WORD input, int& listCurSel)
                 } else {
                     return INPUT_NEEDNOTREFRESH;;
                 }
-                break;
             }
             console.SetLineAttr(listCurSel + 3, FOREGROUND_WHITE | BACKGROUND_BLUE);
             listCurSel++;
@@ -168,6 +168,18 @@ int StudentManagementUI::Show()
 
 void StudentManagementUI::OnSearchStudent()
 {
+    StudentSearchDlg searchDlg(console);
+    if (searchDlg.Show() == DIALOG_RET_OK && !searchDlg.IsAllEmpty()) {
+        Student searchCondition = searchDlg.GetStudent();
+        searchList = studentList.Search_Fuzzy(searchCondition, searchDlg.GetSearchSex());
+        pShowingList = &searchList;
+        RefreshList(0);
+        SetStatus(_T("筛选记录完毕"));
+    } else {
+        pShowingList = &studentList;
+        RefreshList(0);
+        SetStatus(_T("退出筛选模式"));
+    }
 }
 
 void StudentManagementUI::Draw()
@@ -202,8 +214,10 @@ void StudentManagementUI::Draw()
 
 void StudentManagementUI::RefreshList(int begin, int end)
 {
+    StudentList& showingList = *pShowingList;
+
     if (end == -1)end = begin + LIST_ROW_PER_PAGE - 1;
-    if (end > studentList.size())end = studentList.size();
+    if (end > showingList.size())end = showingList.size();
 
     static const short x_select = 0, x_ID = 8, x_name = 24, x_sex = 38, x_clazz = 46, x_phoneNum = 62, x_end = 78;
 
@@ -212,7 +226,7 @@ void StudentManagementUI::RefreshList(int begin, int end)
     console.WriteConsoleLine(_T("┃ 序号 ┃     学号     ┃    姓名    ┃ 性别 ┃     班级     ┃   联系方式   ┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
 
     short y = 3;
-    for (auto iter = studentList.getIter(begin); iter != studentList.getIter(end + 1); ++iter) {
+    for (auto iter = showingList.getIter(begin); iter != showingList.getIter(end + 1); ++iter) {
         Student s = *iter;
         wchar_t buffer[10] = { 0 };
         _itow(y - 3 + 1 + begin, buffer, 10);

@@ -93,6 +93,7 @@ public:
         if (this == &other)
             return *this;
 
+        clear();
         for (auto iter = other.begin(); iter != other.end(); ++iter) {
             push_back(*iter);
         }
@@ -114,9 +115,9 @@ public:
     class mylklist_iterator /*: public LinkedList<T>::iterator*/
     {
     public:
-        mylklist_iterator(MyLinkedList& lk_list, LkListNode<T>* node)
+        mylklist_iterator(const MyLinkedList& lk_list, LkListNode<T>* node)
             : nodeptr(node),
-              lkList(lk_list)
+              lkList(&lk_list)
         {
         }
 
@@ -177,16 +178,17 @@ public:
         bool operator==(mylklist_iterator& other)
         {
             return this->nodeptr == other.nodeptr
-                   && &(this->lkList) == &(other.lkList);
+                   && this->lkList == other.lkList;
         }
 
         bool operator!=(mylklist_iterator& other)
         {
             return !(*this == other);
         }
+
     private:
         LkListNode<T>* nodeptr;
-        MyLinkedList<T>& lkList;
+        const MyLinkedList<T>* lkList;
     };
 
     class mylklist_reverse_iterator : public mylklist_iterator
@@ -243,13 +245,21 @@ public:
         return next_iter;
     }
 
+    void clear()
+    {
+        mylklist_iterator iter = begin();
+        while (iter != end()) {
+            iter = erase(iter);
+        }
+    }
+
     // iterators
-    mylklist_iterator begin()
+    mylklist_iterator begin() const
     {
         return mylklist_iterator(*this, head->GetNext());
     }
 
-    mylklist_iterator end()
+    mylklist_iterator end() const
     {
         return mylklist_iterator(*this, nullptr);
     }

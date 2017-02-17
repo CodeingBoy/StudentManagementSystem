@@ -18,11 +18,12 @@ class StudentManagementUI
 {
 private:
     SMALL_RECT list_rect;
-    StudentList studentList;
+    StudentList studentList, searchList;
     ConsoleOperator& console;
     int curSel = 0;
     int curPage = 1;
     int totalPage = 1;
+    StudentList* pShowingList = &studentList;
 
     void OnAddStudent();
     void OnEditStudent(int curSel);

@@ -161,6 +161,7 @@
     <ClInclude Include="LinkedListSel.h" />
     <ClInclude Include="StudentList.h" />
     <ClInclude Include="StudentManagementUI.h" />
+    <ClInclude Include="StudentSearchDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChoiceDlg.cpp" />
@@ -178,6 +179,7 @@
     <ClCompile Include="Student.cpp" />
     <ClCompile Include="StudentList.cpp" />
     <ClCompile Include="StudentManagementUI.cpp" />
+    <ClCompile Include="StudentSearchDlg.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

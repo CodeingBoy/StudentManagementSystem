@@ -18,7 +18,7 @@ public:
     void Draw() override;
     void Dispose() override;
     int ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode) override;
-    wstring InputDialog::ParseCharInfos(const CHAR_INFO const charinfos[], int begin, int end);
+    static wstring  ParseCharInfos(const CHAR_INFO const charinfos[], int begin, int end);
 
     wstring GetInputContent() const
     {

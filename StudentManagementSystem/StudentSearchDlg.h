@@ -3,7 +3,7 @@
 #include "Dialog.h"
 #include "Student.h"
 
-class StudentEditDlg : public Dialog
+class StudentSearchDlg : public Dialog
 {
 private:
     ConsoleOperator& console = ConsoleOperator::GetInstance();
@@ -11,20 +11,27 @@ private:
     const WORD keyCode_OK = VK_RETURN, keyCode_cancel = VK_ESCAPE;
     bool addMode = false;
     Student student;
+    bool searchSex = false;
 public:
-    StudentEditDlg(ConsoleOperator& console);
-    StudentEditDlg(ConsoleOperator& console, const Student& student);
+    StudentSearchDlg(ConsoleOperator& console);
+    StudentSearchDlg(ConsoleOperator& console, const Student& student);
 
-    ~StudentEditDlg();
+    ~StudentSearchDlg();
 
     void Draw() override;
     void Dispose() override;
+    bool IsAllEmpty();
 
     int ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode) override;
 
     Student GetStudent() const
     {
         return student;
+    }
+
+    bool GetSearchSex() const
+    {
+        return searchSex;
     }
 };
 

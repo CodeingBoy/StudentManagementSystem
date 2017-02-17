@@ -1,40 +1,31 @@
-#include "StudentEditDlg.h"
+#include "StudentSearchDlg.h"
 #include <iostream>
 #include "InputDialog.h"
 
 
-StudentEditDlg::StudentEditDlg(ConsoleOperator& console): Dialog(console), addMode(true)
+StudentSearchDlg::StudentSearchDlg(ConsoleOperator& console) : Dialog(console), addMode(true)
 {
-    SetCenteredPos(31, 10);
+    SetCenteredPos(31, 12);
 }
 
-StudentEditDlg::StudentEditDlg(ConsoleOperator& console, const Student& student)
-    : Dialog(console),
-      student(student)
-{
-    SetCenteredPos(31, 10);
-}
-
-StudentEditDlg::~StudentEditDlg()
+StudentSearchDlg::~StudentSearchDlg()
 {
 }
 
-void StudentEditDlg::Draw()
+void StudentSearchDlg::Draw()
 {
-    if (addMode) {
-        DrawTitle(_T("添加学生信息"));
-    } else {
-        DrawTitle(_T("编辑学生信息"));
-    }
+    DrawTitle(_T("搜索学生信息"));
 
-    console.WriteConsoleLine(_T("学号："), { clientArea.Left, clientArea.Top + 1 });
-    console.WriteConsoleLine(_T("姓名："), { clientArea.Left, clientArea.Top + 2 });
-    console.WriteConsoleLine(_T("性别："), { clientArea.Left, clientArea.Top + 3 });
-    console.WriteConsoleLine(_T("班级："), { clientArea.Left, clientArea.Top + 4 });
-    console.WriteConsoleLine(_T("联系方式："), { clientArea.Left, clientArea.Top + 5 });
+    console.WriteConsoleLine(_T("请输入搜索条件，留空为不限制"), { clientArea.Left, clientArea.Top + 1 });
+
+    console.WriteConsoleLine(_T("学号："), { clientArea.Left, clientArea.Top + 3 });
+    console.WriteConsoleLine(_T("姓名："), { clientArea.Left, clientArea.Top + 4 });
+    console.WriteConsoleLine(_T("性别："), { clientArea.Left, clientArea.Top + 5 });
+    console.WriteConsoleLine(_T("班级："), { clientArea.Left, clientArea.Top + 6 });
+    console.WriteConsoleLine(_T("联系方式："), { clientArea.Left, clientArea.Top + 7 });
 
     SMALL_RECT editArea = { clientArea.Left + (clientArea.Right + 1 - clientArea.Left) / 2, // middle point
-                            clientArea.Top + 1, clientArea.Right, clientArea.Top + 5
+                            clientArea.Top + 3, clientArea.Right, clientArea.Top + 7
                           };
     console.FillArea(editArea, _T(' '), BACKGROUND_GREEN | BACKGROUND_BLUE);
 
@@ -52,34 +43,14 @@ void StudentEditDlg::Draw()
     // set cursor to first editarea
     console.ShowCursor();
     console.SetCursorSize(100);
-    COORD defaultPos = { clientArea.Left + (clientArea.Right + 1 - clientArea.Left) / 2, clientArea.Top + 1 };
+    COORD defaultPos = { clientArea.Left + (clientArea.Right + 1 - clientArea.Left) / 2, clientArea.Top + 3 };
     console.SetCursorPos(defaultPos);
-
-    // in edit mode, set student inf to editarea
-    if (!addMode) {
-        COORD startPos = { clientArea.Left + (clientArea.Right + 1 - clientArea.Left) / 2, clientArea.Top + 1 };
-        WriteConsoleOutputCharacter(console.GetConsoleHandle(), student.GetID().c_str(), student.GetID().length(), startPos, &fillNum);
-        startPos.Y++;
-
-        WriteConsoleOutputCharacter(console.GetConsoleHandle(), student.GetName().c_str(), student.GetName().length(), startPos, &fillNum);
-        startPos.Y++;
-
-        WriteConsoleOutputCharacter(console.GetConsoleHandle(), student.IsMale() ? _T("男") : _T("女"), 2, startPos, &fillNum);
-        startPos.Y++;
-
-        WriteConsoleOutputCharacter(console.GetConsoleHandle(), student.GetClass().c_str(), student.GetClass().length(), startPos, &fillNum);
-        startPos.Y++;
-
-        WriteConsoleOutputCharacter(console.GetConsoleHandle(), student.GetPhoneNum().c_str(), student.GetPhoneNum().length(), startPos, &fillNum);
-    }
-
-    SMALL_RECT editarea_rect = { defaultPos.X, defaultPos.Y, clientArea.Right, defaultPos.Y + 5 - 1 };
 }
 
-int StudentEditDlg::ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode)
+int StudentSearchDlg::ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode)
 {
-    SMALL_RECT editarea_rect = { clientArea.Left + (clientArea.Right + 1 - clientArea.Left) / 2, clientArea.Top + 1,
-                                 clientArea.Right, clientArea.Top + 5
+    SMALL_RECT editarea_rect = { clientArea.Left + (clientArea.Right + 1 - clientArea.Left) / 2, clientArea.Top + 3,
+                                 clientArea.Right, clientArea.Top + 7
                                };
     COORD curPos = console.GetCursorPos();
     DWORD fillNum;
@@ -98,6 +69,7 @@ int StudentEditDlg::ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode)
 
         student.SetID(ID);
         student.SetName(name);
+        if (!sex.empty())searchSex = true;
         student.SetIsMale(sex.compare(_T("男")) == 0);
         student.SetClass(clazz);
         student.SetPhoneNum(phoneNum);
@@ -136,7 +108,12 @@ int StudentEditDlg::ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode)
 
     return DIALOG_RET_CONTINUE;
 }
-void StudentEditDlg::Dispose()
+void StudentSearchDlg::Dispose()
 {
 }
 
+bool StudentSearchDlg::IsAllEmpty()
+{
+    return student.GetID().empty() && student.GetClass().empty() &&
+           student.GetName().empty() && student.GetPhoneNum().empty() && !searchSex;
+}
