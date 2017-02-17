@@ -10,6 +10,7 @@
 #define INPUT_OK 0
 #define INPUT_EXIT 1
 #define INPUT_SWITCH 2
+#define INPUT_NEEDNOTREFRESH 3
 
 #define LIST_ROW_PER_PAGE 19
 

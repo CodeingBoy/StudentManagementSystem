@@ -98,12 +98,14 @@ int StudentManagementUI::ProcessInput(WORD input, int& listCurSel)
             if (curPage > 1)curPage--;
             else {
                 SetStatus(_T("没有上一页了"));
+                return INPUT_NEEDNOTREFRESH;;
             }
             break;
         case VK_NEXT: // PgDown
             if (curPage < totalPage)curPage++;
             else {
                 SetStatus(_T("没有下一页了"));
+                return INPUT_NEEDNOTREFRESH;;
             }
             break;
         case VK_ESCAPE: // Esc - Exit
@@ -113,21 +115,28 @@ int StudentManagementUI::ProcessInput(WORD input, int& listCurSel)
                 if (curPage > 1) {
                     curPage--;
                     listCurSel = 18;
+                    return INPUT_OK;
+                } else {
+                    return INPUT_NEEDNOTREFRESH;;
                 }
-                break;
             }
+            console.SetLineAttr(listCurSel + 3, FOREGROUND_WHITE | BACKGROUND_BLUE);
             listCurSel--;
-            break;
+            return INPUT_NEEDNOTREFRESH;
         case VK_DOWN:
             if (listCurSel >= 18) { // cursor at list bottom
                 if (curPage < totalPage) {
                     curPage++;
                     listCurSel = 0;
+                    return INPUT_OK;
+                } else {
+                    return INPUT_NEEDNOTREFRESH;;
                 }
                 break;
             }
+            console.SetLineAttr(listCurSel + 3, FOREGROUND_WHITE | BACKGROUND_BLUE);
             listCurSel++;
-            break;
+            return INPUT_NEEDNOTREFRESH;;
         default:
             break;
     }
@@ -149,8 +158,10 @@ int StudentManagementUI::Show()
                 return UI_RET_SWITCH;
         }
         console.HideCursor();
-        RefreshList(LIST_ROW_PER_PAGE * (curPage - 1));
-        RefreshStatusInf();
+        if (retcode != INPUT_NEEDNOTREFRESH) {
+            RefreshList(LIST_ROW_PER_PAGE * (curPage - 1));
+            RefreshStatusInf();
+        }
         console.HighlightRow(3 + curSel);
     }
 }
