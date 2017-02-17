@@ -129,6 +129,18 @@ void Dialog::SetCenteredPos(int width, int height)
     UpdateClientArea();
 }
 
+void Dialog::RequestClientArea(int width, int height)
+{
+    COORD size = console.GetSize();
+    rect.Left = (size.X - width) / 2 - 2;
+    rect.Right = (size.X + width) / 2 + 2;
+
+    rect.Top = (size.Y - height) / 2 - 1;
+    rect.Bottom = (size.Y + height) / 2 + 1;
+
+    UpdateClientArea();
+}
+
 void Dialog::UpdateClientArea()
 {
     clientArea = { rect.Left + 2, rect.Top + 1, rect.Right - 2, rect.Bottom - 1 };

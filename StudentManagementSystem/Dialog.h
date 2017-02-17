@@ -39,6 +39,7 @@ public:
 
     void SetPos(int x, int y, int width, int height);
     void SetCenteredPos(int width, int height);
+    void RequestClientArea(int width, int height);
     void UpdateClientArea();
 
     static int GetMBCSLength(wstring str);
