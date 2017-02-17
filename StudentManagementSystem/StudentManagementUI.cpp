@@ -4,6 +4,7 @@
 #include "ChoiceDlg.h"
 #include "defs.h"
 #include "StudentSearchDlg.h"
+#include "InputDialog.h"
 
 StudentManagementUI::StudentManagementUI(ConsoleOperator& console): console(console)
 {
@@ -39,6 +40,11 @@ void StudentManagementUI::OnEditStudent(int curSel)
     SetStatus(_T("编辑记录成功"));
 }
 
+bool StudentManagementUI::isInFilterMode()
+{
+    return mask.size() > 0;
+}
+
 void StudentManagementUI::OnDeleteStudent(int curSel)
 {
     int selNum = GetSelNum(3 + curSel);
@@ -49,6 +55,9 @@ void StudentManagementUI::OnDeleteStudent(int curSel)
     }
     ChoiceDlg choiceDlg(console, _T("是否确认删除"), _T("选中的记录将被删除，且无法恢复。是否删除？"));
     if (choiceDlg.Show() == DIALOG_RET_YES) {
+        if (isInFilterMode()) {
+            mask.erase(mask.getIter(selNum - 1));
+        }
         studentList.erase(studentList.getIter(selNum - 1));
         SetStatus(_T("删除记录成功"));
     }
@@ -171,12 +180,11 @@ void StudentManagementUI::OnSearchStudent()
     StudentSearchDlg searchDlg(console);
     if (searchDlg.Show() == DIALOG_RET_OK && !searchDlg.IsAllEmpty()) {
         Student searchCondition = searchDlg.GetStudent();
-        searchList = studentList.Search_Fuzzy(searchCondition, searchDlg.GetSearchSex());
-        pShowingList = &searchList;
+        mask = studentList.Search_Mask(searchCondition, searchDlg.GetSearchSex());
         RefreshList(0);
         SetStatus(_T("筛选记录完毕"));
     } else {
-        pShowingList = &studentList;
+        mask.clear();
         RefreshList(0);
         SetStatus(_T("退出筛选模式"));
     }
@@ -212,12 +220,9 @@ void StudentManagementUI::Draw()
     RefreshList(0);
 }
 
-void StudentManagementUI::RefreshList(int begin, int end)
+void StudentManagementUI::RefreshList(int begin, int pageLength)
 {
     StudentList& showingList = *pShowingList;
-
-    if (end == -1)end = begin + LIST_ROW_PER_PAGE - 1;
-    if (end > showingList.size())end = showingList.size();
 
     static const short x_select = 0, x_ID = 8, x_name = 24, x_sex = 38, x_clazz = 46, x_phoneNum = 62, x_end = 78;
 
@@ -225,11 +230,28 @@ void StudentManagementUI::RefreshList(int begin, int end)
     console.WriteConsoleLine(_T("┏━━━┳━━━━━━━┳━━━━━━┳━━━┳━━━━━━━┳━━━━━━━┓"), { 0, 1 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
     console.WriteConsoleLine(_T("┃ 序号 ┃     学号     ┃    姓名    ┃ 性别 ┃     班级     ┃   联系方式   ┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
 
+
+
+    auto maskIter = mask.begin();
+    int index = 0;
+
     short y = 3;
-    for (auto iter = showingList.getIter(begin); iter != showingList.getIter(end + 1); ++iter) {
+    auto iter = showingList.getIter(begin);
+    while (index < pageLength && iter != studentList.end()) {
         Student s = *iter;
+
+        if (mask.size() > 0) {// mask is vaild
+            int maskCode = *maskIter;
+            ++maskIter;
+            if (maskCode != 1) {
+                index++;
+                ++iter;
+                continue;
+            }
+        }
+
         wchar_t buffer[10] = { 0 };
-        _itow(y - 3 + 1 + begin, buffer, 10);
+        _itow(index + begin + 1, buffer, 10);
         console.WriteConsoleLine(_T("┃ " + wstring(buffer)), { x_select, y });
         console.WriteConsoleLine(_T("┃" + s.GetID()), { x_ID, y });
         console.WriteConsoleLine(_T("┃" + s.GetName()), { x_name, y });
@@ -237,8 +259,10 @@ void StudentManagementUI::RefreshList(int begin, int end)
         console.WriteConsoleLine(_T("┃" + s.GetClass()), { x_clazz, y });
         console.WriteConsoleLine(_T("┃" + s.GetPhoneNum()), { x_phoneNum, y });
         console.WriteConsoleLine(_T("┃"), { x_end, y });
-
         y++;
+
+        index++;
+        ++iter;
     }
 }
 
@@ -259,6 +283,30 @@ int StudentManagementUI::GetSelNum(int curSelRow)
     } else {
         return _wtoi(buffer);
     }
+}
+
+Student StudentManagementUI::GetSelStudent(int curSelRow)
+{
+    SMALL_RECT IDarea_rect = { 10, curSelRow, 24, curSelRow },
+               namearea_rect = { 26, curSelRow, 38, curSelRow },
+               sexarea_rect = { 42, curSelRow, 46, curSelRow },
+               classarea_rect = { 48, curSelRow, 62, curSelRow },
+               phonenumarea_rect = { 64, curSelRow, 78, curSelRow };
+    const int col_count = 14;
+    CHAR_INFO info[col_count * 5];
+    ReadConsoleOutput(console.GetConsoleHandle(), info, { col_count, 5 }, { 0, 0 }, &IDarea_rect);
+    ReadConsoleOutput(console.GetConsoleHandle(), info, { col_count, 5 }, { 0, 1 }, &namearea_rect);
+    ReadConsoleOutput(console.GetConsoleHandle(), info, { col_count, 5 }, { 0, 2 }, &sexarea_rect);
+    ReadConsoleOutput(console.GetConsoleHandle(), info, { col_count, 5 }, { 0, 3 }, &classarea_rect);
+    ReadConsoleOutput(console.GetConsoleHandle(), info, { col_count, 5 }, { 0, 4 }, &phonenumarea_rect);
+
+    wstring ID = InputDialog::ParseCharInfos(info, 0 * col_count, 1 * col_count - 1);
+    wstring name = InputDialog::ParseCharInfos(info, 1 * col_count, 2 * col_count - 1);
+    wstring sex = InputDialog::ParseCharInfos(info, 2 * col_count, 3 * col_count - 1);
+    wstring clazz = InputDialog::ParseCharInfos(info, 3 * col_count, 4 * col_count - 1);
+    wstring phoneNum = InputDialog::ParseCharInfos(info, 4 * col_count, 5 * col_count - 1);
+
+    return Student(ID, name, clazz, sex.compare(_T("男")), phoneNum);
 }
 
 void StudentManagementUI::SetStatus(wstring text)

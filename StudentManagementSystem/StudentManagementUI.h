@@ -24,16 +24,19 @@ private:
     int curPage = 1;
     int totalPage = 1;
     StudentList* pShowingList = &studentList;
+    MyLinkedList<int> mask;
 
     void OnAddStudent();
     void OnEditStudent(int curSel);
+    bool isInFilterMode();
     void OnDeleteStudent(int curSel);
     void OnInsertStudent();
     int ProcessInput(WORD input, int& curSel);
     void OnSearchStudent();
     void Draw();
-    void RefreshList(int begin, int end = -1);
+    void RefreshList(int begin, int pageLength = LIST_ROW_PER_PAGE);
     int GetSelNum(int curSelRow);
+    Student GetSelStudent(int curSelRow);
     void SetStatus(wstring text);
     void CalcTotalPage();
     void RefreshStatusInf();
