@@ -246,3 +246,4 @@ ModelManifest.xml
 *.vcxproj.user
 /StudentManagementSystem/data.txt
 /StudentManagementSystem/data1.txt
+/StudentManagementSystem/data.csv

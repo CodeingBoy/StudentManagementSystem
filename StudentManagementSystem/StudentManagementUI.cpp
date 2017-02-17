@@ -185,6 +185,7 @@ void StudentManagementUI::Draw()
     RefreshStatusInf();
     SetStatus(_T("¾ÍÐ÷"));
 
+    CalcTotalPage();
     RefreshList(0);
 }
 
