@@ -163,7 +163,6 @@ void StudentManagementUI::Draw()
 {
     console.HideCursor(); // hide cursor at first
     COORD size = console.GetSize();
-    console.SetSize({ size.X, 25 });
     console.ClearScreen(FOREGROUND_WHITE | BACKGROUND_BLUE); // set background
 
     // set list rect

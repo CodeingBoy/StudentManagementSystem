@@ -7,16 +7,19 @@
 #include "defs.h"
 #include "CourseManagementUI.h"
 #include "StuCSVParser.h"
+#include "InputDialog.h"
 
 using namespace std;
 
 ConsoleOperator& console = ConsoleOperator::GetInstance();
 StudentManagementUI studentUI(console);
 CourseManagementUI courseUI(console);
+wstring readFileName;
 
 void Exit();
 void OnExit();
-void ReadFromFile(wchar_t* fileName);
+void ReadFromFile(wstring fileName);
+void SaveToFile(wstring fileName);
 void DrawVerticalRainbow();
 
 int main()
@@ -24,10 +27,18 @@ int main()
     setlocale(LC_ALL, "chs");
     wcout.imbue(locale("chs"));
     console.SetTitle(_T("学生管理系统")); // set window title
+    COORD size = console.GetSize();
+    console.SetSize({ size.X, 25 });
 
     DrawVerticalRainbow();
-    Sleep(5000);
-    ReadFromFile(NULL);
+    InputDialog inputDlg(console, _T("读取之前的记录"), _T("输入程序目录下的文件名以读取，留空或取消为不读取"));
+    if (inputDlg.Show() == DIALOG_RET_OK) {
+        wstring fileName = inputDlg.GetInputContent();
+        if (!fileName.empty()) {
+            ReadFromFile(fileName);
+            readFileName = fileName;
+        }
+    }
 
     while (true) {
         int retCode = studentUI.Show();
@@ -50,9 +61,9 @@ int main()
     }
 }
 
-void ReadFromFile(wchar_t* fileName)
+void ReadFromFile(wstring fileName)
 {
-    CFileHandler handler(_T("data.txt"), true);
+    CFileHandler handler(fileName.c_str(), true);
     CStuCSVParser parser(&handler);
     MyLinkedList<Student> list;
     parser.Parse(false, &list);
@@ -63,9 +74,9 @@ void ReadFromFile(wchar_t* fileName)
     }
 }
 
-void SaveToFile(wchar_t* fileName)
+void SaveToFile(wstring fileName)
 {
-    CFileHandler handler(_T("data.txt"), false);
+    CFileHandler handler(fileName.c_str(), false);
     StudentList& stuList = studentUI.GetStudentList();
     for (auto iter = stuList.begin(); iter != stuList.end(); ++iter) {
         Student& s = *iter;
@@ -92,7 +103,13 @@ void OnExit()
 {
     ChoiceDlg confirm_dlg(console, _T("是否保存？"), _T("是否将当前系统信息保存到文件？"), 40, _T("（Y）保存"), _T("（N）舍弃"));
     if (confirm_dlg.Show() == DIALOG_RET_YES) {
-        SaveToFile(NULL);
+        InputDialog inputDlg(console, _T("保存记录"), _T("输入程序目录下的文件名或文件路径以保存，留空或取消为放弃保存"), readFileName);
+        if (inputDlg.Show() == DIALOG_RET_OK) {
+            wstring fileName = inputDlg.GetInputContent();
+            if (!fileName.empty()) {
+                SaveToFile(fileName);
+            }
+        }
     }
 }
 
@@ -101,7 +118,6 @@ void SetColor(unsigned short ForeColor, unsigned short BackGroundColor)
     HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hCon, ForeColor + BackGroundColor * 0x10);
 }
-
 
 // copied from others
 void DrawVerticalRainbow()
@@ -114,6 +130,5 @@ void DrawVerticalRainbow()
             putchar('A');
             putchar('A');
         }
-
     }
 }

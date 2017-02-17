@@ -87,6 +87,9 @@
     <ClInclude Include="StudentEditDlg.h">
       <Filter>Text-based UI\StudentManagementUI\Dialogs</Filter>
     </ClInclude>
+    <ClInclude Include="InputDialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Student.cpp">
@@ -130,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="StudentEditDlg.cpp">
       <Filter>Text-based UI\StudentManagementUI\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="InputDialog.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
