@@ -17,6 +17,7 @@ CourseManagementUI courseUI(console);
 void Exit();
 void OnExit();
 void ReadFromFile(wchar_t* fileName);
+void DrawVerticalRainbow();
 
 int main()
 {
@@ -24,6 +25,8 @@ int main()
     wcout.imbue(locale("chs"));
     console.SetTitle(_T("学生管理系统")); // set window title
 
+    DrawVerticalRainbow();
+    Sleep(5000);
     ReadFromFile(NULL);
 
     while (true) {
@@ -93,3 +96,24 @@ void OnExit()
     }
 }
 
+void SetColor(unsigned short ForeColor, unsigned short BackGroundColor)
+{
+    HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hCon, ForeColor + BackGroundColor * 0x10);
+}
+
+
+// copied from others
+void DrawVerticalRainbow()
+{
+    int i, j, k;
+    for (i = 0; i < 25; ++i) {
+        for (j = 0; j < 40; ++j) {
+            k = j % 16;
+            SetColor(k, k);
+            putchar('A');
+            putchar('A');
+        }
+
+    }
+}
