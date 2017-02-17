@@ -162,6 +162,7 @@
     <ClInclude Include="StudentList.h" />
     <ClInclude Include="StudentManagementUI.h" />
     <ClInclude Include="StudentSearchDlg.h" />
+    <ClInclude Include="StudentSortDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChoiceDlg.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="StudentList.cpp" />
     <ClCompile Include="StudentManagementUI.cpp" />
     <ClCompile Include="StudentSearchDlg.cpp" />
+    <ClCompile Include="StudentSortDlg.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

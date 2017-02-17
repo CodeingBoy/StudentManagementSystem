@@ -31,6 +31,7 @@ private:
     bool isInFilterMode();
     void OnDeleteStudent(int curSel);
     void OnInsertStudent();
+    void OnSortStudent();
     int ProcessInput(WORD input, int& curSel);
     void OnSearchStudent();
     void Draw();

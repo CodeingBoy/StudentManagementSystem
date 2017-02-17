@@ -91,6 +91,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="StudentSearchDlg.h">
+      <Filter>Text-based UI\StudentManagementUI\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="StudentSortDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -141,6 +144,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="StudentSearchDlg.cpp">
+      <Filter>Text-based UI\StudentManagementUI\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="StudentSortDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

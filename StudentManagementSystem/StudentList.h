@@ -129,7 +129,7 @@ public:
         return -1;
     }
 
-    void Sort()
+    void Sort(int weighs[])
     {
 
     }

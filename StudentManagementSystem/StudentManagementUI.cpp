@@ -5,6 +5,7 @@
 #include "defs.h"
 #include "StudentSearchDlg.h"
 #include "InputDialog.h"
+#include "StudentSortDlg.h"
 
 StudentManagementUI::StudentManagementUI(ConsoleOperator& console): console(console)
 {
@@ -80,6 +81,17 @@ void StudentManagementUI::OnInsertStudent()
     }
 }
 
+void StudentManagementUI::OnSortStudent()
+{
+    StudentSortDlg sortDlg(console);
+    if (sortDlg.Show() == DIALOG_RET_OK && !sortDlg.IsAllEmpty()) {
+        int weighs[5];
+        sortDlg.GetWeight(weighs);
+        studentList.Sort(weighs);
+        SetStatus(_T("排序完毕"));
+    }
+}
+
 int StudentManagementUI::ProcessInput(WORD input, int& listCurSel)
 {
     switch (input) {
@@ -98,8 +110,11 @@ int StudentManagementUI::ProcessInput(WORD input, int& listCurSel)
             OnDeleteStudent(listCurSel);
             CalcTotalPage();
             break;
-        case 0x53: // S - Search
+        case 0x46: // F - Filter
             OnSearchStudent();
+            break;
+        case 0x53: // S - Sort
+            OnSortStudent();
             break;
         case 0x4d: // M - Switch to CourseUI
             return INPUT_SWITCH;
@@ -208,7 +223,7 @@ void StudentManagementUI::Draw()
     console.SetLineAttr(23, ATTR_OPERINSTRUCTIONS);
 
     console.WriteConsoleLine(_T("操作：（A）追加 （I）插入 （E）编辑 （D）删除 (PgUp)上一屏 (PgDown)下一屏"), { 0, 22 });
-    console.WriteConsoleLine(_T("      （S）搜索 （C）查看学生选课 （M）管理课程信息 （Esc）退出"), { 0, 23 });
+    console.WriteConsoleLine(_T("      （F）筛选 （S）排序 （C）查看学生选课 （M）管理课程信息 （Esc）退出"), { 0, 23 });
 
     // show status bar
     console.SetLineAttr(24, ATTR_STATUSBAR);
