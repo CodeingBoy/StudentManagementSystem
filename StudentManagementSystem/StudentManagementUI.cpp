@@ -7,7 +7,7 @@
 #include "InputDialog.h"
 #include "StudentSortDlg.h"
 
-StudentManagementUI::StudentManagementUI(ConsoleOperator& console): console(console)
+StudentManagementUI::StudentManagementUI(ConsoleOperator &console): console(console)
 {
 }
 
@@ -92,7 +92,7 @@ void StudentManagementUI::OnSortStudent()
     }
 }
 
-int StudentManagementUI::ProcessInput(WORD input, int& listCurSel)
+int StudentManagementUI::ProcessInput(WORD input, int &listCurSel)
 {
     switch (input) {
         case 0x41: // A - Add
@@ -160,7 +160,7 @@ int StudentManagementUI::ProcessInput(WORD input, int& listCurSel)
             }
             console.SetLineAttr(listCurSel + 3, FOREGROUND_WHITE | BACKGROUND_BLUE);
             listCurSel++;
-            return INPUT_NEEDNOTREFRESH;;
+            return INPUT_NEEDNOTREFRESH;
         default:
             break;
     }
@@ -237,7 +237,7 @@ void StudentManagementUI::Draw()
 
 void StudentManagementUI::RefreshList(int begin, int pageLength)
 {
-    StudentList& showingList = *pShowingList;
+    StudentList &showingList = *pShowingList;
 
     static const short x_select = 0, x_ID = 8, x_name = 24, x_sex = 38, x_clazz = 46, x_phoneNum = 62, x_end = 78;
 

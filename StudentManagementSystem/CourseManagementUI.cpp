@@ -27,7 +27,10 @@ int CourseManagementUI::Show()
                 return UI_RET_SWITCH;
         }
         console.HideCursor();
-        RefreshList();
+        if (retcode != INPUT_NEEDNOTREFRESH) {
+            RefreshList(LIST_ROW_PER_PAGE * (curPage - 1));
+            RefreshStatusInf();
+        }
         console.HighlightRow(3 + curSel);
     }
 }
@@ -56,33 +59,59 @@ int CourseManagementUI::ProcessInput(wchar_t input, int &curSel)
     switch (input) {
         case 0x41: // A - Add
             OnAddCourse();
+            CalcTotalPage();
             break;
         case 0x45: // E - Edit
             OnEditCourse(curSel);
             break;
         case 0x44: // D - Delete
             OnDeleteCourse(curSel);
+            CalcTotalPage();
             break;
         case 0x4d: // M - Switch to StudentUI
             return INPUT_SWITCH;
         case VK_PRIOR: // PgUp
+            if (curPage > 1)curPage--;
+            else {
+                SetStatus(_T("没有上一页了"));
+                return INPUT_NEEDNOTREFRESH;;
+            }
             break;
         case VK_NEXT: // PgDown
+            if (curPage < totalPage)curPage++;
+            else {
+                SetStatus(_T("没有下一页了"));
+                return INPUT_NEEDNOTREFRESH;;
+            }
             break;
         case VK_ESCAPE: // Esc - Exit
             return INPUT_EXIT;
         case VK_UP: // up arrow
             if (curSel <= 0) { // cursor at list top
-                break;
+                if (curPage > 1) {
+                    curPage--;
+                    curSel = 18;
+                    return INPUT_OK;
+                } else {
+                    return INPUT_NEEDNOTREFRESH;;
+                }
             }
+            console.SetLineAttr(curSel + 3, FOREGROUND_WHITE | BACKGROUND_GREEN);
             curSel--;
-            break;
+            return INPUT_NEEDNOTREFRESH;
         case VK_DOWN:
             if (curSel >= 18) { // cursor at list bottom
-                break;
+                if (curPage < totalPage) {
+                    curPage++;
+                    curSel = 0;
+                    return INPUT_OK;
+                } else {
+                    return INPUT_NEEDNOTREFRESH;;
+                }
             }
+            console.SetLineAttr(curSel + 3, FOREGROUND_WHITE | BACKGROUND_GREEN);
             curSel++;
-            break;
+            return INPUT_NEEDNOTREFRESH;
         default:
             break;
     }
@@ -114,10 +143,11 @@ void CourseManagementUI::Draw()
     RefreshStatusInf();
     SetStatus(_T("就绪"));
 
-    RefreshList();
+    CalcTotalPage();
+    RefreshList(0);
 }
 
-void CourseManagementUI::RefreshList()
+void CourseManagementUI::RefreshList(int begin, int pageLength)
 {
     static const short x_num = 0, x_ID = 8, x_name = 24, x_period = 42, x_teacher = 60, x_end = 76;
 
@@ -125,11 +155,14 @@ void CourseManagementUI::RefreshList()
     console.WriteConsoleLine(_T("┏━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┓"), { 0, 1 }, FOREGROUND_WHITE | BACKGROUND_GREEN);
     console.WriteConsoleLine(_T("┃ 序号 ┃   课程编号   ┃     课程名     ┃    开课学期    ┃   任课教师   ┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_GREEN);
 
+    int index = 0;
+
     short y = 3;
-    for (auto iter = courseList.begin(); iter != courseList.end(); ++iter) {
+    auto iter = courseList.getIter(begin);
+    while (index < pageLength && iter != courseList.end()) {
         Course c = *iter;
         wchar_t buffer[10] = { 0 };
-        _itow(y - 3 + 1, buffer, 10);
+        _itow(begin + index + 1, buffer, 10);
         console.WriteConsoleLine(_T("┃ " + wstring(buffer)), { x_num, y });
         console.WriteConsoleLine(_T("┃" + c.GetID()), { x_ID, y });
         console.WriteConsoleLine(_T("┃" + c.GetName()), { x_name, y });
@@ -138,6 +171,8 @@ void CourseManagementUI::RefreshList()
         console.WriteConsoleLine(_T("┃"), { x_end, y });
 
         y++;
+        index++;
+        ++iter;
     }
 }
 
@@ -174,4 +209,10 @@ void CourseManagementUI::SetStatus(wstring text)
 {
     console.FillAreaChar({ 0, 24, 50, 24 }, _T(' '));
     console.WriteConsoleLine(text, 24, NULL, 0);
+}
+
+void CourseManagementUI::CalcTotalPage()
+{
+    totalPage = ceil(courseList.size() / static_cast<double>(LIST_ROW_PER_PAGE));
+    if (totalPage < 1)totalPage = 1; // at least 1 page
 }
