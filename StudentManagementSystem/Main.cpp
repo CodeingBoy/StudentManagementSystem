@@ -27,8 +27,9 @@ int main()
     setlocale(LC_ALL, "chs");
     wcout.imbue(locale("chs"));
     console.SetTitle(_T("学生管理系统")); // set window title
+
     COORD size = console.GetSize();
-    console.SetSize({ size.X, 25 });
+    console.SetSize({ 80, 25 });
 
     DrawVerticalRainbow();
     InputDialog inputDlg(console, _T("读取之前的记录"), _T("输入程序目录下的文件名以读取，留空或取消为不读取"));

@@ -230,6 +230,12 @@ COORD ConsoleOperator::GetSize() const
 
 void ConsoleOperator::SetSize(COORD size) const
 {
+    // set window info before adjusting buffer size
+    // if we don't, SetConsoleScreenBufferSize() will throw invalid arguments
+    // see MSDN for more information
+    SMALL_RECT rect = { 0, 0, size.X - 1, size.Y - 1 };
+    SetConsoleWindowInfo(consoleHandle, TRUE, &rect);
+
     SetConsoleScreenBufferSize(consoleHandle, size);
 }
 
