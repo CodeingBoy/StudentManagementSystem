@@ -5,14 +5,14 @@
 
 CourseEditDlg::CourseEditDlg(ConsoleOperator &console) : Dialog(console), addMode(true)
 {
-    SetCenteredPos(31, 10);
+    SetCenteredPos(31, 9);
 }
 
 CourseEditDlg::CourseEditDlg(ConsoleOperator &console, const Course &course)
     : Dialog(console),
       course(course)
 {
-    SetCenteredPos(31, 10);
+    SetCenteredPos(31, 9);
 }
 
 CourseEditDlg::~CourseEditDlg()
@@ -22,9 +22,9 @@ CourseEditDlg::~CourseEditDlg()
 void CourseEditDlg::Draw()
 {
     if (addMode) {
-        DrawTitle(_T("添加学生信息"));
+        DrawTitle(_T("添加课程信息"));
     } else {
-        DrawTitle(_T("编辑学生信息"));
+        DrawTitle(_T("编辑课程信息"));
     }
 
     console.WriteConsoleLine(_T("课程编号："), { clientArea.Left, clientArea.Top + 1 });
@@ -33,7 +33,7 @@ void CourseEditDlg::Draw()
     console.WriteConsoleLine(_T("任课教师："), { clientArea.Left, clientArea.Top + 4 });
 
     SMALL_RECT editArea = { clientArea.Left + (clientArea.Right + 1 - clientArea.Left) / 2, // middle point
-                            clientArea.Top + 1, clientArea.Right, clientArea.Top + 5
+                            clientArea.Top + 1, clientArea.Right, clientArea.Top + 4
                           };
     console.FillArea(editArea, _T(' '), BACKGROUND_GREEN | BACKGROUND_BLUE);
 
@@ -55,7 +55,7 @@ void CourseEditDlg::Draw()
     console.SetCursorPos(defaultPos);
 
     // in edit mode, set student inf to editarea
-    /*if (!addMode) {
+    if (!addMode) {
         COORD startPos = { clientArea.Left + (clientArea.Right + 1 - clientArea.Left) / 2, clientArea.Top + 1 };
         WriteConsoleOutputCharacter(console.GetConsoleHandle(), course.GetID().c_str(), course.GetID().length(), startPos, &fillNum);
         startPos.Y++;
@@ -63,16 +63,13 @@ void CourseEditDlg::Draw()
         WriteConsoleOutputCharacter(console.GetConsoleHandle(), course.GetName().c_str(), course.GetName().length(), startPos, &fillNum);
         startPos.Y++;
 
-        WriteConsoleOutputCharacter(console.GetConsoleHandle(), course.IsMale() ? _T("男") : _T("女"), 2, startPos, &fillNum);
+        WriteConsoleOutputCharacter(console.GetConsoleHandle(), course.GetPeriod().c_str(), course.GetPeriod().length(), startPos, &fillNum);
         startPos.Y++;
 
-        WriteConsoleOutputCharacter(console.GetConsoleHandle(), course.GetClass().c_str(), course.GetClass().length(), startPos, &fillNum);
-        startPos.Y++;
+        WriteConsoleOutputCharacter(console.GetConsoleHandle(), course.GetTeacherName().c_str(), course.GetTeacherName().length(), startPos, &fillNum);
+    }
 
-        WriteConsoleOutputCharacter(console.GetConsoleHandle(), course.GetPhoneNum().c_str(), course.GetPhoneNum().length(), startPos, &fillNum);
-    }*/
-
-    SMALL_RECT editarea_rect = { defaultPos.X, defaultPos.Y, clientArea.Right, defaultPos.Y + 5 - 1 };
+    SMALL_RECT editarea_rect = { defaultPos.X, defaultPos.Y, clientArea.Right, defaultPos.Y + 4 - 1 };
 }
 
 int CourseEditDlg::ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode)
@@ -116,7 +113,7 @@ int CourseEditDlg::ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode)
 
     if (keyCode == VK_UP && curPos.Y > editarea_rect.Top) { // up arrow
         console.SetCursorPos({ editarea_rect.Left, curPos.Y - 1 });
-    } else if ((keyCode == VK_DOWN && curPos.Y < editarea_rect.Top + 5 - 1)) { // down arrow
+    } else if ((keyCode == VK_DOWN && curPos.Y < editarea_rect.Top + 4 - 1)) { // down arrow
         console.SetCursorPos({ editarea_rect.Left, curPos.Y + 1 });
     }
 

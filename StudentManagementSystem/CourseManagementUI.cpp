@@ -3,6 +3,7 @@
 #include "Student.h"
 #include "Dialog.h"
 #include "CourseEditDlg.h"
+#include "ConfirmDlg.h"
 
 CourseManagementUI::CourseManagementUI(ConsoleOperator &console): console(console)
 {
@@ -47,6 +48,18 @@ void CourseManagementUI::OnAddCourse()
 
 void CourseManagementUI::OnEditCourse(int curSel)
 {
+    int selNum = GetSelNum(3 + curSel);
+    if (selNum == -1) {
+        ConfirmDlg confirm_dlg(console, _T("无记录"), _T("所选行没有记录，请选择记录行。"), 20);
+        confirm_dlg.Show();
+        return;
+    }
+    CourseEditDlg editDlg(console, courseList.at(selNum - 1));
+    if (editDlg.Show() == DIALOG_RET_OK) {
+        auto nextiter = courseList.erase(courseList.getIter(selNum - 1));
+        courseList.insert(nextiter, editDlg.GetCourse());
+    }
+    SetStatus(_T("编辑记录成功"));
 }
 
 bool CourseManagementUI::OnDeleteCourse(int curSel)
