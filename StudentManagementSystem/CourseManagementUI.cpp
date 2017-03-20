@@ -7,7 +7,7 @@
 #include "ChoiceDlg.h"
 #include <filesystem>
 
-CourseManagementUI::CourseManagementUI(ConsoleOperator &console): console(console)
+CourseManagementUI::CourseManagementUI(ConsoleOperator& console): console(console)
 {
 }
 
@@ -79,7 +79,7 @@ void CourseManagementUI::OnDeleteCourse(int curSel)
     }
 }
 
-int CourseManagementUI::ProcessInput(wchar_t input, int &curSel)
+int CourseManagementUI::ProcessInput(wchar_t input, int& curSel)
 {
     switch (input) {
         case 0x41: // A - Add
@@ -174,11 +174,11 @@ void CourseManagementUI::Draw()
 
 void CourseManagementUI::RefreshList(int begin, int pageLength)
 {
-    static const short x_num = 0, x_ID = 8, x_name = 24, x_period = 42, x_teacher = 60, x_end = 76;
+    static const short x_num = 0, x_ID = 8, x_name = 20, x_period = 50, x_teacher = 68, x_end = 78;
 
     console.FillArea(list_rect, _T(' '), FOREGROUND_WHITE | BACKGROUND_GREEN);
-    console.WriteConsoleLine(_T("┏━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┓"), { 0, 1 }, FOREGROUND_WHITE | BACKGROUND_GREEN);
-    console.WriteConsoleLine(_T("┃ 序号 ┃   课程编号   ┃     课程名     ┃    开课学期    ┃   任课教师   ┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_GREEN);
+    console.WriteConsoleLine(_T("┏━━━┳━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━┓"), { 0, 1 }, FOREGROUND_WHITE | BACKGROUND_GREEN);
+    console.WriteConsoleLine(_T("┃ 序号 ┃ 课程编号 ┃           课程名           ┃    开课学期    ┃任课教师┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_GREEN);
 
     int index = 0;
 
