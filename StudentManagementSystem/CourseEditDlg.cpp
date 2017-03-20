@@ -3,16 +3,16 @@
 #include "InputDialog.h"
 
 
-CourseEditDlg::CourseEditDlg(ConsoleOperator &console) : Dialog(console), addMode(true)
+CourseEditDlg::CourseEditDlg(ConsoleOperator& console) : Dialog(console), addMode(true)
 {
-    SetCenteredPos(31, 9);
+    SetCenteredPos(59, 9);
 }
 
-CourseEditDlg::CourseEditDlg(ConsoleOperator &console, const Course &course)
+CourseEditDlg::CourseEditDlg(ConsoleOperator& console, const Course& course)
     : Dialog(console),
       course(course)
 {
-    SetCenteredPos(31, 9);
+    SetCenteredPos(59, 9);
 }
 
 CourseEditDlg::~CourseEditDlg()
@@ -79,11 +79,12 @@ int CourseEditDlg::ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode)
                                };
     COORD curPos = console.GetCursorPos();
     DWORD fillNum;
+    int input_restriction[] = { 10, 28, 16, 8 };
 
     if (keyCode == keyCode_OK) { // OK
-        const int col_count = 14;
-        CHAR_INFO info[5 * col_count];
-        ReadConsoleOutput(console.GetConsoleHandle(), info, { 14, 5 }, { 0, 0 }, &editarea_rect);
+        const int col_count = 28;
+        CHAR_INFO info[4 * col_count];
+        ReadConsoleOutput(console.GetConsoleHandle(), info, { 28, 4 }, { 0, 0 }, &editarea_rect);
 
         wstring ID, name, period, teacherName;
         ID = InputDialog::ParseCharInfos(info, 0, col_count - 1);
@@ -124,7 +125,7 @@ int CourseEditDlg::ProcessInput(KEY_EVENT_RECORD keyEvent, WORD keyCode)
     wchar_t buffer[10] = { 0 };
     buffer[0] = keyEvent.uChar.UnicodeChar;
     WriteConsoleOutputCharacter(console.GetConsoleHandle(), buffer, 1, curPos, &fillNum);
-    if (curPos.X < clientArea.Right) {
+    if (curPos.X < min(editarea_rect.Left + input_restriction[curPos.Y - editarea_rect.Top] - 1, clientArea.Right)) {
         console.SetCursorPos({ static_cast<SHORT>(curPos.X + GetMBCSLength(buffer)), curPos.Y });
     }
 
