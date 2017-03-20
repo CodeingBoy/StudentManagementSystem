@@ -26,7 +26,7 @@ private:
 
     void OnAddCourse();
     void OnEditCourse(int curSel);
-    bool OnDeleteCourse(int curSel);
+    void OnDeleteCourse(int curSel);
     int ProcessInput(wchar_t input, int &curSel);
     void Draw();
     void RefreshList(int begin, int pageLength = LIST_ROW_PER_PAGE);

@@ -4,6 +4,8 @@
 #include "Dialog.h"
 #include "CourseEditDlg.h"
 #include "ConfirmDlg.h"
+#include "ChoiceDlg.h"
+#include <filesystem>
 
 CourseManagementUI::CourseManagementUI(ConsoleOperator &console): console(console)
 {
@@ -62,9 +64,19 @@ void CourseManagementUI::OnEditCourse(int curSel)
     SetStatus(_T("编辑记录成功"));
 }
 
-bool CourseManagementUI::OnDeleteCourse(int curSel)
+void CourseManagementUI::OnDeleteCourse(int curSel)
 {
-    return true;
+    int selNum = GetSelNum(3 + curSel);
+    if (selNum == -1) {
+        ConfirmDlg confirm_dlg(console, _T("无记录"), _T("所选行没有记录，请选择记录行。"), 20);
+        confirm_dlg.Show();
+        return;
+    }
+    ChoiceDlg choiceDlg(console, _T("是否确认删除"), _T("选中的记录将被删除，且无法恢复。是否删除？"));
+    if (choiceDlg.Show() == DIALOG_RET_YES) {
+        courseList.erase(courseList.getIter(selNum - 1));
+        SetStatus(_T("删除记录成功"));
+    }
 }
 
 int CourseManagementUI::ProcessInput(wchar_t input, int &curSel)
