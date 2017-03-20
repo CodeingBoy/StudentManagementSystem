@@ -31,6 +31,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Text-based UI\CourseManagementUI\Dialogs">
+      <UniqueIdentifier>{7be652ba-3ce3-4f18-a37c-d540c6ecf9b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Student.h">
@@ -96,6 +99,9 @@
     <ClInclude Include="StudentSortDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CourseEditDlg.h">
+      <Filter>Text-based UI\CourseManagementUI\Dialogs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Student.cpp">
@@ -148,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="StudentSortDlg.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CourseEditDlg.cpp">
+      <Filter>Text-based UI\CourseManagementUI\Dialogs</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

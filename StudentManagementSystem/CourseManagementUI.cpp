@@ -1,8 +1,10 @@
 #include "CourseManagementUI.h"
 #include "defs.h"
 #include "Student.h"
+#include "Dialog.h"
+#include "CourseEditDlg.h"
 
-CourseManagementUI::CourseManagementUI(ConsoleOperator& console): console(console)
+CourseManagementUI::CourseManagementUI(ConsoleOperator &console): console(console)
 {
 }
 
@@ -33,6 +35,11 @@ int CourseManagementUI::Show()
 
 void CourseManagementUI::OnAddCourse()
 {
+    CourseEditDlg editDlg(console);
+    if (editDlg.Show() == DIALOG_RET_OK) {
+        courseList.push_back(editDlg.GetCourse());
+        SetStatus(_T("添加记录成功"));
+    }
 }
 
 void CourseManagementUI::OnEditCourse(int curSel)
@@ -44,7 +51,7 @@ bool CourseManagementUI::OnDeleteCourse(int curSel)
     return true;
 }
 
-int CourseManagementUI::ProcessInput(wchar_t input, int& curSel)
+int CourseManagementUI::ProcessInput(wchar_t input, int &curSel)
 {
     switch (input) {
         case 0x41: // A - Add
@@ -104,7 +111,7 @@ void CourseManagementUI::Draw()
 
     // show status bar
     console.SetLineAttr(24, ATTR_STATUSBAR);
-    console.WriteConsoleLine(_T("课程数：0┃文件：未读取"), 24, NULL, 1);
+    RefreshStatusInf();
     SetStatus(_T("就绪"));
 
     RefreshList();
@@ -112,7 +119,7 @@ void CourseManagementUI::Draw()
 
 void CourseManagementUI::RefreshList()
 {
-    static const short x_num = 0, x_ID = 8, x_name = 20, x_period = 30, x_teacher = 38, x_end = 52;
+    static const short x_num = 0, x_ID = 8, x_name = 24, x_period = 42, x_teacher = 60, x_end = 76;
 
     console.FillArea(list_rect, _T(' '), FOREGROUND_WHITE | BACKGROUND_GREEN);
     console.WriteConsoleLine(_T("┏━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┓"), { 0, 1 }, FOREGROUND_WHITE | BACKGROUND_GREEN);
@@ -130,16 +137,41 @@ void CourseManagementUI::RefreshList()
         console.WriteConsoleLine(_T("┃" + c.GetTeacherName()), { x_teacher, y });
         console.WriteConsoleLine(_T("┃"), { x_end, y });
 
-
         y++;
     }
 }
 
+void CourseManagementUI::RefreshStatusInf()
+{
+    wstringstream wss;
+    wss << curPage << _T("/") << totalPage << _T("页");
+    wss << _T("┃");
+    wss << _T("记录数：") << courseList.size();
+
+    console.WriteConsoleLine(wss.str(), 24, NULL, 1);
+}
+
 int CourseManagementUI::GetSelNum(int curSelRow)
 {
-    return 0;
+    SMALL_RECT numarea_rect = { 3, curSelRow, 7, curSelRow };
+    CHAR_INFO info[5];
+    ReadConsoleOutput(console.GetConsoleHandle(), info, { 5, 1 }, { 0, 0 }, &numarea_rect);
+
+    wchar_t buffer[6] = { 0 };
+    for (int i = 0; i < 5; ++i) {
+        wchar_t uchar = info[i].Char.UnicodeChar;
+        if (uchar == _T(' '))break;
+        buffer[i] = uchar;
+    }
+    if (!wcscmp(buffer, _T(""))) {
+        return -1;
+    } else {
+        return _wtoi(buffer);
+    }
 }
 
 void CourseManagementUI::SetStatus(wstring text)
 {
+    console.FillAreaChar({ 0, 24, 50, 24 }, _T(' '));
+    console.WriteConsoleLine(text, 24, NULL, 0);
 }
