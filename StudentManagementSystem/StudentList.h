@@ -194,7 +194,8 @@ public:
 
     void Sort(int weighs[])
     {
-        while (weighs[0] > 0 || weighs[1] > 0 || weighs[2] > 0 || weighs[3] > 0 || weighs[4] > 0) {
+        QuickSort_Student(0, size(), weighs);
+        /*while (weighs[0] > 0 || weighs[1] > 0 || weighs[2] > 0 || weighs[3] > 0 || weighs[4] > 0) {
             if (weighs[0] == 1) {
                 SortByID();
             }
@@ -220,7 +221,83 @@ public:
             weighs[2]--;
             weighs[3]--;
             weighs[4]--;
+        }*/
+    }
+
+    bool IsLessThan(const int weighs[], Student &a, Student &b)
+    {
+        int cur_weighs[5];
+        memcpy(&cur_weighs, weighs, sizeof(int) * 5);
+
+        while (cur_weighs[0] > 0 || cur_weighs[1] > 0 || cur_weighs[2] > 0 || cur_weighs[3] > 0 || cur_weighs[4] > 0) {
+            if (cur_weighs[0] == 1) {
+                int rtnVal = a.Compare_ID(b);
+                if(rtnVal != 0) {
+                    return rtnVal < 0;
+                }
+            }
+
+            if (cur_weighs[1] == 1) {
+                int rtnVal = a.Compare_Name(b);
+                if (rtnVal != 0) {
+                    return rtnVal < 0;
+                }
+            }
+
+            if (cur_weighs[2] == 1) {
+                if(a.IsMale() != b.IsMale()) {
+                    return a.IsMale();
+                }
+            }
+
+            if (cur_weighs[3] == 1) {
+                int rtnVal = a.Compare_Class(b);
+                if (rtnVal != 0) {
+                    return rtnVal < 0;
+                }
+            }
+
+            if (cur_weighs[4] == 1) {
+                int rtnVal = a.Compare_PhoneNum(b);
+                if (rtnVal != 0) {
+                    return rtnVal < 0;
+                }
+            }
+
+            cur_weighs[0]--;
+            cur_weighs[1]--;
+            cur_weighs[2]--;
+            cur_weighs[3]--;
+            cur_weighs[4]--;
         }
+
+        return false;
+    }
+
+    void QuickSort_Student(const int start, const int end, const int weighs[])
+    {
+        if (start >= end)return;
+
+        Student pivot = at(start);
+
+        int index_left = start, index_right = end - 1;
+        while (index_left < index_right) {
+            while (index_left < index_right && IsLessThan(weighs, pivot, at(index_right)))index_right--;
+            while (index_left < index_right && !IsLessThan(weighs, pivot, at(index_left)))index_left++;
+
+            if (index_left < index_right) {
+                mylklist_iterator iter_left = getIter(index_left);
+                mylklist_iterator iter_right = getIter(index_right);
+
+                Swap(iter_left, iter_right);
+            }
+        }
+
+        if (start != index_left)
+            Swap(getIter(start), getIter(index_left));
+
+        QuickSort_Student(start, index_left, weighs);
+        QuickSort_Student(index_left + 1, end, weighs);
     }
 
     void QuickSort_ID(const int start, const int end)

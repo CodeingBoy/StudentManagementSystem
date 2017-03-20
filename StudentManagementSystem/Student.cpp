@@ -25,3 +25,8 @@ int Student::Compare_Class(Student &other)
 {
     return clazz.compare(other.clazz);
 }
+
+int Student::Compare_PhoneNum(Student &other)
+{
+    return phoneNum.compare(other.phoneNum);
+}
