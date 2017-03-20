@@ -8,6 +8,7 @@
 #include "CourseManagementUI.h"
 #include "StuCSVParser.h"
 #include "InputDialog.h"
+#include "CourseCSVParser.h"
 
 using namespace std;
 
@@ -65,20 +66,28 @@ int main()
 void ReadFromFile(wstring fileName)
 {
     CFileHandler handler(fileName.c_str(), true);
-    CStuCSVParser parser(&handler);
+
+    // parse student list
+    CStuCSVParser parser_stu(&handler);
     MyLinkedList<Student> list;
-    parser.Parse(false, &list);
+    parser_stu.Parse(false, &list, _T("\n"));
 
     StudentList& stuList = studentUI.GetStudentList();
     for (auto iter = list.begin(); iter != list.end(); ++iter) {
         stuList.push_back(*iter);
     }
+
+    // parse course list
+    CCourseCSVParser parser_course(&handler);
+    MyLinkedList<Course>& course_list = courseUI.GetCourseList();
+    parser_course.Parse(false, &course_list, _T("\n"));
 }
 
 void SaveToFile(wstring fileName)
 {
     CFileHandler handler(fileName.c_str(), false);
     StudentList& stuList = studentUI.GetStudentList();
+    MyLinkedList<Course> courses = courseUI.GetCourseList();
     for (auto iter = stuList.begin(); iter != stuList.end(); ++iter) {
         Student& s = *iter;
         s.GetFormatted(); // fill space instead of blank, so wcstok_s won't jump duplicate tokens
@@ -89,6 +98,21 @@ void SaveToFile(wstring fileName)
         wss << (s.IsMale() ? _T("1") : _T("0")) << _T(",");
         wss << s.GetClass() << _T(",");
         wss << s.GetPhoneNum() << _T(",");
+
+        handler.WriteLine(wss.str().c_str());
+    }
+
+    handler.Write(_T("\n"));
+
+    for (auto iter = courses.begin(); iter != courses.end(); ++iter) {
+        Course& c = *iter;
+        c.GetFormatted(); // fill space instead of blank, so wcstok_s won't jump duplicate tokens
+
+        wstringstream wss;
+        wss << c.GetID() << _T(",");
+        wss << c.GetName() << _T(",");
+        wss << c.GetPeriod() << _T(",");
+        wss << c.GetTeacherName() << _T(",");
 
         handler.WriteLine(wss.str().c_str());
     }

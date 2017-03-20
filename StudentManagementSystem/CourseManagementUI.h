@@ -19,7 +19,7 @@ class CourseManagementUI
 private:
     SMALL_RECT list_rect;
     MyLinkedList<Course> courseList;
-    ConsoleOperator &console;
+    ConsoleOperator& console;
     int curSel = 0;
     int curPage = 1;
     int totalPage = 1;
@@ -27,7 +27,7 @@ private:
     void OnAddCourse();
     void OnEditCourse(int curSel);
     void OnDeleteCourse(int curSel);
-    int ProcessInput(wchar_t input, int &curSel);
+    int ProcessInput(wchar_t input, int& curSel);
     void Draw();
     void RefreshList(int begin, int pageLength = LIST_ROW_PER_PAGE);
     void RefreshStatusInf();
@@ -35,8 +35,14 @@ private:
     void SetStatus(wstring text);
     void CalcTotalPage();
 public:
-    CourseManagementUI(ConsoleOperator &console);
+    CourseManagementUI(ConsoleOperator& console);
     ~CourseManagementUI();
     int Show();
+
+
+    MyLinkedList<Course>& GetCourseList()
+    {
+        return courseList;
+    }
 };
 

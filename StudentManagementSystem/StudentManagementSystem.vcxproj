@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ChoiceDlg.h" />
+    <ClInclude Include="CourseCSVParser.h" />
     <ClInclude Include="CourseEditDlg.h" />
     <ClInclude Include="CourseManagementUI.h" />
     <ClInclude Include="defs.h" />
@@ -167,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChoiceDlg.cpp" />
+    <ClCompile Include="CourseCSVParser.cpp" />
     <ClCompile Include="CourseEditDlg.cpp" />
     <ClCompile Include="CourseManagementUI.cpp" />
     <ClCompile Include="InputDialog.cpp" />

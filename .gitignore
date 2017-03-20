@@ -247,3 +247,4 @@ ModelManifest.xml
 /StudentManagementSystem/data.txt
 /StudentManagementSystem/data1.txt
 /StudentManagementSystem/data.csv
+*.csv

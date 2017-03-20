@@ -1,25 +1,25 @@
-#include "StuCSVParser.h"
 #include <TCHAR.h>
 #include <vector>
+#include "CourseCSVParser.h"
 
 #define LIST_ERR -1
 #define LIST_ERR_STR (_T("Error"))
 
-CStuCSVParser::CStuCSVParser(CFileHandler *pHandler)
+CCourseCSVParser::CCourseCSVParser(CFileHandler *pHandler)
 {
     this->fileHandler = pHandler;
 }
 
-CStuCSVParser::~CStuCSVParser()
+CCourseCSVParser::~CCourseCSVParser()
 {
 }
 
-bool CStuCSVParser::Parse(bool haveHeader, MyLinkedList<Student> *plist, const wchar_t *delimiter)
+bool CCourseCSVParser::Parse(bool haveHeader, MyLinkedList<Course> *plist, const wchar_t *delimiter)
 {
     if (haveHeader)
         delete fileHandler->ReadLine(); // 忽略第一行
 
-    Student inf;
+    Course inf;
     wchar_t line[1024];
     while (!fileHandler->isEOF()) {
         memset(line, NULL, 1024); // 设置为空
@@ -29,9 +29,9 @@ bool CStuCSVParser::Parse(bool haveHeader, MyLinkedList<Student> *plist, const w
             return true;
         int size = Parse(line, inf);
         plist->push_back(inf);
-        if (size < 6)
+        if (size < 5)
             hasDataError = true;
-        else if (size > 6)
+        else if (size > 5)
             hasExtraInf = true;
         parsedLine++;
     }
@@ -39,31 +39,30 @@ bool CStuCSVParser::Parse(bool haveHeader, MyLinkedList<Student> *plist, const w
     return true;
 }
 
-int CStuCSVParser::Parse(wchar_t *line, Student &inf)
+int CCourseCSVParser::Parse(wchar_t *line, Course& inf)
 {
     vector<wchar_t *> container;
     CCSVParser::Parse(line, container);
 
     inf.SetID(container.size() >= 1 ? container.at(0) : LIST_ERR_STR);
     inf.SetName(container.size() >= 2 ? container.at(1) : LIST_ERR_STR);
-    inf.SetIsMale(container.size() >= 3 ? _wtoi(container.at(2)) : 0);
-    inf.SetClass(container.size() >= 4 ? container.at(3) : LIST_ERR_STR);
-    inf.SetPhoneNum(container.size() >= 5 ? container.at(4) : LIST_ERR_STR);
+    inf.SetPeriod(container.size() >= 3 ? container.at(2) : LIST_ERR_STR);
+    inf.SetTeacherName(container.size() >= 4 ? container.at(3) : LIST_ERR_STR);
 
     return container.size();
 }
 
-unsigned int CStuCSVParser::GetParsedLine()
+unsigned int CCourseCSVParser::GetParsedLine()
 {
     return parsedLine;
 }
 
-bool CStuCSVParser::HasExtraInf()
+bool CCourseCSVParser::HasExtraInf()
 {
     return hasExtraInf;
 }
 
-bool CStuCSVParser::HasDataError()
+bool CCourseCSVParser::HasDataError()
 {
     return hasDataError;
 }

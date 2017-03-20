@@ -2,19 +2,19 @@
 
 #include "CSVParser.h"
 #include "FileHandler.h"
-#include "Student.h"
 #include "LinkedListSel.h"
+#include "Course.h"
 
 using namespace std;
 
-class CStuCSVParser :
+class CCourseCSVParser :
     public CCSVParser
 {
 public:
-    CStuCSVParser(CFileHandler *pHandler);
-    ~CStuCSVParser();
-    bool Parse(bool haveHeader, MyLinkedList<Student> *plist, const wchar_t *delimiter = NULL);
-    static int Parse(wchar_t *line, Student& inf);
+    CCourseCSVParser(CFileHandler *pHandler);
+    ~CCourseCSVParser();
+    bool Parse(bool haveHeader, MyLinkedList<Course> *plist, const wchar_t *delimiter = NULL);
+    static int Parse(wchar_t *line, Course& inf);
     unsigned int GetParsedLine();
     bool HasExtraInf();
     bool HasDataError();
