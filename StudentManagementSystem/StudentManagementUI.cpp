@@ -154,7 +154,7 @@ int StudentManagementUI::ProcessInput(WORD input, int& listCurSel)
             if (curPage < totalPage)curPage++;
             else {
                 SetStatus(_T("没有下一页了"));
-                return INPUT_NEEDNOTREFRESH;;
+                return INPUT_NEEDNOTREFRESH;
             }
             break;
         case VK_ESCAPE: // Esc - Exit
@@ -186,6 +186,10 @@ int StudentManagementUI::ProcessInput(WORD input, int& listCurSel)
             listCurSel++;
             return INPUT_NEEDNOTREFRESH;
         default:
+            wstringstream buf;
+            buf << _T("输入有误，不存在对应虚拟按键码 ") << input << _T(" 的动作");
+            SetStatus(buf.str());
+            return INPUT_NEEDNOTREFRESH;
             break;
     }
     return 0;
