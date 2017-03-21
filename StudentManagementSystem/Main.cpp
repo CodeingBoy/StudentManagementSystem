@@ -9,6 +9,7 @@
 #include "StuCSVParser.h"
 #include "InputDialog.h"
 #include "CourseCSVParser.h"
+#include "ConfirmDlg.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ wstring readFileName;
 
 void Exit();
 void OnExit();
-void ReadFromFile(wstring fileName);
+bool ReadFromFile(wstring fileName);
 void SaveToFile(wstring fileName);
 void DrawVerticalRainbow();
 
@@ -33,13 +34,19 @@ int main()
     console.SetSize({ 80, 25 });
 
     DrawVerticalRainbow();
-    InputDialog inputDlg(console, _T("读取之前的记录"), _T("输入程序目录下的文件名以读取，留空或取消为不读取"));
-    if (inputDlg.Show() == DIALOG_RET_OK) {
+    while (true) {
+        InputDialog inputDlg(console, _T("读取之前的记录"), _T("输入程序目录下的文件名以读取，留空或取消为不读取"));
+        if (inputDlg.Show() != DIALOG_RET_OK) break;
         wstring fileName = inputDlg.GetInputContent();
-        if (!fileName.empty()) {
-            ReadFromFile(fileName);
+        if (fileName.empty()) break;
+
+        if(ReadFromFile(fileName)) {
             readFileName = fileName;
+            break;
         }
+
+        ConfirmDlg errorDlg(console, _T("无法读取"), _T("文件无法读取，可能为找不到文件或您没有对文件读取的权限，请检查您提供的文件路径"), 50);
+        errorDlg.Show();
     }
 
     while (true) {
@@ -63,9 +70,10 @@ int main()
     }
 }
 
-void ReadFromFile(wstring fileName)
+bool ReadFromFile(wstring fileName)
 {
     CFileHandler handler(fileName.c_str(), true);
+    if (!handler.IsVaild())return false;
 
     // parse student list
     CStuCSVParser parser_stu(&handler);
@@ -81,6 +89,8 @@ void ReadFromFile(wstring fileName)
     CCourseCSVParser parser_course(&handler);
     MyLinkedList<Course>& course_list = courseUI.GetCourseList();
     parser_course.Parse(false, &course_list, _T("\n"));
+
+    return true;
 }
 
 void SaveToFile(wstring fileName)
