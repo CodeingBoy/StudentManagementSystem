@@ -144,6 +144,11 @@ void SetColor(unsigned short ForeColor, unsigned short BackGroundColor)
     SetConsoleTextAttribute(hCon, ForeColor + BackGroundColor * 0x10);
 }
 
+MyLinkedList<Course> GetCourse()
+{
+    return courseUI.GetCourseList();
+}
+
 // copied from others
 void DrawVerticalRainbow()
 {
