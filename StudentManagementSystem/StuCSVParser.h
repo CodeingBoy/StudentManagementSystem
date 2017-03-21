@@ -14,6 +14,7 @@ public:
     CStuCSVParser(CFileHandler *pHandler);
     ~CStuCSVParser();
     bool Parse(bool haveHeader, MyLinkedList<Student> *plist, const wchar_t *delimiter = NULL);
+    static MyLinkedList<wstring> ParseChosenCourse(wchar_t *str);
     static int Parse(wchar_t *line, Student& inf);
     unsigned int GetParsedLine();
     bool HasExtraInf();

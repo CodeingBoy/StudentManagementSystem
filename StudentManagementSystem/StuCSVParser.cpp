@@ -31,7 +31,7 @@ bool CStuCSVParser::Parse(bool haveHeader, MyLinkedList<Student> *plist, const w
         plist->push_back(inf);
         if (size < 6)
             hasDataError = true;
-        else if (size > 6)
+        else if (size > 7)
             hasExtraInf = true;
         parsedLine++;
     }
@@ -39,7 +39,21 @@ bool CStuCSVParser::Parse(bool haveHeader, MyLinkedList<Student> *plist, const w
     return true;
 }
 
-int CStuCSVParser::Parse(wchar_t *line, Student &inf)
+MyLinkedList<wstring> CStuCSVParser::ParseChosenCourse(wchar_t *str)
+{
+    MyLinkedList<wstring> result;
+
+    vector<wchar_t *> container;
+    CCSVParser::Parse(str, container, _T("|"));
+
+    for (auto iter = container.begin(); iter != container.end(); ++iter) {
+        result.push_back(*iter);
+    }
+
+    return result;
+}
+
+int CStuCSVParser::Parse(wchar_t *line, Student& inf)
 {
     vector<wchar_t *> container;
     CCSVParser::Parse(line, container);
@@ -49,6 +63,9 @@ int CStuCSVParser::Parse(wchar_t *line, Student &inf)
     inf.SetIsMale(container.size() >= 3 ? _wtoi(container.at(2)) : 0);
     inf.SetClass(container.size() >= 4 ? container.at(3) : LIST_ERR_STR);
     inf.SetPhoneNum(container.size() >= 5 ? container.at(4) : LIST_ERR_STR);
+    if(container.size() >= 6 && wcscmp(container.at(5), _T("\n"))) {
+        inf.SetChosenCourses(ParseChosenCourse(container.at(5)));
+    }
 
     return container.size();
 }

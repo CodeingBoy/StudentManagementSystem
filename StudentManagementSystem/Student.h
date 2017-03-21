@@ -118,7 +118,6 @@ public:
     int Compare_Class(Student& other);
     int Compare_PhoneNum(Student& other);
 
-
     MyLinkedList<wstring> GetChosenCourses() const
     {
         return chosen_courses;

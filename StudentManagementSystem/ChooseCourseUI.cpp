@@ -6,16 +6,16 @@
 #include <filesystem>
 #include "ConfirmDlg.h"
 
-ChooseCourseUI::ChooseCourseUI(ConsoleOperator& console, MyLinkedList<Course> courses_list, MyLinkedList<wstring> *chosen_list)
+ChooseCourseUI::ChooseCourseUI(ConsoleOperator& console, MyLinkedList<Course> courses_list, MyLinkedList<wstring> chosen_list)
     : console(console), courses_list(courses_list)
 {
     chosen = new bool[courses_list.size()];
     memset(chosen, 0, courses_list.size() * sizeof(bool));
 
-    if(chosen_list != NULL && chosen_list->size() != 0) {
+    if(chosen_list.size() != 0) {
         int index = 0;
         for (auto iter = courses_list.begin(); iter != courses_list.end(); ++iter) {
-            MyLinkedList<wstring>::mylklist_iterator search_iter = chosen_list->search((*iter).GetID());
+            MyLinkedList<wstring>::mylklist_iterator search_iter = chosen_list.search((*iter).GetID());
             if(search_iter.GetNodePtr() != nullptr) {
                 chosen[index] = true;
                 chosenCount++;

@@ -104,7 +104,7 @@ void StudentManagementUI::OnChooseCourse()
     }
 
     Student stu = studentList.at(selNum - 1);
-    ChooseCourseUI courseUI(console, GetCourse(), &stu.GetChosenCourses());
+    ChooseCourseUI courseUI(console, GetCourse(), stu.GetChosenCourses());
     if (courseUI.Show() == UI_RET_EXIT) {
         stu.SetChosenCourses(courseUI.GetChosenCourse());
         studentList.Replace(selNum - 1, stu);
@@ -268,8 +268,6 @@ void StudentManagementUI::RefreshList(int begin, int pageLength)
     console.FillArea(list_rect, _T(' '), FOREGROUND_WHITE | BACKGROUND_BLUE);
     console.WriteConsoleLine(_T("┏━━━┳━━━━━━━┳━━━━━━┳━━━┳━━━━━━━┳━━━━━━━┓"), { 0, 1 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
     console.WriteConsoleLine(_T("┃ 序号 ┃     学号     ┃    姓名    ┃ 性别 ┃     班级     ┃   联系方式   ┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
-
-
 
     auto maskIter = mask.begin();
     int index = 0;

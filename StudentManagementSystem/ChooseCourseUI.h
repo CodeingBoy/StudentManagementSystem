@@ -26,7 +26,7 @@ class ChooseCourseUI
     int chosenCount = 0;
     bool *chosen;
 public:
-    ChooseCourseUI(ConsoleOperator& console, MyLinkedList<Course> courses_list, MyLinkedList<wstring> *chosen_list);
+    ChooseCourseUI(ConsoleOperator& console, MyLinkedList<Course> courses_list, MyLinkedList<wstring> chosen_list);
     ~ChooseCourseUI();
     void OnChoose();
     int ProcessInput(wchar_t input, int& curSel);

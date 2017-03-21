@@ -98,6 +98,11 @@ void SaveToFile(wstring fileName)
         wss << (s.IsMale() ? _T("1") : _T("0")) << _T(",");
         wss << s.GetClass() << _T(",");
         wss << s.GetPhoneNum() << _T(",");
+        MyLinkedList<wstring> chosen_course = s.GetChosenCourses();
+        for(auto iter = chosen_course.begin(); iter != chosen_course.end(); ++iter) {
+            wss << *iter << _T("|");
+        }
+        wss << _T(",");
 
         handler.WriteLine(wss.str().c_str());
     }
