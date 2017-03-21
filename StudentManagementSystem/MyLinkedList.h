@@ -14,9 +14,9 @@ public:
 
     ~MyLinkedList()
     {
-        LkListNode<T>* node = head;
+        LkListNode<T> *node = head;
         while (node) {
-            LkListNode<T>* next = node->GetNext();
+            LkListNode<T> *next = node->GetNext();
             delete node;
             node = next;
         }
@@ -48,7 +48,7 @@ public:
     }
     void push_front(T obj)
     {
-        LkListNode<T>* node = new LkListNode<T>(obj);
+        LkListNode<T> *node = new LkListNode<T>(obj);
         if (!node)
             return;
 
@@ -115,7 +115,7 @@ public:
     class mylklist_iterator /*: public LinkedList<T>::iterator*/
     {
     public:
-        mylklist_iterator(const MyLinkedList* pLklist, LkListNode<T>* node)
+        mylklist_iterator(const MyLinkedList *pLklist, LkListNode<T> *node)
             : nodeptr(node),
               lkList(pLklist)
         {
@@ -165,7 +165,7 @@ public:
             return *this;
         }
 
-        LkListNode<T>* GetNodePtr()
+        LkListNode<T> *GetNodePtr()
         {
             return nodeptr;
         }
@@ -187,14 +187,14 @@ public:
         }
 
     protected:
-        LkListNode<T>* nodeptr;
-        const MyLinkedList<T>* lkList;
+        LkListNode<T> *nodeptr;
+        const MyLinkedList<T> *lkList;
     };
 
     class mylklist_reverse_iterator : public mylklist_iterator
     {
     public:
-        mylklist_reverse_iterator(const MyLinkedList* pLklist, LkListNode<T>* node)
+        mylklist_reverse_iterator(const MyLinkedList *pLklist, LkListNode<T> *node)
             : mylklist_iterator(pLklist, node)
         {
         }
@@ -223,7 +223,7 @@ public:
 
     void insert(mylklist_iterator& where, T obj)
     {
-        LkListNode<T>* node = new LkListNode<T>(obj);
+        LkListNode<T> *node = new LkListNode<T>(obj);
         if (!node)
             return;
 
@@ -234,7 +234,7 @@ public:
 
         mylklist_iterator prev_iter = where - 1;
 
-        LkListNode<T>* priorNode = prev_iter.GetNodePtr();
+        LkListNode<T> *priorNode = prev_iter.GetNodePtr();
 
         node->SetNext(priorNode->GetNext());
         node->SetPrev(priorNode);
@@ -247,9 +247,9 @@ public:
     {
         mylklist_iterator next_iter = where + 1;
 
-        LkListNode<T>* pNode = where.GetNodePtr();
-        LkListNode<T>* pPriorNode = pNode->GetPrev();
-        LkListNode<T>* pNextNode = pNode->GetNext();
+        LkListNode<T> *pNode = where.GetNodePtr();
+        LkListNode<T> *pPriorNode = pNode->GetPrev();
+        LkListNode<T> *pNextNode = pNode->GetNext();
 
         if (pPriorNode)pPriorNode->SetNext(pNextNode);
         if (pNextNode)pNextNode->SetPrev(pPriorNode);
@@ -294,12 +294,21 @@ public:
         return mylklist_iterator(this, GetNode(index));
     }
 
-private:
-    LkListNode<T>* head;
-
-    LkListNode<T>* GetNode(int index)
+    mylklist_iterator search(T pattern) const
     {
-        LkListNode<T>* node = head->GetNext();
+        for (auto iter = begin(); iter != end(); ++iter) {
+            if (*iter == pattern)
+                return iter;
+        }
+        return mylklist_iterator(this, nullptr);
+    }
+
+private:
+    LkListNode<T> *head;
+
+    LkListNode<T> *GetNode(int index)
+    {
+        LkListNode<T> *node = head->GetNext();
         int curIndex = 0;
 
         while (curIndex < index && node) {
@@ -312,7 +321,7 @@ private:
 
     bool Insert(T data, int index = -1)
     {
-        LkListNode<T>* node = new LkListNode<T>(data);
+        LkListNode<T> *node = new LkListNode<T>(data);
         if (!node)
             return false;
 
@@ -320,7 +329,7 @@ private:
             index = GetLength();
 
         if (index > 0) { // insert at other place
-            LkListNode<T>* priorNode = GetNode(index - 1);
+            LkListNode<T> *priorNode = GetNode(index - 1);
 
             node->SetNext(priorNode->GetNext());
             node->SetPrev(priorNode);
@@ -334,7 +343,7 @@ private:
     }
     int GetLength() const
     {
-        LkListNode<T>* node = head->GetNext();
+        LkListNode<T> *node = head->GetNext();
         int curIndex = 0;
 
         while (node) {
@@ -354,7 +363,7 @@ private:
     }
     T GetData(int index)
     {
-        LkListNode<T>* node = GetNode(index);
+        LkListNode<T> *node = GetNode(index);
 
         if (node)
             return node->GetData();
