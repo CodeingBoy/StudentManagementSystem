@@ -62,7 +62,7 @@ public:
         consoleHandle = console_handle;
     }
 
-    void ShadowWindowLine(wchar_t* str);
+    void ShadowWindowLine(wchar_t *str);
     void DrawBox(bool bSingle, SMALL_RECT rc);
     void HideCursor();
     void ShowCursor();
@@ -70,6 +70,7 @@ public:
     static int GetMBCSLength(wstring str);
     static int GetWCSLength(string str);
     void HighlightRow(int row);
+    void HighlightRow(int row, WORD attr);
 
     void SetHighlightAttr(const WORD highlight_attr)
     {

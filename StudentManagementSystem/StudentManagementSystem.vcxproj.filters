@@ -101,6 +101,12 @@
     <ClInclude Include="CourseCSVParser.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ChooseCourseUI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Student.cpp">
@@ -158,6 +164,9 @@
       <Filter>Text-based UI\CourseManagementUI\Dialogs</Filter>
     </ClCompile>
     <ClCompile Include="CourseCSVParser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ChooseCourseUI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

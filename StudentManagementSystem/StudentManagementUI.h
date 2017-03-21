@@ -23,7 +23,7 @@ private:
     int curSel = 0;
     int curPage = 1;
     int totalPage = 1;
-    StudentList* pShowingList = &studentList;
+    StudentList *pShowingList = &studentList;
     MyLinkedList<int> mask;
 
     void OnAddStudent();
@@ -32,6 +32,7 @@ private:
     void OnDeleteStudent(int curSel);
     void OnInsertStudent();
     void OnSortStudent();
+    void OnChooseCourse();
     int ProcessInput(WORD input, int& curSel);
     void OnSearchStudent();
     void Draw();

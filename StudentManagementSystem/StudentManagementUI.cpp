@@ -6,8 +6,10 @@
 #include "StudentSearchDlg.h"
 #include "InputDialog.h"
 #include "StudentSortDlg.h"
+#include "ChooseCourseUI.h"
+#include "Main.h"
 
-StudentManagementUI::StudentManagementUI(ConsoleOperator &console): console(console)
+StudentManagementUI::StudentManagementUI(ConsoleOperator& console): console(console)
 {
 }
 
@@ -92,12 +94,34 @@ void StudentManagementUI::OnSortStudent()
     }
 }
 
-int StudentManagementUI::ProcessInput(WORD input, int &listCurSel)
+void StudentManagementUI::OnChooseCourse()
+{
+    int selNum = GetSelNum(3 + curSel);
+    if (selNum == -1) {
+        ConfirmDlg confirm_dlg(console, _T("无记录"), _T("所选行没有记录，请选择记录行。"), 20);
+        confirm_dlg.Show();
+        return;
+    }
+
+    Student stu = studentList.at(selNum - 1);
+    ChooseCourseUI courseUI(console, GetCourse(), &stu.GetChosenCourses());
+    if (courseUI.Show() == UI_RET_EXIT) {
+        stu.SetChosenCourses(courseUI.GetChosenCourse());
+        studentList.Replace(selNum - 1, stu);
+    }
+
+    Draw(); // need a full refresh
+}
+
+int StudentManagementUI::ProcessInput(WORD input, int& listCurSel)
 {
     switch (input) {
         case 0x41: // A - Add
             OnAddStudent();
             CalcTotalPage();
+            break;
+        case 0x43: // C - Choose
+            OnChooseCourse();
             break;
         case 0x49: // I - Insert
             OnInsertStudent();
@@ -237,7 +261,7 @@ void StudentManagementUI::Draw()
 
 void StudentManagementUI::RefreshList(int begin, int pageLength)
 {
-    StudentList &showingList = *pShowingList;
+    StudentList& showingList = *pShowingList;
 
     static const short x_select = 0, x_ID = 8, x_name = 24, x_sex = 38, x_clazz = 46, x_phoneNum = 62, x_end = 78;
 

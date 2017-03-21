@@ -323,9 +323,14 @@ int ConsoleOperator::GetWCSLength(string str)
 
 void ConsoleOperator::HighlightRow(int row)
 {
+    HighlightRow(row, highlightAttr);
+}
+
+void ConsoleOperator::HighlightRow(int row, WORD attr)
+{
     SMALL_RECT highlight_rect = GetWindowSize();
     highlight_rect.Top = row;
     highlight_rect.Bottom = row;
 
-    FillAreaAttr(highlight_rect, highlightAttr);
+    FillAreaAttr(highlight_rect, attr);
 }
