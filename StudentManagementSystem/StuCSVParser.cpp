@@ -19,9 +19,11 @@ bool CStuCSVParser::Parse(bool haveHeader, MyLinkedList<Student> *plist, const w
     if (haveHeader)
         delete fileHandler->ReadLine(); // 忽略第一行
 
-    Student inf;
+
     wchar_t line[1024];
     while (!fileHandler->isEOF()) {
+        Student inf;
+
         memset(line, NULL, 1024); // 设置为空
         if (!fileHandler->ReadLine(line) || !wcscmp(line, _T("")))
             continue;
