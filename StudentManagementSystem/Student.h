@@ -3,6 +3,7 @@
 #include <ostream>
 #include <sstream>
 #include <TCHAR.h>
+#include "MyLinkedList.h"
 
 using namespace std;
 
@@ -15,13 +16,14 @@ private:
     std::wstring clazz;
     bool isMale;
     std::wstring phoneNum;
+    MyLinkedList<wstring> chosen_courses;
 
 public:
     Student();
     ~Student();
-    int Compare_ID(Student &other);
+    int Compare_ID(Student& other);
 
-    Student(const std::wstring &id, const std::wstring &name, const std::wstring &clazz, bool is_male, const std::wstring &phone_num)
+    Student(const std::wstring& id, const std::wstring& name, const std::wstring& clazz, bool is_male, const std::wstring& phone_num)
         : id(id),
           name(name),
           clazz(clazz),
@@ -35,7 +37,7 @@ public:
         return id;
     }
 
-    void SetID(const std::wstring &id)
+    void SetID(const std::wstring& id)
     {
         this->id = id;
     }
@@ -45,7 +47,7 @@ public:
         return name;
     }
 
-    void SetName(const std::wstring &name)
+    void SetName(const std::wstring& name)
     {
         this->name = name;
     }
@@ -55,7 +57,7 @@ public:
         return clazz;
     }
 
-    void SetClass(const std::wstring &clazz)
+    void SetClass(const std::wstring& clazz)
     {
         this->clazz = clazz;
     }
@@ -75,7 +77,7 @@ public:
         return phoneNum;
     }
 
-    void SetPhoneNum(const std::wstring &phone_num)
+    void SetPhoneNum(const std::wstring& phone_num)
     {
         phoneNum = phone_num;
     }
@@ -88,7 +90,7 @@ public:
         if (phoneNum.empty())phoneNum = _T(" ");
     }
 
-    friend bool operator==(const Student &lhs, const Student &rhs)
+    friend bool operator==(const Student& lhs, const Student& rhs)
     {
         return lhs.id == rhs.id
                && lhs.name == rhs.name
@@ -97,12 +99,12 @@ public:
                && lhs.phoneNum == rhs.phoneNum;
     }
 
-    friend bool operator!=(const Student &lhs, const Student &rhs)
+    friend bool operator!=(const Student& lhs, const Student& rhs)
     {
         return !(lhs == rhs);
     }
 
-    friend std::wostream &operator<<(std::wostream &os, const Student &obj)
+    friend std::wostream& operator<<(std::wostream& os, const Student& obj)
     {
         return os
                << obj.id << ","
@@ -112,8 +114,19 @@ public:
                << obj.phoneNum;
     }
 
-    int Compare_Name(Student &other);
-    int Compare_Class(Student &other);
-    int Compare_PhoneNum(Student &other);
+    int Compare_Name(Student& other);
+    int Compare_Class(Student& other);
+    int Compare_PhoneNum(Student& other);
+
+
+    MyLinkedList<wstring> GetChosenCourses() const
+    {
+        return chosen_courses;
+    }
+
+    void SetChosenCourses(const MyLinkedList<wstring>& chosen_courses)
+    {
+        this->chosen_courses = chosen_courses;
+    }
 };
 
