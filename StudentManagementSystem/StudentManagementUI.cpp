@@ -224,10 +224,26 @@ void StudentManagementUI::OnSearchStudent()
     if (searchDlg.Show() == DIALOG_RET_OK && !searchDlg.IsAllEmpty()) {
         Student searchCondition = searchDlg.GetStudent();
         mask = studentList.Search_Mask(searchCondition, searchDlg.GetSearchSex());
+
+        // calc filtered count
+        filteredCount = 0;
+        for(auto iter = mask.begin(); iter != mask.end(); ++iter) {
+            if (*iter == 1) {
+                filteredCount++;
+            }
+        }
+
+        CalcTotalPage();
+        if(curPage > totalPage) {
+            curPage = totalPage; // filp to last page
+        }
+
         RefreshList(0);
         SetStatus(_T("筛选记录完毕"));
     } else {
         mask.clear();
+        filteredCount = 0;
+        CalcTotalPage();
         RefreshList(0);
         SetStatus(_T("退出筛选模式"));
     }
@@ -274,14 +290,32 @@ void StudentManagementUI::RefreshList(int begin, int pageLength)
     console.WriteConsoleLine(_T("┃ 序号 ┃     学号     ┃    姓名    ┃ 性别 ┃     班级     ┃   联系方式   ┃"), { 0, 2 }, FOREGROUND_WHITE | BACKGROUND_BLUE);
 
     auto maskIter = mask.begin();
+    if (mask.size() > 0) {
+        int skipCount = 0;
+        int totalCount = 0;
+        while (skipCount < begin && maskIter != mask.end()) {
+            int maskCode = *maskIter;
+            if (maskCode == 1) {
+                skipCount++;
+            }
+            totalCount++;
+            ++maskIter;
+        }
+        begin = totalCount;
+    }
+
     int index = 0;
 
     short y = 3;
     auto iter = showingList.getIter(begin);
-    while (index < pageLength && iter != studentList.end()) {
+    int recordShownCount = 0;
+    while (recordShownCount < pageLength && iter != studentList.end()) {
         Student s = *iter;
 
         if (mask.size() > 0) {// mask is vaild
+            if(maskIter == mask.end()) {
+                break;
+            }
             int maskCode = *maskIter;
             ++maskIter;
             if (maskCode != 1) {
@@ -303,6 +337,7 @@ void StudentManagementUI::RefreshList(int begin, int pageLength)
         y++;
 
         index++;
+        recordShownCount++;
         ++iter;
     }
 }
@@ -358,7 +393,11 @@ void StudentManagementUI::SetStatus(wstring text)
 
 void StudentManagementUI::CalcTotalPage()
 {
-    totalPage = ceil(studentList.size() / static_cast<double>(LIST_ROW_PER_PAGE));
+    if (mask.size() > 0) {
+        totalPage = ceil(filteredCount / static_cast<double>(LIST_ROW_PER_PAGE));
+    } else {
+        totalPage = ceil(studentList.size() / static_cast<double>(LIST_ROW_PER_PAGE));
+    }
     if (totalPage < 1)totalPage = 1; // at least 1 page
 }
 

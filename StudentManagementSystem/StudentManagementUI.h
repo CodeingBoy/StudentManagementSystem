@@ -23,6 +23,7 @@ private:
     int curSel = 0;
     int curPage = 1;
     int totalPage = 1;
+    int filteredCount = 0;
     StudentList *pShowingList = &studentList;
     MyLinkedList<int> mask;
 
