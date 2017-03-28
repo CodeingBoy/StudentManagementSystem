@@ -223,14 +223,14 @@ public:
 
     void insert(mylklist_iterator& where, T obj)
     {
-        LkListNode<T> *node = new LkListNode<T>(obj);
-        if (!node)
-            return;
-
         if (where == end()) {
             push_back(obj);
             return;
         }
+
+        LkListNode<T> *node = new LkListNode<T>(obj);
+        if (!node)
+            return;
 
         mylklist_iterator prev_iter = where - 1;
 
