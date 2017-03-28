@@ -140,6 +140,7 @@ int CourseManagementUI::ProcessInput(wchar_t input, int& curSel)
         default:
             break;
     }
+    return INPUT_OK;
 }
 
 void CourseManagementUI::Draw()
