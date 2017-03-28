@@ -24,7 +24,6 @@ void StudentManagementUI::OnAddStudent()
         studentList.push_back(editDlg.GetStudent());
         SetStatus(_T("添加记录成功"));
     }
-
 }
 
 void StudentManagementUI::OnEditStudent(int curSel)

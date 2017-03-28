@@ -162,7 +162,6 @@
     <ClInclude Include="LkListNode.h" />
     <ClInclude Include="StuCSVParser.h" />
     <ClInclude Include="Student.h" />
-    <ClInclude Include="LinkedListSel.h" />
     <ClInclude Include="StudentList.h" />
     <ClInclude Include="StudentManagementUI.h" />
     <ClInclude Include="StudentSearchDlg.h" />

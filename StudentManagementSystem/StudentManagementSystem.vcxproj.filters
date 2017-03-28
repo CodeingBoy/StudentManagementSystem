@@ -30,37 +30,25 @@
     <Filter Include="Text-based UI\CourseManagementUI\Dialogs">
       <UniqueIdentifier>{7be652ba-3ce3-4f18-a37c-d540c6ecf9b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Text-based UI\ChooseCourseUI">
+      <UniqueIdentifier>{0b4ca7cc-1a32-4e36-a258-aeb90948e668}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File Reader/Parser">
+      <UniqueIdentifier>{20ea3c49-d647-47a6-ae7a-d2740960ef9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{67c5d192-98f2-4cc5-af73-0cf442d1ec90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Student.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Course.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="LinkedListSel.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="LkListNode.h">
       <Filter>Data Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="CSVParser.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="FileHandler.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="StuCSVParser.h">
-      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="MyLinkedList.h">
       <Filter>Data Struct</Filter>
     </ClInclude>
     <ClInclude Include="LinkedList.h">
       <Filter>Data Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="StudentList.h">
-      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="StudentManagementUI.h">
       <Filter>Text-based UI\StudentManagementUI</Filter>
@@ -74,9 +62,6 @@
     <ClInclude Include="ConsoleOperator.h">
       <Filter>Text-based UI</Filter>
     </ClInclude>
-    <ClInclude Include="Dialog.h">
-      <Filter>Text-based UI</Filter>
-    </ClInclude>
     <ClInclude Include="defs.h">
       <Filter>Text-based UI\Common Dialogs</Filter>
     </ClInclude>
@@ -86,48 +71,51 @@
     <ClInclude Include="StudentEditDlg.h">
       <Filter>Text-based UI\StudentManagementUI\Dialogs</Filter>
     </ClInclude>
-    <ClInclude Include="InputDialog.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="StudentSearchDlg.h">
       <Filter>Text-based UI\StudentManagementUI\Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="StudentSortDlg.h">
-      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CourseEditDlg.h">
       <Filter>Text-based UI\CourseManagementUI\Dialogs</Filter>
     </ClInclude>
-    <ClInclude Include="CourseCSVParser.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ChooseCourseUI.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Main.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="StudentSortDlg.h">
+      <Filter>Text-based UI\StudentManagementUI\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ChooseCourseUI.h">
+      <Filter>Text-based UI\ChooseCourseUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog.h">
+      <Filter>Text-based UI\Common Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDialog.h">
+      <Filter>Text-based UI\Common Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVParser.h">
+      <Filter>File Reader/Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="CourseCSVParser.h">
+      <Filter>File Reader/Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="Student.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Course.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="StuCSVParser.h">
+      <Filter>File Reader/Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="FileHandler.h">
+      <Filter>File Reader/Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="StudentList.h">
+      <Filter>Data Struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Student.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Course.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CSVParser.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="FileHandler.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="StuCSVParser.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="StudentList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="StudentManagementUI.cpp">
@@ -142,32 +130,50 @@
     <ClCompile Include="ConsoleOperator.cpp">
       <Filter>Text-based UI</Filter>
     </ClCompile>
-    <ClCompile Include="Dialog.cpp">
-      <Filter>Text-based UI</Filter>
-    </ClCompile>
     <ClCompile Include="CourseManagementUI.cpp">
       <Filter>Text-based UI\CourseManagementUI</Filter>
     </ClCompile>
     <ClCompile Include="StudentEditDlg.cpp">
       <Filter>Text-based UI\StudentManagementUI\Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="InputDialog.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="StudentSearchDlg.cpp">
       <Filter>Text-based UI\StudentManagementUI\Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="StudentSortDlg.cpp">
-      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CourseEditDlg.cpp">
       <Filter>Text-based UI\CourseManagementUI\Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="CourseCSVParser.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="StudentSortDlg.cpp">
+      <Filter>Text-based UI\StudentManagementUI\Dialogs</Filter>
     </ClCompile>
     <ClCompile Include="ChooseCourseUI.cpp">
-      <Filter>源文件</Filter>
+      <Filter>Text-based UI\ChooseCourseUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog.cpp">
+      <Filter>Text-based UI\Common Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="InputDialog.cpp">
+      <Filter>Text-based UI\Common Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="Course.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Student.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVParser.cpp">
+      <Filter>File Reader/Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="CourseCSVParser.cpp">
+      <Filter>File Reader/Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="StuCSVParser.cpp">
+      <Filter>File Reader/Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="FileHandler.cpp">
+      <Filter>File Reader/Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="StudentList.cpp">
+      <Filter>Data Struct</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
